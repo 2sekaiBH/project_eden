@@ -4,63 +4,66 @@ using UnityEngine.InputSystem;
 
 public class PlayerController : MonoBehaviour
 {
-
-    [Header("Player Movement Settings")]
+    [Header("Player Horizontal Movement Settings")]
     [SerializeField] private float moveSpeed = 5f;
-    [SerializeField] private float jumpForce = 10f;
-
-    [Header("Reference")]
-    [SerializeField] private LayerMask groundLayer;
-    [SerializeField] private Transform groundCheck;
-    
-
-    [Header("Setting")]
-    // 점프맵에서만 점프 및 슬라이드 가능
-    [SerializeField] private bool isJumpAndSlideAble = false;
-
+    [SerializeField] private float dashValue = 1.5f;
     private float _moveInput;
-    // 이동 방향 프로퍼티
     public float moveInput => _moveInput;
-
-    private bool isGrounded;
+    // 이동 방향 프로퍼티
 
     private Rigidbody2D rb;
-
+    private float lastInputDir = 0f;
+    private bool leftHeld = false;
+    private bool rightHeld = false;
     void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
     }
 
-    // horizontal movement
-    public void OnMove(InputAction.CallbackContext context)
+    // 좌측 이동
+    public void OnMoveLeft(InputAction.CallbackContext context)
     {
-        _moveInput = context.ReadValue<float>();
-
-        // flip 기능 추가 - animation, sprite 연동
+        if (context.performed)
+        {
+            lastInputDir = -1f;
+            leftHeld = true;
+        }
+        else if (context.canceled)
+            leftHeld = false;
     }
 
-    // jump -> jump map에서만 action 할당
-    public void OnJump(InputAction.CallbackContext context)
+    //우측 이동
+    public void OnMoveRight(InputAction.CallbackContext context)
     {
-        Debug.Log(isGrounded);
-        if (context.performed && isGrounded)
+        if (context.performed)
         {
-            rb.linearVelocityY = jumpForce;
+            lastInputDir = 1f;
+            rightHeld = true;
         }
+        else if (context.canceled)
+            rightHeld = false;
+    }
+
+    // 달리기
+    public void OnDash(InputAction.CallbackContext context)
+    {
+        if(context.performed)
+            moveSpeed *= dashValue;
+        else if (context.canceled)
+            moveSpeed /= dashValue;
     }
 
     public void FixedUpdate()
     {
-        if(isJumpAndSlideAble)
-            isGrounded = Physics2D.OverlapCircle(groundCheck.position, 0.1f, groundLayer);
-        rb.linearVelocityX = moveInput * moveSpeed;
-    }
+        if (leftHeld && !rightHeld) 
+            _moveInput = -1f;
+        else if (!leftHeld && rightHeld)
+            _moveInput = 1f;
+        else if(leftHeld && rightHeld) // 키 동시 입력 시 마지막 입력 방향 유지
+            _moveInput = lastInputDir;
+        else
+            _moveInput = 0f;
 
-    void OnDrawGizmos()
-    {
-        if (groundCheck == null) return;
-
-        Gizmos.color = isGrounded ? Color.green : Color.red;
-        Gizmos.DrawWireSphere(groundCheck.position, 0.1f);
+        rb.linearVelocityX = _moveInput * moveSpeed;
     }
 }

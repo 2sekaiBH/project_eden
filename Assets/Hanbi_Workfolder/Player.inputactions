@@ -3,22 +3,31 @@
     "name": "Player",
     "maps": [
         {
-            "name": "Player",
+            "name": "PlayerDefaultMove",
             "id": "c2443be2-0c82-4e6c-b64c-311e536b8c55",
             "actions": [
                 {
-                    "name": "Move",
-                    "type": "Value",
+                    "name": "MoveLeft",
+                    "type": "Button",
                     "id": "0654c796-2bb2-45fb-9cfb-ad0b20a129b3",
-                    "expectedControlType": "Axis",
+                    "expectedControlType": "",
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": true
                 },
                 {
-                    "name": "Jump",
+                    "name": "MoveRight",
                     "type": "Button",
-                    "id": "1ee8cb2e-8df5-4621-b2bd-19336a07910f",
+                    "id": "468205df-6a69-4049-b263-827ad3cddcea",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
+                },
+                {
+                    "name": "Dash",
+                    "type": "Button",
+                    "id": "a6c00174-b979-4199-825f-e9f92cb1b7c9",
                     "expectedControlType": "",
                     "processors": "",
                     "interactions": "",
@@ -29,55 +38,141 @@
                 {
                     "name": "",
                     "id": "0700638a-1e3c-4602-b9b8-a5664dc1f040",
-                    "path": "",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": ";KeyboardMouse",
-                    "action": "Move",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "1D Axis",
-                    "id": "e3e494fa-9815-49f9-895d-d15d58048918",
-                    "path": "1DAxis",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Move",
-                    "isComposite": true,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "Negative",
-                    "id": "e686cff1-736e-4108-8e32-c1fd4dbf781c",
                     "path": "<Keyboard>/a",
                     "interactions": "",
                     "processors": "",
                     "groups": ";KeyboardMouse",
-                    "action": "Move",
+                    "action": "MoveLeft",
                     "isComposite": false,
-                    "isPartOfComposite": true
+                    "isPartOfComposite": false
                 },
                 {
-                    "name": "Positive",
-                    "id": "51a8381e-af46-43f8-95b5-ef93fd60e29b",
+                    "name": "",
+                    "id": "67862404-9625-4d48-a204-79264a76db42",
                     "path": "<Keyboard>/d",
                     "interactions": "",
                     "processors": "",
                     "groups": ";KeyboardMouse",
-                    "action": "Move",
+                    "action": "MoveRight",
                     "isComposite": false,
-                    "isPartOfComposite": true
+                    "isPartOfComposite": false
                 },
                 {
                     "name": "",
-                    "id": "af38d689-0802-4bad-bb0a-0ae752e81a55",
+                    "id": "5b8eccc8-2979-4ed8-86ea-c8f876f91e29",
+                    "path": "<Keyboard>/shift",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";KeyboardMouse",
+                    "action": "Dash",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
+        },
+        {
+            "name": "PlayerWithJump",
+            "id": "79b46900-0dc7-4fc2-a3d1-1cc67174fe36",
+            "actions": [
+                {
+                    "name": "Jump",
+                    "type": "Button",
+                    "id": "3a8a7744-5e03-4839-8014-a8e9e75efc35",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "MoveRight",
+                    "type": "Button",
+                    "id": "bb38c14a-2e29-4d6d-9c76-ea786cee35b6",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
+                },
+                {
+                    "name": "MoveLeft",
+                    "type": "Button",
+                    "id": "88b8cce2-3ed0-445c-9c9a-5e59ee87dd32",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
+                },
+                {
+                    "name": "Dash",
+                    "type": "Button",
+                    "id": "672081ee-25fb-4eec-b717-a15057942bb5",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Slide",
+                    "type": "Button",
+                    "id": "74eba0a3-d1c9-43d0-a098-9185b99c416d",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "82f7ecc4-5a41-4f82-ae69-6fa36af1b129",
                     "path": "<Keyboard>/space",
                     "interactions": "",
                     "processors": "",
                     "groups": ";KeyboardMouse",
                     "action": "Jump",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "82b935ab-9140-40e3-a714-97929ea52f92",
+                    "path": "<Keyboard>/d",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";KeyboardMouse",
+                    "action": "MoveRight",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "8d9a2a7e-5bc7-4a39-a668-b614c66e419c",
+                    "path": "<Keyboard>/a",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";KeyboardMouse",
+                    "action": "MoveLeft",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "925e0fef-804c-4eb1-b787-65b175a54d0c",
+                    "path": "<Keyboard>/shift",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";KeyboardMouse",
+                    "action": "Dash",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "8ef7f584-acee-4ebd-9397-9a093f86452a",
+                    "path": "<Keyboard>/s",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";KeyboardMouse",
+                    "action": "Slide",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
