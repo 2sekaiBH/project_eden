@@ -13,14 +13,14 @@ public class PlayerJumpWithSlide : MonoBehaviour
     private bool isGrounded;
     private bool isSliding;
     private Rigidbody2D rb;
-    private PlayerController controller;
+    private PlayerDefaultMove defaultMove;
     private Collider2D playerCollider;
 
     void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
         playerCollider = GetComponent<Collider2D>();
-        controller = GetComponent<PlayerController>();
+        defaultMove = GetComponent<PlayerDefaultMove>();
     }
 
     void FixedUpdate()
@@ -28,7 +28,7 @@ public class PlayerJumpWithSlide : MonoBehaviour
         isGrounded = Physics2D.OverlapCircle(groundCheck.position, 0.1f, groundLayer);
     }
 
-    // jump
+    // ------ 플레이어 점프  ------ //
     public void OnJump(InputAction.CallbackContext context)
     {
         if (context.performed && isGrounded)
@@ -37,17 +37,17 @@ public class PlayerJumpWithSlide : MonoBehaviour
         }
     }
 
-    //slide
+    // ------ 플레이어 슬라이드  ------ //
     public void OnSlide(InputAction.CallbackContext context)
     {
-        float direction = controller.moveInput;
+        float direction = defaultMove.moveInput;
         if (context.performed && isGrounded && isSliding)
         {
             // playerCollider 조정 및 애니메이션 적용
         }
     }   
 
-    // gizmos
+    // isGrounded checking gizmos
     void OnDrawGizmos()
     {
         if (groundCheck == null) return;
