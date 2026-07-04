@@ -8,9 +8,6 @@ public class PlayerDefaultMove : MonoBehaviour
     [SerializeField] private float moveSpeed = 5f;
     [SerializeField] private float dashValue = 1.5f;
 
-    [Header("Refernces")]
-    [SerializeField] private PlayerInteraction playerInteraction;
-
     private float _moveInput;
     public float moveInput => _moveInput;
     // 이동 방향 프로퍼티

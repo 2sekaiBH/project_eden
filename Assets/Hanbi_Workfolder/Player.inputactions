@@ -3,7 +3,7 @@
     "name": "Player",
     "maps": [
         {
-            "name": "PlayerDefaultMove",
+            "name": "PlayerDefault",
             "id": "c2443be2-0c82-4e6c-b64c-311e536b8c55",
             "actions": [
                 {
@@ -28,6 +28,15 @@
                     "name": "Dash",
                     "type": "Button",
                     "id": "a6c00174-b979-4199-825f-e9f92cb1b7c9",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Interaction",
+                    "type": "Button",
+                    "id": "b81a8a8d-f32c-4f1b-87cb-45a721967e6d",
                     "expectedControlType": "",
                     "processors": "",
                     "interactions": "",
@@ -67,6 +76,17 @@
                     "action": "Dash",
                     "isComposite": false,
                     "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "513349c9-ff67-4b47-b5ef-6d8737e332c8",
+                    "path": "<Keyboard>/e",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";KeyboardMouse",
+                    "action": "Interaction",
+                    "isComposite": false,
+                    "isPartOfComposite": false
                 }
             ]
         },
@@ -78,6 +98,15 @@
                     "name": "Jump",
                     "type": "Button",
                     "id": "3a8a7744-5e03-4839-8014-a8e9e75efc35",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Interaction",
+                    "type": "Button",
+                    "id": "96a1bc95-b940-442d-9b00-325da1c5a7a1",
                     "expectedControlType": "",
                     "processors": "",
                     "interactions": "",
@@ -129,6 +158,17 @@
                     "processors": "",
                     "groups": ";KeyboardMouse",
                     "action": "Jump",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "6eaf7ef5-8f44-4102-8689-8fc80b08c56f",
+                    "path": "<Keyboard>/e",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";KeyboardMouse",
+                    "action": "Interaction",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },

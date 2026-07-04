@@ -4,16 +4,21 @@ using UnityEngine;
 
 public interface IWorldInteractable
 {
-    string InteractionId { get; }
-    InteractionType InteractionType { get; }
-
     /// <summary>
-    /// 상호작용이 가능한지 - 충족 조건
+    /// 상호작용 ID - 상호작용을 구분하기 위한 고유 ID
     /// </summary>
-    /// <param name="player"></param>
-    bool CanInteract(PlayerController player);
+    int InteractionId { get; }
+    /// <summary>
+    /// 상호작용 타입
+    /// </summary>
+    InteractionType InteractionType { get; }
+    /// <summary>
+    /// 상호작용이 가능한지 - 완료 시 비활성화
+    /// </summary>
+    bool CanInteract { get; }
+
     /// <summary>
     /// 구체적인 상호작용 구현
     /// </summary>
-    void Interact(PlayerController player);
+    void Interact();
 }
