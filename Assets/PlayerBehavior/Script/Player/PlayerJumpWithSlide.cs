@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -10,7 +11,12 @@ public class PlayerJumpWithSlide : MonoBehaviour
     [SerializeField] private LayerMask groundLayer;
     [SerializeField] private Transform groundCheck;
 
+    public static event Action onJump;
+    public static event Action onLand;
+
     private bool isGrounded;
+    private bool wasGrounded; // 이전 프레임 접지 상태
+
     private bool isSliding;
     private Rigidbody2D rb;
     private PlayerDefaultMove defaultMove;
@@ -26,6 +32,13 @@ public class PlayerJumpWithSlide : MonoBehaviour
     void FixedUpdate()
     {
         isGrounded = Physics2D.OverlapCircle(groundCheck.position, 0.1f, groundLayer);
+
+        if(isGrounded && !wasGrounded) // 공중 -> 지상으로 바뀐 프레임
+        {
+            onLand?.Invoke();
+        }
+
+        wasGrounded = isGrounded;
     }
 
     // ------ 플레이어 점프  ------ //
@@ -34,6 +47,7 @@ public class PlayerJumpWithSlide : MonoBehaviour
         if (context.performed && isGrounded)
         {
             rb.linearVelocityY = jumpForce;
+            onJump?.Invoke();
         }
     }
 
