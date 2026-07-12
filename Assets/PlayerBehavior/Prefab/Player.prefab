@@ -13,7 +13,6 @@ GameObject:
   - component: {fileID: 5814251272184235685}
   - component: {fileID: 3552298114639347072}
   - component: {fileID: 2975183765098594557}
-  - component: {fileID: 6326399584913553315}
   - component: {fileID: 4256740315653153972}
   - component: {fileID: 559347385340990031}
   - component: {fileID: 7864178059310995411}
@@ -146,7 +145,7 @@ MonoBehaviour:
     m_ActionName: 'Player/Move[/Keyboard/a,/Keyboard/d]'
   - m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 6326399584913553315}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: PlayerJumpWithSlide, Assembly-CSharp
         m_MethodName: OnJump
         m_Mode: 0
@@ -162,7 +161,7 @@ MonoBehaviour:
     m_ActionName: 'PlayerWithJump/Jump[/Keyboard/space]'
   - m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 6326399584913553315}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: PlayerJumpWithSlide, Assembly-CSharp
         m_MethodName: OnSlide
         m_Mode: 0
@@ -290,7 +289,7 @@ MonoBehaviour:
     m_ActionName: 'PlayerWithJump/Interaction[/Keyboard/e]'
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: KeyboardMouse
-  m_DefaultActionMap: PlayerWithJump
+  m_DefaultActionMap: PlayerDefault
   m_SplitScreenIndex: -1
   m_Camera: {fileID: 0}
 --- !u!114 &3552298114639347072
@@ -321,25 +320,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerController
   playerDefaultMove: {fileID: 3552298114639347072}
-  playerJumpWithSlide: {fileID: 6326399584913553315}
+  playerJumpWithSlide: {fileID: 0}
   playerInteraction: {fileID: 4256740315653153972}
---- !u!114 &6326399584913553315
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1520303822129780790}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4682f4510e1888e48a317dcc6544debd, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::PlayerJumpWithSlide
-  jumpForce: 5
-  groundLayer:
-    serializedVersion: 2
-    m_Bits: 64
-  groundCheck: {fileID: 0}
 --- !u!114 &4256740315653153972
 MonoBehaviour:
   m_ObjectHideFlags: 0

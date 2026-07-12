@@ -1,4 +1,5 @@
 using System;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -24,11 +25,35 @@ public class PlayerDefaultMove : MonoBehaviour
     private float lastInputDir = 0f;
     private bool leftHeld = false;
     private bool rightHeld = false;
+    private bool blockDash = false;
     
     void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
         spriteRender = GetComponent<SpriteRenderer>();
+    }
+
+    private void OnEnable()
+    {
+        PlayerJumpWithSlide.onJump += BlockDash;
+        PlayerJumpWithSlide.onLand += AllowDash;
+    }
+
+
+    private void OnDisable()
+    {
+        PlayerJumpWithSlide.onJump -= BlockDash;
+        PlayerJumpWithSlide.onLand -= AllowDash;
+    }
+
+    private void BlockDash()
+    {
+        blockDash = true;
+    }
+
+    private void AllowDash()
+    {
+        blockDash = false;
     }
 
 
@@ -63,6 +88,9 @@ public class PlayerDefaultMove : MonoBehaviour
     // ------ 플레이어 달리기  ------ //
     public void OnDash(InputAction.CallbackContext context)
     {
+        // 점프 중일 때 dash 막기
+        if (blockDash == true) return;
+
         if (context.performed)
         {
             moveSpeed *= dashValue;

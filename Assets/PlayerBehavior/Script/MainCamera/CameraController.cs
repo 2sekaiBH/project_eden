@@ -4,8 +4,11 @@ using UnityEngine.UIElements;
 public class CameraController : MonoBehaviour
 {
     [Header("References")]
+    [Tooltip("플레이어 연결")]
     [SerializeField] Transform player;
+    [Tooltip("카메라 이동 속도")]
     [SerializeField] float smoothing = 0.2f;
+    [Tooltip("카메라 경계 설정 - CameraBoundary object 연결")]
     [SerializeField] Transform minCameraBoundary;
     [SerializeField] Transform maxCameraBoundary;
 
@@ -13,10 +16,10 @@ public class CameraController : MonoBehaviour
     {
         if(player == null)
         {
-            Debug.LogWarning("CameraController에 player assign해주세요");
-            player = GameObject.FindWithTag("Player").transform;
+            Debug.LogError("CameraController에 player assign해주세요");
+            //player = GameObject.FindWithTag("Player").transform;
 
-            Debug.LogWarning("CameraController에 CameraBoundary assign해주세요.");
+            Debug.LogError("CameraController에 CameraBoundary assign해주세요.");
         }
     }
 
