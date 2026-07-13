@@ -22,6 +22,8 @@ public class PlayerJumpWithSlide : MonoBehaviour
     private PlayerDefaultMove defaultMove;
     private Collider2D playerCollider;
 
+    private bool jumpSlideBlock = false;
+
     void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
@@ -41,9 +43,22 @@ public class PlayerJumpWithSlide : MonoBehaviour
         wasGrounded = isGrounded;
     }
 
+    // 플레이어 점프, 슬라이드 비활성화
+    public void BlockJumpAndSlide()
+    {
+        jumpSlideBlock = true;
+    }
+
+    public void AllowJumpSlide()
+    {
+        jumpSlideBlock = false;
+    }
+
     // ------ 플레이어 점프  ------ //
     public void OnJump(InputAction.CallbackContext context)
     {
+        if (jumpSlideBlock) return;
+
         if (context.performed && isGrounded)
         {
             rb.linearVelocityY = jumpForce;
@@ -54,6 +69,8 @@ public class PlayerJumpWithSlide : MonoBehaviour
     // ------ 플레이어 슬라이드  ------ //
     public void OnSlide(InputAction.CallbackContext context)
     {
+        if (jumpSlideBlock) return;
+
         float direction = defaultMove.moveInput;
         if (context.performed && isGrounded && isSliding)
         {

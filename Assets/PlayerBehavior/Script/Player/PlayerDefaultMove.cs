@@ -16,7 +16,6 @@ public class PlayerDefaultMove : MonoBehaviour
     public static event Action <bool>OnWalk;
     public static event Action <bool>OnRun;
 
-    [HideInInspector] public bool isCanNotMoving = false;
     // 플레이어 이동 상태 프로퍼티 - 이동 가능 상태면 false, 가능이면 true
     // 외부 수정 가능.
 
@@ -25,7 +24,9 @@ public class PlayerDefaultMove : MonoBehaviour
     private float lastInputDir = 0f;
     private bool leftHeld = false;
     private bool rightHeld = false;
+
     private bool blockDash = false;
+    private bool blockMoving = false;
     
     void Awake()
     {
@@ -46,14 +47,25 @@ public class PlayerDefaultMove : MonoBehaviour
         PlayerJumpWithSlide.onLand -= AllowDash;
     }
 
-    private void BlockDash()
+    public void BlockDash()
     {
         blockDash = true;
     }
 
-    private void AllowDash()
+    public void AllowDash()
     {
         blockDash = false;
+    }
+
+    // 플레이어 이동 비활성화 - 외부 스크립트에서 플레이어 이동 제어할 때 사용.
+    public void BlockMove()
+    {
+        blockMoving = true;
+    }
+
+    public void AllowMove()
+    {
+        blockMoving = false;
     }
 
 
@@ -106,7 +118,8 @@ public class PlayerDefaultMove : MonoBehaviour
     private bool isWalking = false;
     public void FixedUpdate()
     {
-        if (isCanNotMoving) return;
+        // 이동 막기
+        if (blockMoving) return;
 
         bool wantsToMove = leftHeld || rightHeld;
 

@@ -119,11 +119,6 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
---- !u!4 &384441551 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 6281156978751323357, guid: 5fb038aa98850d046a7cc4a4f5259d1d, type: 3}
-  m_PrefabInstance: {fileID: 1951190105}
-  m_PrefabAsset: {fileID: 0}
 --- !u!4 &636773477 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 1063566983020880649, guid: 14ae850f2cf0d4d42a159c3fa5b3490d, type: 3}
@@ -133,6 +128,11 @@ Transform:
 Transform:
   m_CorrespondingSourceObject: {fileID: 1063566983020880649, guid: 14ae850f2cf0d4d42a159c3fa5b3490d, type: 3}
   m_PrefabInstance: {fileID: 1892723364}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &1330688812 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 4727367076381957428, guid: 6badac72fe9bcad48baa2884a87e86d7, type: 3}
+  m_PrefabInstance: {fileID: 6514982979659134172}
   m_PrefabAsset: {fileID: 0}
 --- !u!1 &1667077700
 GameObject:
@@ -728,7 +728,7 @@ PrefabInstance:
     - target: {fileID: 7975772861139251445, guid: 7e651f6c8900ee847862f01f93f25651, type: 3}
       propertyPath: player
       value: 
-      objectReference: {fileID: 384441551}
+      objectReference: {fileID: 1330688812}
     - target: {fileID: 7975772861139251445, guid: 7e651f6c8900ee847862f01f93f25651, type: 3}
       propertyPath: maxCameraBoundary
       value: 
