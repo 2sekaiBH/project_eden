@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: "\uC790\uD310\uAE30"
   m_EditorClassIdentifier: Assembly-CSharp::ItemData
   id: 1
-  itemName: "\uC790\uD310\uAE30"
-  itemIcon: {fileID: 7656290815486033927, guid: ac46c3fec1e4ef24290cc12a53ca86dc, type: 3}
-  detail_itemIcon: {fileID: 0}
+  itemName: "\uCE94"
+  itemIcon: {fileID: 1270503685348215860, guid: 9dc7c29d6ade5d4458f8873dfc25777d, type: 3}
+  ItemDetailIcon: {fileID: 4128536567324617806, guid: 405dc9e30596f3a419002c0c0a07cd31, type: 3}
   itemDescription: "\uC774\uAC83\uC740 \uC124\uBA85\uC785\uB2C8\uB2E4"
