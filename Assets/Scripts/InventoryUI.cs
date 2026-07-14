@@ -18,8 +18,13 @@ public class InventoryUI : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     private void Start()
     {
-        inventoryPanel.SetActive(false);
-        
+        inventoryPanel.SetActive(false); //초기값, 인벤토리 UI는 꺼져 있음
+
+        //초기값, 아이템 설명창의 모든 것들을 꺼둠
+        itemDetailIcon.enabled = false;
+        itemName.text = "";
+        itemDescription.text = "";
+
     }
 
     // Update is called once per frame
@@ -50,5 +55,7 @@ public class InventoryUI : MonoBehaviour
         itemDetailIcon.sprite = item.ItemDetailIcon;
         itemName.text = item.itemName;
         itemDescription.text = item.itemDescription;
+
+        itemDetailIcon.enabled = true;
     }
 }

@@ -6,9 +6,9 @@ using Unity.VisualScripting;
 
 public class InventorySlotUI : MonoBehaviour
 {
+    private InventoryUI inventoryUI;
 
     [SerializeField] private Image itemIcon;
-    [SerializeField] private InventoryUI InventoryUI;
 
     private ItemData currentItem; //ItemData를 불러옴
 
@@ -20,14 +20,22 @@ public class InventorySlotUI : MonoBehaviour
         SetItem(testItem);
     }
 
+    //슬롯 프리펩이 알아서 버튼 컴포넌트를 찾게 해주는 함수
+    private void Awake()
+    {
+        inventoryUI = GetComponentInParent<InventoryUI>();
+    }
+
 
     //Slot에 아이템 이미지를 붙여줌
     public void SetItem(ItemData item)
     {
+
         currentItem = item;
 
         if(item == null)
         {
+      
             itemIcon.enabled = false;
         }
 
@@ -35,7 +43,9 @@ public class InventorySlotUI : MonoBehaviour
         {
             itemIcon.enabled = true;
             itemIcon.sprite = item.itemIcon;
+        
         }
+
 
     }
 
@@ -44,7 +54,7 @@ public class InventorySlotUI : MonoBehaviour
         if (currentItem == null)
             return;
 
-        InventoryUI.ShowItem(currentItem);
+        inventoryUI.ShowItem(currentItem);
     }
 
 
