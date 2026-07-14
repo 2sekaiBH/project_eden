@@ -10,10 +10,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 46cd658e801ebb046a6ab7f6b43be040, type: 3}
-  m_Name: "\uC804\uAD11\uD310"
+  m_Name: "\uB85C\uBD07"
   m_EditorClassIdentifier: Assembly-CSharp::ItemData
-  id: 2
-  itemName: "\uC804\uB2E8\uC9C0"
-  itemIcon: {fileID: -8400776326617106399, guid: d87ede04d6264e544b51850198bf95d2, type: 3}
-  ItemDetailIcon: {fileID: 6123854183193652009, guid: 4b66423df9e0df14a8fa8d1e4660ff30, type: 3}
-  itemDescription: "\uC124\uBA85 22 \uAD6C\uB9AC\uAD6C\uB9AC\uAD6C\uB9AC"
+  id: 3
+  itemName: "\uB85C\uBD07"
+  itemIcon: {fileID: -1865530240695709975, guid: f6627c5046829ae4e97606d6695c8ae6, type: 3}
+  ItemDetailIcon: {fileID: -8280455101827630033, guid: ae2b91448c33fe4428b86ba026ffb156, type: 3}
+  itemDescription: 

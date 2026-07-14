@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: e5deac6fa22e1784687d8908f9ea1f97
+guid: 7f07bc778ba9867428951361ef01020c
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -2327242721752233153
-    second: "\uD31D\uC5C5 \uCC3D 1_0"
+      213: -6723666972549974350
+    second: slotimage_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -100,13 +100,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: "\uD31D\uC5C5 \uCC3D 1_0"
+      name: slotimage_0
       rect:
         serializedVersion: 2
         x: 0
         y: 0
-        width: 1717
-        height: 954
+        width: 172
+        height: 172
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -115,8 +115,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: f3b48d72319f3bfd0800000000000000
-      internalID: -2327242721752233153
+      spriteID: 2b6f121138cb0b2a0800000000000000
+      internalID: -6723666972549974350
       vertices: []
       indices: 
       edges: []
@@ -135,7 +135,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      "\uD31D\uC5C5 \uCC3D 1_0": -2327242721752233153
+      slotimage_0: -6723666972549974350
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
