@@ -8,6 +8,7 @@ public class CardData : ScriptableObject
     public string cardName;
     public CardType cardType;
     public int energyCost;
+    public string effect;
     [TextArea] public string description;
 
     public List<CardEffectData> effects;
@@ -15,7 +16,7 @@ public class CardData : ScriptableObject
 
 public enum CardType
 {
-    Attack,
+    Attack = 0,
     Defense,
     Special,
 }
