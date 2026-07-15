@@ -847,6 +847,7 @@ GameObject:
   m_Component:
   - component: {fileID: 664649294}
   - component: {fileID: 664649293}
+  - component: {fileID: 664649295}
   m_Layer: 0
   m_Name: "67\uCE35 \uB9F5_\uC218\uC815\uBCF8"
   m_TagString: Untagged
@@ -929,6 +930,19 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &664649295
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 664649292}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e1a47a8a72a22664aa060ff6af8e7edf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::GameBootstrap
+  itemUISceneName: Scene_Init
 --- !u!1 &757178251
 GameObject:
   m_ObjectHideFlags: 0
@@ -960,7 +974,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dbe147a576c36c040a08c9ff15cc9889, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::InteractableObject
-  interactionId: 13
+  interactionId: 3
   interactionType: 0
   sprite1: {fileID: -6683756541103208342, guid: ff2d82f0fa083a245a3e0f7211b8a58c, type: 3}
   sprite2: {fileID: -5071698821761897387, guid: a82483938158112419e34117af24290d, type: 3}
@@ -1116,7 +1130,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dbe147a576c36c040a08c9ff15cc9889, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::InteractableObject
-  interactionId: 11
+  interactionId: 1
   interactionType: 0
   sprite1: {fileID: 750968990134057401, guid: 450a2d9f80ef1b5498272bed111ecc61, type: 3}
   sprite2: {fileID: 1693877202873261968, guid: d60c47bad93e0ec43b4388bd4a388be4, type: 3}
@@ -1411,7 +1425,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dbe147a576c36c040a08c9ff15cc9889, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::InteractableObject
-  interactionId: 12
+  interactionId: 2
   interactionType: 0
   sprite1: {fileID: -8400776326617106399, guid: 3baf9a9210bef87448acf377356b532c, type: 3}
   sprite2: {fileID: -413579867828638114, guid: ff73d18400eedec4ea8dbfab5fee2107, type: 3}
