@@ -46,6 +46,13 @@ public class IntroDialogueController : MonoBehaviour
     [SerializeField] private Button nameConfirmButton;
     [SerializeField] private TMP_Text nameErrorText;
 
+    [Header("Game Start UI")]
+    [SerializeField] private GameObject gameStartScreen;
+    [SerializeField] private TMP_Text gameStartText;
+
+    [SerializeField, Min(0f)]
+    private float gameStartDuration = 1.5f;
+
     [Header("Dialogue UI")]
     [SerializeField] private TMP_Text speakerNameText;
     [SerializeField] private TMP_Text dialogueText;
@@ -63,6 +70,10 @@ public class IntroDialogueController : MonoBehaviour
     [SerializeField] private SpriteEntry[] characters;
     [SerializeField] private AudioEntry[] soundEffects;
     [SerializeField] private AudioSource soundEffectSource;
+
+    [Header("Text Transition")]
+    [SerializeField, Min(0f)]
+    private float textFadeDuration = 0.2f;
 
     private readonly Dictionary<string, DialogueNode> nodeById = new();
     private readonly Dictionary<string, Sprite> backgroundByKey = new();
@@ -84,10 +95,9 @@ public class IntroDialogueController : MonoBehaviour
         BuildAssetDictionaries();
         LoadDialogue();
 
-        prologueNextButton.onClick.AddListener(Advance);
-        dialogueNextButton.onClick.AddListener(Advance);
         nameConfirmButton.onClick.AddListener(ConfirmName);
         nameInputField.onSubmit.AddListener(_ => ConfirmName());
+        nameInputField.onValueChanged.AddListener(UpdateNameButtonState);
     }
 
     private void Start()
@@ -97,17 +107,26 @@ public class IntroDialogueController : MonoBehaviour
 
     private void Update()
     {
-        if (isTransitioning || currentNode == null || Keyboard.current == null)
+        if (isTransitioning || currentNode == null)
         {
             return;
         }
 
+        // 이름 입력 중에는 좌클릭이나 Space로 넘어가지 않음
         if (currentNode.type == "nameInput")
         {
             return;
         }
 
-        if (Keyboard.current.spaceKey.wasPressedThisFrame)
+        bool spacePressed =
+            Keyboard.current != null &&
+            Keyboard.current.spaceKey.wasPressedThisFrame;
+
+        bool leftClickPressed =
+            Mouse.current != null &&
+            Mouse.current.leftButton.wasPressedThisFrame;
+
+        if (spacePressed || leftClickPressed)
         {
             Advance();
         }
@@ -115,17 +134,16 @@ public class IntroDialogueController : MonoBehaviour
 
     private void OnDestroy()
     {
-        if (prologueNextButton != null)
-            prologueNextButton.onClick.RemoveListener(Advance);
-
-        if (dialogueNextButton != null)
-            dialogueNextButton.onClick.RemoveListener(Advance);
-
         if (nameConfirmButton != null)
             nameConfirmButton.onClick.RemoveListener(ConfirmName);
 
         if (nameInputField != null)
+        {
+            nameInputField.onValueChanged.RemoveListener(
+                UpdateNameButtonState
+            );
             nameInputField.onSubmit.RemoveAllListeners();
+        }
     }
 
     private bool ValidateRequiredReferences()
@@ -134,6 +152,8 @@ public class IntroDialogueController : MonoBehaviour
             dialogueJson != null &&
             prologueScreen != null &&
             nameInputScreen != null &&
+            gameStartScreen != null &&
+            gameStartText != null &&
             characterDialogueScreen != null &&
             backgroundImage != null &&
             prologueDim != null &&
@@ -303,7 +323,6 @@ public class IntroDialogueController : MonoBehaviour
         SetOnlyScreen(prologueScreen);
         SetDimVisibility(usePrologueDim: true);
 
-        prologueText.text = "";
         prologueNextIndicator.SetActive(false);
         prologueNextButton.interactable = false;
 
@@ -314,7 +333,11 @@ public class IntroDialogueController : MonoBehaviour
             node.fadeDuration
         );
 
-        prologueText.text = ReplacePlayerName(node.text);
+        yield return ReplaceTextWithFade(
+            prologueText,
+            ReplacePlayerName(node.text)
+        );
+
         prologueNextIndicator.SetActive(true);
         prologueNextButton.interactable = true;
     }
@@ -325,9 +348,11 @@ public class IntroDialogueController : MonoBehaviour
         SetDimVisibility(usePrologueDim: false, hideBoth: true);
 
         namePromptText.text = ReplacePlayerName(node.text);
-        nameInputField.text = "";
+        nameInputField.SetTextWithoutNotify("");
         nameInputField.interactable = true;
-        nameConfirmButton.interactable = true;
+        nameConfirmButton.interactable = false;
+
+        UpdateNameButtonState("");
 
         if (nameErrorText != null)
         {
@@ -347,7 +372,6 @@ public class IntroDialogueController : MonoBehaviour
             !string.IsNullOrWhiteSpace(speakerNameText.text)
         );
 
-        dialogueText.text = "";
         dialogueNextHint.SetActive(false);
         dialogueNextButton.interactable = false;
 
@@ -370,7 +394,10 @@ public class IntroDialogueController : MonoBehaviour
             node.fadeDuration
         );
 
-        dialogueText.text = ReplacePlayerName(node.text);
+        yield return ReplaceTextWithFade(
+            dialogueText,
+            ReplacePlayerName(node.text)
+        );
         dialogueNextHint.SetActive(true);
         dialogueNextButton.interactable = true;
     }
@@ -396,24 +423,89 @@ public class IntroDialogueController : MonoBehaviour
             return;
         }
 
-        string enteredName = nameInputField.text.Trim();
+        string enteredName =
+            nameInputField.text.Trim();
 
         if (string.IsNullOrWhiteSpace(enteredName))
         {
+            nameConfirmButton.interactable = false;
+
             if (nameErrorText != null)
             {
-                nameErrorText.text = "이름을 한 글자 이상 입력해 주세요.";
+                nameErrorText.text =
+                    "이름을 한 글자 이상 입력해 주세요.";
             }
 
             nameInputField.ActivateInputField();
             return;
         }
 
+        // 입력한 이름 저장
         playerName = enteredName;
+
+        // Game Start 화면이 끝난 뒤 이동할 JSON 노드
+        string nextNodeId = currentNode.nextId;
+
+        isTransitioning = true;
+
         nameInputField.interactable = false;
         nameConfirmButton.interactable = false;
 
-        DisplayNode(currentNode.nextId);
+        StartCoroutine(
+            ShowGameStartThenContinue(nextNodeId)
+        );
+    }
+
+    private IEnumerator ShowGameStartThenContinue(string nextNodeId)
+    {
+        SetOnlyScreen(gameStartScreen);
+
+        SetDimVisibility(
+            usePrologueDim: false,
+            hideBoth: true
+        );
+
+        gameStartText.text =
+            ReplacePlayerName(
+                "%%님,영원한 낙원에 오신 걸 환영합니다."
+            );
+
+        SetTextAlpha(gameStartText, 0f);
+
+        yield return FadeTextAlpha(
+            gameStartText,
+            0f,
+            1f,
+            0.4f
+        );
+
+        yield return new WaitForSecondsRealtime(
+            gameStartDuration
+        );
+
+        yield return FadeTextAlpha(
+            gameStartText,
+            1f,
+            0f,
+            0.3f
+        );
+
+        isTransitioning = false;
+
+        DisplayNode(nextNodeId);
+    }
+
+    private void UpdateNameButtonState(string inputValue)
+    {
+        bool hasValidName =
+            !string.IsNullOrWhiteSpace(inputValue);
+
+        nameConfirmButton.interactable = hasValidName;
+
+        if (hasValidName && nameErrorText != null)
+        {
+            nameErrorText.text = "";
+        }
     }
 
     private void ApplyBackground(string key)
@@ -489,10 +581,27 @@ public class IntroDialogueController : MonoBehaviour
         bool fade,
         float duration)
     {
+        if (target == null)
+        {
+            yield break;
+        }
+
         alpha = Mathf.Clamp01(alpha);
+
         target.gameObject.SetActive(true);
         target.interactable = false;
         target.blocksRaycasts = false;
+
+        // Image 자체의 Alpha가 0이면 CanvasGroup을 올려도 안 보이므로 보정
+        Graphic dimGraphic =
+            target.GetComponent<Graphic>();
+
+        if (dimGraphic != null)
+        {
+            Color graphicColor = dimGraphic.color;
+            graphicColor.a = 1f;
+            dimGraphic.color = graphicColor;
+        }
 
         if (!fade || duration <= 0f)
         {
@@ -506,8 +615,13 @@ public class IntroDialogueController : MonoBehaviour
         while (elapsed < duration)
         {
             elapsed += Time.unscaledDeltaTime;
-            float t = Mathf.Clamp01(elapsed / duration);
-            target.alpha = Mathf.Lerp(0f, alpha, t);
+
+            float progress =
+                Mathf.Clamp01(elapsed / duration);
+
+            target.alpha =
+                Mathf.Lerp(0f, alpha, progress);
+
             yield return null;
         }
 
@@ -516,8 +630,18 @@ public class IntroDialogueController : MonoBehaviour
 
     private void SetOnlyScreen(GameObject activeScreen)
     {
-        prologueScreen.SetActive(activeScreen == prologueScreen);
-        nameInputScreen.SetActive(activeScreen == nameInputScreen);
+        prologueScreen.SetActive(
+            activeScreen == prologueScreen
+        );
+
+        nameInputScreen.SetActive(
+            activeScreen == nameInputScreen
+        );
+
+        gameStartScreen.SetActive(
+            activeScreen == gameStartScreen
+        );
+
         characterDialogueScreen.SetActive(
             activeScreen == characterDialogueScreen
         );
@@ -553,5 +677,89 @@ public class IntroDialogueController : MonoBehaviour
         dialogueNextButton.interactable = false;
 
         Debug.Log("현재 준비된 인트로 대사가 끝났습니다.");
+    }
+
+
+    private IEnumerator FadeTextAlpha(
+    TMP_Text target,
+    float startAlpha,
+    float endAlpha,
+    float duration)
+    {
+        if (target == null)
+        {
+            yield break;
+        }
+
+        if (duration <= 0f)
+        {
+            SetTextAlpha(target, endAlpha);
+            yield break;
+        }
+
+        float elapsed = 0f;
+
+        while (elapsed < duration)
+        {
+            elapsed += Time.unscaledDeltaTime;
+
+            float progress =
+                Mathf.Clamp01(elapsed / duration);
+
+            float alpha =
+                Mathf.Lerp(startAlpha, endAlpha, progress);
+
+            SetTextAlpha(target, alpha);
+
+            yield return null;
+        }
+
+        SetTextAlpha(target, endAlpha);
+    }
+
+    private static void SetTextAlpha(
+        TMP_Text target,
+        float alpha)
+    {
+        if (target == null)
+        {
+            return;
+        }
+
+        Color color = target.color;
+        color.a = Mathf.Clamp01(alpha);
+        target.color = color;
+    }
+
+    private IEnumerator ReplaceTextWithFade(
+    TMP_Text target,
+    string newText)
+    {
+        if (target == null)
+        {
+            yield break;
+        }
+
+        // 기존 텍스트가 있으면 먼저 사라짐
+        if (!string.IsNullOrEmpty(target.text))
+        {
+            yield return FadeTextAlpha(
+                target,
+                target.color.a,
+                0f,
+                textFadeDuration * 0.5f
+            );
+        }
+
+        target.text = newText;
+        SetTextAlpha(target, 0f);
+
+        // 새 텍스트가 나타남
+        yield return FadeTextAlpha(
+            target,
+            0f,
+            1f,
+            textFadeDuration
+        );
     }
 }
