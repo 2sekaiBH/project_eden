@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 4514650078733946992}
   m_Layer: 0
   m_Name: "groundchecker(\uC810\uD504\uB9F5\uC5D0\uC11C\uB9CC)"
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -105,7 +105,7 @@ GameObject:
   - component: {fileID: 1998666461606089337}
   m_Layer: 0
   m_Name: InteractionDetecter
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -119,8 +119,8 @@ Transform:
   m_GameObject: {fileID: 4794432498916526745}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.02, y: 0.13, z: 0}
-  m_LocalScale: {x: 3.580876, y: 3.580876, z: 1.790438}
+  m_LocalPosition: {x: 0.02, y: -0.15, z: 0}
+  m_LocalScale: {x: 1.6, y: 3.1, z: 1.790438}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 4727367076381957428}
@@ -196,7 +196,7 @@ GameObject:
   - component: {fileID: 7930459813053568219}
   m_Layer: 0
   m_Name: PlayerInJumpMap
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -482,7 +482,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::PlayerController
   moveSpeed: 5
   dashValue: 2
-  isCanNotMoving: 0
 --- !u!114 &2160284406496620832
 MonoBehaviour:
   m_ObjectHideFlags: 0
