@@ -9,8 +9,13 @@ public class OpponentActor : Actor
     void Start()
     {
         name = opponentData.name;
-        currentHp = opponentData.totalHp;
+        Initialize();
 
         profileUpdator.UpdateProfile(name, currentHp, currentBlock);
+    }
+    public override void Initialize()
+    {
+        currentHp = opponentData.totalHp;
+        currentBlock = 0;
     }
 }

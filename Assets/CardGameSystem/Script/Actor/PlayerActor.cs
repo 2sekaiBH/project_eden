@@ -4,14 +4,26 @@ using UnityEngine;
 
 public class PlayerActor : Actor
 {
-    [SerializeField] private int energy = 3;
-    public int Energy => energy;
+    [Header("Setting")]
+    [SerializeField] private int maxEnergy;
+    [SerializeField] private int maxHp;
+
+    private int currentEnergy = 4;
+    public int CurrentEnergy => currentEnergy;
+
+    public override void Initialize()
+    {
+        currentHp = maxHp;
+        currentBlock = 0;
+        currentEnergy = maxEnergy;
+    }
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        name = "Player"; // 디버깅용
-        profileUpdator.UpdateProfile(name, currentHp, currentBlock, energy);
+        Initialize();
+        name = "Player"; // 디버깅용 - 게임 매니저랑 연결
+        profileUpdator.UpdateProfile(name, currentHp, currentBlock, currentEnergy);
     }
 
     // Update is called once per frame

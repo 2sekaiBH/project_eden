@@ -13,9 +13,9 @@ public abstract class Actor: MonoBehaviour
     [Header("Reference")]
     [SerializeField] protected ProfileUpdator profileUpdator;
     protected new string name;
-    protected int currentHp = 15;
+    protected int currentHp;
     protected int currentBlock = 0;
-    protected List<CardData> hand;
+    protected List<CardData> hand = new List<CardData>();
     public int CurrentHp => currentHp;
     public int CurrentBlock => currentBlock;
     public List<CardData> Hand => hand;
@@ -41,8 +41,10 @@ public abstract class Actor: MonoBehaviour
         currentBlock += amount;
     }
 
-    public virtual void DrawCards(List<CardData> cards)
+    public virtual void DrawCards(int amount)
     {
-        Hand.AddRange(cards);
+        hand.AddRange(DeckManager.Instance.DrawRandomCard(amount));
     }
+
+    public abstract void Initialize();
 }

@@ -10,12 +10,12 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 1c13dab7a990a8249959515d8c16c972, type: 3}
-  m_Name: Card
+  m_Name: Card 7
   m_EditorClassIdentifier: Assembly-CSharp::Card
   cardName: "\uACF5\uACA9-4\uCE74\uB4DC"
   cardType: 0
   energyCost: 3
   effect: "\uACF5\uACA9 -4"
-  description: 1
+  description: 8
   effects:
   - {fileID: 11400000, guid: b3181539cf79ac3438f185f162783b41, type: 2}
