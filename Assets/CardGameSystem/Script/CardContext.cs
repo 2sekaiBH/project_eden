@@ -9,15 +9,14 @@ namespace CardSystem.Runtime
     /// </summary>
     public class CardContext
     {
-        
-        public ICardActor caster { get; }
-        public ICardActor target { get; }
+        public Actor caster { get; }
+        public Actor target { get; }
 
         
         // 예: 현재 라운드 수, 랜덤 시드, 전투 로그 등 확장 여지
         public int CurrentRound { get; set; }
 
-        public CardContext(ICardActor caster, ICardActor target)
+        public CardContext(Actor caster, Actor target)
         {
             this.caster = caster;
             this.target = target;

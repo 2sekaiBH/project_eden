@@ -14,7 +14,7 @@ public class CardDisplay : MonoBehaviour
     [SerializeField] private TextMeshProUGUI descriptionText;
 
     [SerializeField] private Sprite[] iconSprite; // 0: Attack 1: Defense 2: Special ¼ø¼­ ¸ÂÃç¼­
-    
+
 
     void Start()
     {
@@ -30,7 +30,7 @@ public class CardDisplay : MonoBehaviour
 
     private void UpdateCardDisplay()
     {
-        energyText.text = $"<> {card.energyCost.ToString()}";
+        energyText.text = $"{card.energyCost.ToString()}";
         iconImage.sprite = iconSprite[(int)card.cardType];
         // valueText.text
         descriptionText.text = card.description;
