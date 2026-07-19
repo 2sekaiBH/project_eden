@@ -1,5 +1,8 @@
+using NUnit.Framework;
 using System;
 using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.Assemblies;
 using UnityEngine.InputSystem.XR.Haptics;
@@ -14,13 +17,25 @@ public class TurnFlowManager : MonoBehaviour
 
     private FlowState currentState;
 
+    // 플레이어 카드 제출 확인용 플래그
+    private bool isPlayerSubmitted = false;
+
+    // 적 카드 제출 확인용 플래그
+    private bool isOpponentSubmitted = false;
+
+    // 플레이어에서 제출한 카드(뽑은 카드)
+    private List<CardData> playerSelectedCards = new List<CardData>();
+
+    // 적에서 제출한 카드
+    private List<CardData> opponentSelectedCards = new List<CardData>();
+
     public enum FlowState
     {
         None,
         TurnStart,
         DrawCards,
-        PlayerSubmit,
-        EnemySubmit,
+        PlayerSelect,
+        OpponentSelect,
         ResolveTurn,
         TurnEnd,
     }
@@ -34,18 +49,29 @@ public class TurnFlowManager : MonoBehaviour
     public event Action OnPlayerSubmitPhaseStart;
 
     [Header("Reference")]
-    [SerializeField] Actor playerActor;
-    [SerializeField] Actor opponentActor;
+    [SerializeField] PlayerActor playerActor;
+    [SerializeField] OpponentActor opponentActor;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        
+        playerActor.HandManager.OnSelectEnd += HandlePlayerCardSubmit;
+        opponentActor.OnOpponentEndSelect += HandleOpponentCardSubmit;
+
+        InitializeState();
+    }
+
+    private void OnDisable()
+    {
+        playerActor.HandManager.OnSelectEnd -= HandlePlayerCardSubmit;
+        opponentActor.OnOpponentEndSelect -= HandleOpponentCardSubmit;
     }
 
     public IEnumerator RunTurn()
     {
-        // 1. 턴 시작 - 초기화
+        InitializeState();
+
+        // 1. 턴 시작
         currentTurn++;
         currentState = FlowState.TurnStart;
 
@@ -58,23 +84,44 @@ public class TurnFlowManager : MonoBehaviour
         playerActor.DrawCards(5);
         opponentActor.DrawCards(5);
         OnDrawCards?.Invoke(); // 손패 UI 반영
+        Debug.Log("랜덤 카드 드로우 완료");
 
         // 3. 플레이어 카드 제출
-        // 카드 제출 시스템 스크립트에서 따로 처리
+        currentState = FlowState.PlayerSelect;
+        playerActor.SelectCard();
+        yield return new WaitUntil(() => isPlayerSubmitted);
+        Debug.Log("player가 낸 카드: " + string.Join(", ", playerSelectedCards.Select(p => p.name)));
 
         // 4. 적 카드 제출
-
+        currentState = FlowState.OpponentSelect;
+        opponentActor.SelectCard();
+        yield return new WaitUntil(() => isOpponentSubmitted);
+        Debug.Log("상대편이 낸 카드: " + string.Join(", ", opponentSelectedCards.Select(p => p.name)));
 
         // 5. 점수 계산 및 턴 결과 반영
 
         yield return null;
     }
 
-
-
-    // Update is called once per frame
-    void Update()
+    private void HandlePlayerCardSubmit(List<CardData> pickedCard)
     {
-        
+        playerSelectedCards.AddRange(pickedCard);
+        isPlayerSubmitted = true;
     }
+
+    private void HandleOpponentCardSubmit(List<CardData> pickedCard)
+    {
+        opponentSelectedCards.AddRange(pickedCard);
+        isOpponentSubmitted = true;
+    }
+
+    private void InitializeState()
+    {
+        currentState = FlowState.None;
+        isPlayerSubmitted = false;
+        isOpponentSubmitted = false;
+        playerSelectedCards.Clear();
+        opponentSelectedCards.Clear();
+    }
+
 }

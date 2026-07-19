@@ -1,4 +1,5 @@
 
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -19,8 +20,6 @@ public abstract class Actor: MonoBehaviour
     public int CurrentHp => currentHp;
     public int CurrentBlock => currentBlock;
     public List<CardData> Hand => hand;
-    
-
 
     public virtual void TakeDamage(int amount)
     {
@@ -45,6 +44,8 @@ public abstract class Actor: MonoBehaviour
     {
         hand.AddRange(DeckManager.Instance.DrawRandomCard(amount));
     }
+
+    public abstract void SelectCard();
 
     public abstract void Initialize();
 }
