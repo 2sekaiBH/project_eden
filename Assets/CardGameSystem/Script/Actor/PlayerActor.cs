@@ -1,6 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class PlayerActor : Actor
@@ -23,18 +20,23 @@ public class PlayerActor : Actor
     // 카드 선택 시작
     public override void SelectCard()
     {
-        handManager.StartSelect(hand);
+        handManager.StartSelect(hand, this);
     }
 
     void Start()
     {
         Initialize();
-        name = "Player"; // 디버깅용 - 게임 매니저랑 연결, 커스텀 name으로 변경
+        name = "Player"; // 디버깅용 - 커스텀 name으로 변경
         UpdateProfileUI();
     }
 
     public override void UpdateProfileUI()
     {
         profileUpdator.UpdateProfile(name, currentHp, currentBlock, currentEnergy);
+    }
+
+    public override void EnergyIntialize()
+    {
+        SetEnergy(maxEnergy);
     }
 }

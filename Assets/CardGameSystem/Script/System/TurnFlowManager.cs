@@ -1,14 +1,9 @@
-using NUnit.Framework;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using TMPro;
 using UnityEngine;
-using CardSystem.Runtime;
-using UnityEngine.Assemblies;
-using UnityEngine.InputSystem.XR.Haptics;
-using UnityEditor.PackageManager.UI;
 
 public class TurnFlowManager : MonoBehaviour
 {
@@ -97,7 +92,10 @@ public class TurnFlowManager : MonoBehaviour
             currentTurn++;
             Debug.Log($"{currentTurn}턴 시작");
             currentState = FlowState.TurnStart;
-            UpdateUI(); // UI 
+            playerActor.EnergyIntialize(); // 플레이어 에너지 초기화
+            opponentActor.EnergyIntialize(); // 적 에너지 초기화
+
+            UpdateUI(); // Turn 정보 UI 갱신
             OnTurnStart?.Invoke(currentTurn); 
 
             // 3. 플레이어 카드 제출
@@ -129,7 +127,7 @@ public class TurnFlowManager : MonoBehaviour
             }
 
             // 8. 턴 종료
-            InitializeState(); // 상태 초기화
+            InitializeState(); // 상태 변수 초기화
             OnTurnEnd?.Invoke(currentTurn);
 
             yield return null;

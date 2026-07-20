@@ -1,8 +1,6 @@
-using NUnit.Framework;
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class HandManager : MonoBehaviour
@@ -17,6 +15,7 @@ public class HandManager : MonoBehaviour
     private List<CardDisplay> cardDisplays = new List<CardDisplay>(); // 카드 오브젝트에 부착된 CardDisplay
 
     private List<CardData> selectedCards = new List<CardData>(); // 선택된 카드 리스트
+    private PlayerActor player;
     private bool selectEndFlag = false; // 선택 종료 플래그
     public void HandleSelectEndFlag(bool value) // 제출 버튼에서 구독
     {
@@ -26,6 +25,8 @@ public class HandManager : MonoBehaviour
     public event Action<List<CardData>> OnSelectEnd;
     // 플레이어 선택 최종 종료 이벤트
     // PlayerActor에서 구독
+
+    public static Action<int> OnCardSelect;
 
     private void Awake()
     {
@@ -42,6 +43,7 @@ public class HandManager : MonoBehaviour
     private void OnDisable()
     {
         cardDisplays.ForEach((display) => display.OnCardSelected -= HandleSelectCard);
+        RoundFlowManager.OnRoundEnd -= FillCard;
     }
 
     /// <summary>
@@ -59,8 +61,9 @@ public class HandManager : MonoBehaviour
     /// 카드 선택 시작
     /// </summary>
     /// <param name="handDatas">손패 데이터</param>
-    public void StartSelect(List<CardData> handDatas)
+    public void StartSelect(List<CardData> handDatas, PlayerActor playerActor)
     {
+        this.player = playerActor;
         // 상태 변수 초기화
         selectedCards.Clear();
         selectEndFlag = false;
@@ -93,19 +96,29 @@ public class HandManager : MonoBehaviour
     /// 카드 선택 이벤트 핸들러
     /// </summary>
     /// <param name="selectedCard"></param>
-    private void HandleSelectCard(CardData selectedCard)
+    private void HandleSelectCard(CardDisplay display)
     {
-        if (selectedCard == null) return;
+        CardData card = display.CardData;
+        if (card == null) return;
 
-        if (selectedCards.Contains(selectedCard)) // 선택 카드 삭제
+        bool alreadySelected = selectedCards.Contains(card);
+
+        if (!alreadySelected) // 카드 선택
         {
-            selectedCards.Remove(selectedCard);
-            
+            if (!player.TrySpendEnergy(card.energyCost)) // currentEnergy와 비교, 판정
+                return; // 에너지 부족 -> 무시, UI도 이미 흐려져 있어서 시각적으로 인지 가능
+
+            // 선택된 카드 리스트에 추가
+            selectedCards.Add(card);
+            display.SetSelectedVisual(true);
         }
-        else if (!selectedCards.Contains(selectedCard)) // 선택 카드 추가
+        else // 이미 클릭된 카드 선택 - 선택 카드 해제
         {
-            selectedCards.Add(selectedCard);
+            player.RefundEnergy(card.energyCost);
+            selectedCards.Remove(card);
+            display.SetSelectedVisual(false);
         }
+        OnCardSelect?.Invoke(player.CurrentEnergy);
     }
 
     /// <summary>

@@ -19,17 +19,28 @@ public class CardDisplay : MonoBehaviour, IPointerClickHandler, IPointerEnterHan
 
     [SerializeField] private Sprite[] iconSprite; // 0: Attack 1: Defense 2: Special 순서 맞춰서 - 자동화 필요..
 
-    public event Action<CardData> OnCardSelected;
+    public event Action<CardDisplay> OnCardSelected;
 
     private Image image;
     private CanvasGroup canvasGroup;
-
     private bool isSelected = false;
+
+    private int currentEnergy;
 
     private void Awake()
     {
         image = GetComponent<Image>();
         canvasGroup = GetComponent<CanvasGroup>();
+    }
+
+    private void OnEnable()
+    {
+        HandManager.OnCardSelect += UpdateAffordableVisual;
+    }
+
+    private void OnDisable()
+    {
+        HandManager.OnCardSelect += UpdateAffordableVisual;
     }
 
     /// <summary>
@@ -47,7 +58,7 @@ public class CardDisplay : MonoBehaviour, IPointerClickHandler, IPointerEnterHan
     public void StateReset()
     {
         isSelected = false;
-        UpdateClickedUI(false);
+        SetSelectedVisual(false);
         SetActiveInput(false);
     }
 
@@ -87,26 +98,34 @@ public class CardDisplay : MonoBehaviour, IPointerClickHandler, IPointerEnterHan
         canvasGroup.blocksRaycasts = active;
     }
 
+    /// <summary>
+    /// 카드 선택 - 선택하자마자 energy cost 반영
+    /// </summary>
+    /// <param name="eventData"></param>
     public void OnPointerClick(PointerEventData eventData)
     {
-        OnCardSelected?.Invoke(card);
-        if (!isSelected) // 카드 선택
-        {
-            isSelected = true;
-        }
-        else // 카드 선택 해제
-        {
-            isSelected = false;
-        }
-        UpdateClickedUI(isSelected);
+        OnCardSelected?.Invoke(this);
     }
 
-    private void UpdateClickedUI(bool isSelected)
+    /// <summary>
+    /// 선택된 카드의 UI 변경
+    /// </summary>
+    /// <param name="selected">선택 여부</param>
+    public void SetSelectedVisual(bool selected)
     {
-        if(isSelected) 
-            image.color = Color.coral;
-        else
-            image.color = Color.white;
+        isSelected = selected;
+        image.color = isSelected ? Color.coral : Color.white;
+    }
+
+    /// <summary>
+    /// 선택 가능 여부 UI 반영
+    /// </summary>
+    /// <param name="currentEnergy">PlayerActor의 currentEnergy</param>
+    private void UpdateAffordableVisual(int currentEnergy)
+    {
+        if (card == null) return;
+        bool affordable = isSelected || currentEnergy >= card.energyCost;
+        canvasGroup.alpha = affordable ? 1f : 0.5f;
     }
 
     private void Hover()

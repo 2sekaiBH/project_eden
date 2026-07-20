@@ -22,16 +22,18 @@ public abstract class Actor: MonoBehaviour
     public int CurrentBlock => currentBlock;
     public int CurrentEnergy => currentEnergy;
     public List<CardData> Hand => hand;
-
+    private Action<int> _handler;
 
     private void OnEnable()
     {
-        CardExecutor.OnCardExecuteEnd += UpdateProfileUI;
+        _handler = (amount) => UpdateProfileUI(); 
+        TurnFlowManager.OnTurnStart += _handler; // turn 시작할 때 UI update
+
     }
 
     private void OnDisEnable()
     {
-        CardExecutor.OnCardExecuteEnd -= UpdateProfileUI;
+        TurnFlowManager.OnTurnStart -= _handler;
     }
 
     /// <summary>
@@ -66,6 +68,42 @@ public abstract class Actor: MonoBehaviour
     {
         currentBlock += amount;
     }
+
+    /// <summary>
+    /// 에너지 소비
+    /// </summary>
+    /// <param name="amount">소비량</param>
+    public virtual bool TrySpendEnergy(int amount)
+    {
+        if (currentEnergy < amount) return false;
+        SetEnergy(currentEnergy - amount);
+        return true;
+    }
+
+    /// <summary>
+    /// 에너지 추가
+    /// </summary>
+    /// <param name="amount">추가할 양</param>
+    public virtual void RefundEnergy(int amount)
+    {
+        SetEnergy(currentEnergy + amount);
+    }
+
+    /// <summary>
+    /// 에너지 설정
+    /// </summary>
+    /// <param name="value"> 설정할 에너지 값</param>
+    public void SetEnergy(int value)
+    {
+        currentEnergy = Mathf.Max(0, value);
+        UpdateProfileUI(); // 에너지 변경 = 프로필 UI 갱신, 항상 같이 일어남을 여기서 보장
+    }
+
+    /// <summary>
+    /// 에너지 초기화 - 매 턴 시작마다 실행
+    /// </summary>
+    /// 
+    public abstract void EnergyIntialize(); 
 
     /// <summary>
     /// 덱에서 카드 뽑기

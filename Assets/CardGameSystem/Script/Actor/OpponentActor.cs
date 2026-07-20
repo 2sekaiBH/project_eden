@@ -35,4 +35,9 @@ public class OpponentActor : Actor
     {
         profileUpdator.UpdateProfile(name, currentHp, currentBlock);
     }
+
+    public override void EnergyIntialize()
+    {
+        SetEnergy(opponentData.maxEnergy);
+    }
 }

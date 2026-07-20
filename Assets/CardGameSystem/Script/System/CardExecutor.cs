@@ -5,8 +5,6 @@ using System;
 
 public class CardExecutor : MonoBehaviour
 {
-    public static event Action OnCardExecuteEnd; // Actor에서 구독 - profile UI 갱신
-
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -28,8 +26,8 @@ public class CardExecutor : MonoBehaviour
         CardContext context = new CardContext(caster, target);
         foreach (CardData card in cardList)
         {
-            card.effects.ForEach((effect) => effect.Execute(context));
-            OnCardExecuteEnd?.Invoke(); // UI 반영
+            card.effects.ForEach((effect) => effect.Execute(context)); // 카드 effect 실행
+            caster.TrySpendEnergy(card.energyCost); // energy 소비
         }
     }
 }
