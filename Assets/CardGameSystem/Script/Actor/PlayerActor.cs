@@ -1,5 +1,8 @@
 using UnityEngine;
 
+/// <summary>
+/// 플레이어 행동 제어 스크립트
+/// </summary>
 public class PlayerActor : Actor
 {
     [Header("Reference")]

@@ -1,6 +1,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// 덱을 관리하는 스크립트
+/// </summary>
 public class DeckManager : MonoBehaviour
 {
     [Header("Reference")]

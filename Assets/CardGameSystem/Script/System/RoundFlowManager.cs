@@ -3,6 +3,9 @@ using System.Collections;
 using TMPro;
 using UnityEngine;
 
+/// <summary>
+/// round의 흐름을 제어하는 스크립트
+/// </summary>
 public class RoundFlowManager : MonoBehaviour
 {
     [Header("Round Setting")]

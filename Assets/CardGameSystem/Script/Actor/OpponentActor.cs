@@ -2,6 +2,9 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// 적 행동 제어 스크립트
+/// </summary>
 public class OpponentActor : Actor
 {
     [SerializeField] private OpponentData opponentData; // name, Hp

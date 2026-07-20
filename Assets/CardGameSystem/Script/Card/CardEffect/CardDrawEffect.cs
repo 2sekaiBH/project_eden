@@ -1,6 +1,9 @@
 using CardSystem.Runtime;
 using UnityEngine;
 
+/// <summary>
+/// 덱에서 카드를 가져오는 effect 모듈
+/// </summary>
 [CreateAssetMenu(fileName = "CardDrawEffect", menuName = "Scriptable Objects/CardSystem/CardEffectData/CardDraw")]
 public class CardDrawEffect : CardEffectData
 {

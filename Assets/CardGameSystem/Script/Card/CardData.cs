@@ -2,6 +2,9 @@ using NUnit.Framework;
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// 카드 데이터 SO
+/// </summary>
 [CreateAssetMenu(fileName = "CardData", menuName = "Scriptable Objects/CardSystem/CardData")]
 public class CardData : ScriptableObject
 {

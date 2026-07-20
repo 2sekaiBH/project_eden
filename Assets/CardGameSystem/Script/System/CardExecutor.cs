@@ -3,6 +3,9 @@ using CardSystem.Runtime;
 using System.Collections.Generic;
 using System;
 
+/// <summary>
+/// 전달받은 카드의 실행을 제어하는 스크립트
+/// </summary>
 public class CardExecutor : MonoBehaviour
 {
     // Start is called once before the first execution of Update after the MonoBehaviour is created

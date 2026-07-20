@@ -3,13 +3,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// Player의 손패 관리 매니저
+/// PlayerActor와 CardDisplay 사이의 인터페이스 역할
+/// </summary>
 public class HandManager : MonoBehaviour
 {
-    /// <summary>
-    /// 손패 관리 매니저
-    /// Actor와 CardDisplay 사이의 인터페이스 역할
-    /// </summary>
-
     [Header("Refernce")]
     [SerializeField] private List<GameObject> cards = new List<GameObject>(); // 카드 오브젝트들
     private List<CardDisplay> cardDisplays = new List<CardDisplay>(); // 카드 오브젝트에 부착된 CardDisplay

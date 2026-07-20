@@ -2,6 +2,9 @@ using CardSystem.Effects;
 using CardSystem.Runtime;
 using UnityEngine;
 
+/// <summary>
+/// 공격 모듈 - 랜덤과 같이 구현하기 위해 IntRange 사용
+/// </summary>
 [CreateAssetMenu(fileName = "AttackEffect", menuName = "Scriptable Objects/CardSystem/CardEffectData/Attack")]
 public class DamageEffect : CardEffectData
 {

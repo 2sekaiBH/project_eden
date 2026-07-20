@@ -2,6 +2,9 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
+/// <summary>
+/// Actor의 UI를 갱신하는 스크립트
+/// </summary>
 public class ProfileUpdator : MonoBehaviour
 {
     [Header("Reference")]

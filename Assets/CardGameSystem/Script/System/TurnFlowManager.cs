@@ -5,6 +5,9 @@ using System.Linq;
 using TMPro;
 using UnityEngine;
 
+/// <summary>
+/// turn의 흐름을 제어하는 스크립트
+/// </summary>
 public class TurnFlowManager : MonoBehaviour
 {
     [Header("Turn Setting")]
