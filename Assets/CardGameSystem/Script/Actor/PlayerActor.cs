@@ -13,9 +13,6 @@ public class PlayerActor : Actor
     [SerializeField] private int maxEnergy;
     [SerializeField] private int maxHp;
 
-    private int currentEnergy = 4;
-    public int CurrentEnergy => currentEnergy;
-
     public override void Initialize()
     {
         currentHp = maxHp;
@@ -34,6 +31,5 @@ public class PlayerActor : Actor
         Initialize();
         name = "Player"; // 디버깅용 - 게임 매니저랑 연결, 커스텀 name으로 변경
         profileUpdator.UpdateProfile(name, currentHp, currentBlock, currentEnergy);
-        handManager.Initialize(hand);
     }
 }

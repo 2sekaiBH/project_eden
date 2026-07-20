@@ -19,9 +19,13 @@ public class OpponentActor : Actor
     {
         currentHp = opponentData.totalHp;
         currentBlock = 0;
+        currentEnergy = opponentData.maxEnergy;
     }
 
-    // 손패 중 랜덤으로 하나 뽑기
+    /// <summary>
+    /// 적의 카드 select 로직
+    /// 손패 중 랜덤으로 하나 뽑기
+    /// </summary>
     public override void SelectCard()
     {
         List<CardData> pickedCard = new List<CardData>();

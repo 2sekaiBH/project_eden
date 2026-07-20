@@ -16,11 +16,17 @@ public abstract class Actor: MonoBehaviour
     protected new string name;
     protected int currentHp;
     protected int currentBlock = 0;
+    protected int currentEnergy = 4;
     protected List<CardData> hand = new List<CardData>();
     public int CurrentHp => currentHp;
     public int CurrentBlock => currentBlock;
+    public int CurrentEnergy => currentEnergy;
     public List<CardData> Hand => hand;
 
+    /// <summary>
+    /// Damage - Hp 감소
+    /// </summary>
+    /// <param name="amount">피해량</param>
     public virtual void TakeDamage(int amount)
     {
         int absorbed = Mathf.Min(currentBlock, amount);
@@ -30,22 +36,40 @@ public abstract class Actor: MonoBehaviour
         currentHp -= amount;
     }
 
+    /// <summary>
+    /// Heal - Hp 증가
+    /// </summary>
+    /// <param name="amount">치료할 양</param>
     public virtual void Heal(int amount)
     {
         currentHp += amount;
     }
 
+    /// <summary>
+    /// 방어 증가
+    /// </summary>
+    /// <param name="amount">증가할 양</param>
     public virtual void AddBlock(int amount)
     {
         currentBlock += amount;
     }
 
+    /// <summary>
+    /// 덱에서 카드 뽑기
+    /// </summary>
+    /// <param name="amount">가져올 카드 수</param>
     public virtual void DrawCards(int amount)
     {
         hand.AddRange(DeckManager.Instance.DrawRandomCard(amount));
     }
 
+    /// <summary>
+    /// 카드 선택
+    /// </summary>
     public abstract void SelectCard();
 
+    /// <summary>
+    /// 초기화
+    /// </summary>
     public abstract void Initialize();
 }

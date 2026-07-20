@@ -149,6 +149,7 @@ GameObject:
   - component: {fileID: 1193106019817082986}
   - component: {fileID: 4348795310302240828}
   - component: {fileID: 5874848249378192769}
+  - component: {fileID: 8710934786050455164}
   m_Layer: 5
   m_Name: CardPrefab
   m_TagString: Untagged
@@ -201,7 +202,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 0
+  m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
@@ -229,7 +230,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 147568eed8fa8e749b5ed6083f8d83ad, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CardDisplay
-  card: {fileID: 11400000, guid: 36c25c21c86b8ba4fa7714243c14fe32, type: 2}
+  card: {fileID: 0}
   energyText: {fileID: 4941412114714321762}
   iconImage: {fileID: 990546255253756855}
   valueText: {fileID: 3370727147038598539}
@@ -238,6 +239,18 @@ MonoBehaviour:
   - {fileID: 2887157185773614050, guid: 7aec92aaa9a1c6d4385e005ea529cc4f, type: 3}
   - {fileID: -3850161368994453836, guid: 7aec92aaa9a1c6d4385e005ea529cc4f, type: 3}
   - {fileID: -656642670871498679, guid: 7aec92aaa9a1c6d4385e005ea529cc4f, type: 3}
+--- !u!225 &8710934786050455164
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1619126981389201015}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 0
+  m_BlocksRaycasts: 0
+  m_IgnoreParentGroups: 0
 --- !u!1 &2895700354273471802
 GameObject:
   m_ObjectHideFlags: 0

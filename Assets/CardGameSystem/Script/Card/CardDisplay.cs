@@ -6,7 +6,7 @@ using UnityEngine.UI;
 
 public class CardDisplay : MonoBehaviour, IPointerClickHandler, IPointerEnterHandler, IPointerExitHandler
 {
-    [SerializeField] private CardData card;
+    public CardData card = null;
     public CardData CardData => card;
 
     public int CardId => card.cardId;
@@ -22,25 +22,28 @@ public class CardDisplay : MonoBehaviour, IPointerClickHandler, IPointerEnterHan
     public event Action<CardData> OnCardSelected;
 
     private Image image;
+    private CanvasGroup canvasGroup;
 
     private bool isSelected = false;
 
     private void Awake()
     {
         image = GetComponent<Image>();
-    }
-    void Start()
-    {
-        UpdateCardDisplay();
+        canvasGroup = GetComponent<CanvasGroup>();
     }
 
-    /// <summary>외부에서 카드를 바꿀 때는 반드시 이 함수를 통해서만.</summary>
+    /// <summary>
+    /// 외부에서 카드를 바꿀 때는 반드시 이 함수를 통해서만.
+    /// </summary>
     public void SetCard(CardData newCard)
     {
         card = newCard;
         UpdateCardDisplay();
     }
 
+    /// <summary>
+    /// 상태 초기화
+    /// </summary>
     public void StateReset()
     {
         isSelected = false;
@@ -48,23 +51,40 @@ public class CardDisplay : MonoBehaviour, IPointerClickHandler, IPointerEnterHan
         SetActiveInput(false);
     }
 
+    /// <summary>
+    /// card data를 UI에 반영
+    /// </summary>
     private void UpdateCardDisplay()
     {
-        energyText.text = $"{card.energyCost.ToString()}";
-        iconImage.sprite = iconSprite[(int)card.cardType];
-        // valueText.text
-        descriptionText.text = card.description;
+        if(card != null) // cardData 존재 시 반영
+        {
+            canvasGroup.alpha = 1f;
+            energyText.text = $"{card.energyCost.ToString()}";
+            iconImage.sprite = iconSprite[(int)card.cardType];
+            // valueText.text
+            descriptionText.text = card.description;
+        }
+        else // cardData 부재 시 카드 투명화
+        {
+            canvasGroup.alpha = 0;
+        }
     }
 
-    public void DiscardCard()
+    /// <summary>
+    /// 카드 제거를 UI에 반영
+    /// </summary>
+    public void UpdateDiscardCard()
     {
-        Debug.Log(CardId);
         gameObject.SetActive(false);
     }
 
+    /// <summary>
+    /// 플레이어의 인풋을 받을지 여부를 제어
+    /// </summary>
+    /// <param name="active"></param>
     public void SetActiveInput(bool active)
     {
-        image.raycastTarget = active;
+        canvasGroup.blocksRaycasts = active;
     }
 
     public void OnPointerClick(PointerEventData eventData)
@@ -87,6 +107,11 @@ public class CardDisplay : MonoBehaviour, IPointerClickHandler, IPointerEnterHan
             image.color = Color.blue;
         else
             image.color = Color.white;
+    }
+
+    private void Hover()
+    {
+
     }
 
     public void OnPointerEnter(PointerEventData eventData)

@@ -4,11 +4,11 @@ using UnityEngine;
 public class DeckManager : MonoBehaviour
 {
     [Header("Reference")]
-    [SerializeField] private CardDataBase CardDataBase;
+    [SerializeField] private CardDataBase CardDataBase; // Ä«µå µ¥ÀÌÅÍ º£ÀÌ½º
     
     public List<CardData> deck; // Ä«µå µ¦
 
-    private static DeckManager instance;
+    private static DeckManager instance; // ½Ì±ÛÅæ
     public static DeckManager Instance => instance;
 
     private void Awake()
@@ -20,12 +20,12 @@ public class DeckManager : MonoBehaviour
 
         InitializeDeck();
     }
-    void Start()
-    {
-        
-    }
 
-    // ·£´ý Ä«µå »Ì±â ÇÔ¼ö(»ÌÀ» Ä«µå °¹¼ö)
+    /// <summary>
+    /// ·£´ý Ä«µå »Ì±â ÇÔ¼ö
+    /// </summary>
+    /// <param name="amount">»ÌÀ» Ä«µå °¹¼ö</param>
+    /// <returns>»ÌÀº Ä«µå</returns>
     public List<CardData> DrawRandomCard(int amount)
     {
         List<CardData> pickedCardDeck = new List<CardData>();
@@ -39,16 +39,12 @@ public class DeckManager : MonoBehaviour
         return pickedCardDeck;
     }
 
+    /// <summary>
+    /// ÃÊ±âÈ­
+    /// </summary>
     public void InitializeDeck()
     {
         deck.Clear();
         deck.AddRange(CardDataBase.cardDataBase);
-    }
-
-
-    // Update is called once per frame
-    void Update()
-    {
-        
     }
 }
