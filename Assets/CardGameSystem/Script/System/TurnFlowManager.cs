@@ -5,8 +5,10 @@ using System.Collections.Generic;
 using System.Linq;
 using TMPro;
 using UnityEngine;
+using CardSystem.Runtime;
 using UnityEngine.Assemblies;
 using UnityEngine.InputSystem.XR.Haptics;
+using UnityEditor.PackageManager.UI;
 
 public class TurnFlowManager : MonoBehaviour
 {
@@ -16,6 +18,7 @@ public class TurnFlowManager : MonoBehaviour
     [Header("Reference")]
     [SerializeField] PlayerActor playerActor;
     [SerializeField] OpponentActor opponentActor;
+    [SerializeField] CardExecutor cardExecutor;
     [SerializeField] TextMeshProUGUI turnTextUI;
 
     // ----------------------------------------
@@ -82,6 +85,7 @@ public class TurnFlowManager : MonoBehaviour
         currentTurn = 0;
 
         // 1. 카드덱에서 각자 카드를 뽑음
+        DeckManager.Instance.InitializeDeck(); // deck 초기화
         currentState = FlowState.DrawCards;
         playerActor.DrawCards(5);
         opponentActor.DrawCards(5);
@@ -93,11 +97,7 @@ public class TurnFlowManager : MonoBehaviour
             currentTurn++;
             Debug.Log($"{currentTurn}턴 시작");
             currentState = FlowState.TurnStart;
-            UpdateUI(); // UI 반영
-
-            playerActor.Initialize(); // player 상태 초기화
-            opponentActor.Initialize(); // opponent 상태 초기화
-            DeckManager.Instance.InitializeDeck(); // deck 초기화
+            UpdateUI(); // UI 
             OnTurnStart?.Invoke(currentTurn); 
 
             // 3. 플레이어 카드 제출
@@ -113,11 +113,14 @@ public class TurnFlowManager : MonoBehaviour
             Debug.Log("상대편이 낸 카드: " + string.Join(", ", opponentSelectedCards.Select(p => p.name)));
 
             // 5. 카드 실행
+            // 플레이어 카드 실행
+            cardExecutor.CardExecute(playerSelectedCards, playerActor, opponentActor);
 
-            // 6. 결과 계산
-            
+            // 적 카드 실행
+            cardExecutor.CardExecute(opponentSelectedCards, opponentActor, playerActor);
+
             // 7. 승리 판정
-            if(opponentActor.CurrentHp <= 0)
+            if (opponentActor.CurrentHp <= 0)
             {
                 Debug.Log("승리");
                 OnPlayerWin?.Invoke();

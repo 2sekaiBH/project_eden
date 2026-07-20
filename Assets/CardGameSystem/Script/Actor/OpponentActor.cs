@@ -7,13 +7,11 @@ public class OpponentActor : Actor
     [SerializeField] private OpponentData opponentData; // name, Hp
 
     public event Action<List<CardData>> OnOpponentEndSelect;
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         name = opponentData.name;
         Initialize();
-
-        profileUpdator.UpdateProfile(name, currentHp, currentBlock);
+        UpdateProfileUI();
     }
     public override void Initialize()
     {
@@ -31,5 +29,10 @@ public class OpponentActor : Actor
         List<CardData> pickedCard = new List<CardData>();
         pickedCard.Add(hand[UnityEngine.Random.Range(0, hand.Count)]);
         OnOpponentEndSelect.Invoke(pickedCard);
+    }
+
+    public override void UpdateProfileUI()
+    {
+        profileUpdator.UpdateProfile(name, currentHp, currentBlock);
     }
 }

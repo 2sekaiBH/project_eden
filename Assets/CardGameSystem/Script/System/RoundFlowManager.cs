@@ -38,12 +38,19 @@ public class RoundFlowManager : MonoBehaviour
         turnFlowManager.OnPlayerWin += HandlePlayerWin;
     }
 
-    void Start()
+    /// <summary>
+    /// 라운드 시작 함수
+    /// </summary>
+    public void StartRound()
     {
-        coRunRound= StartCoroutine(RunRound()); // 디버깅용
+        coRunRound = StartCoroutine(RunRound());
     }
-    
-    public IEnumerator RunRound()
+
+    /// <summary>
+    /// 메인 라운드 코루틴
+    /// </summary>
+    /// <returns></returns>
+    private IEnumerator RunRound()
     {
         Initialize(); // 라운드 상태 초기화
         while (currentRound < maxRounds)

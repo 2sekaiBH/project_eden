@@ -30,6 +30,11 @@ public class PlayerActor : Actor
     {
         Initialize();
         name = "Player"; // 디버깅용 - 게임 매니저랑 연결, 커스텀 name으로 변경
+        UpdateProfileUI();
+    }
+
+    public override void UpdateProfileUI()
+    {
         profileUpdator.UpdateProfile(name, currentHp, currentBlock, currentEnergy);
     }
 }

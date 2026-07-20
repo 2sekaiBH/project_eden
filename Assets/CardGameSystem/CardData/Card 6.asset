@@ -17,6 +17,6 @@ MonoBehaviour:
   cardType: 0
   energyCost: 3
   effect: "\uACF5\uACA9 -4"
-  description: 6
+  description: "4 \uACF5\uACA9"
   effects:
   - {fileID: 11400000, guid: b3181539cf79ac3438f185f162783b41, type: 2}

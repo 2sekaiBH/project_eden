@@ -23,16 +23,29 @@ public abstract class Actor: MonoBehaviour
     public int CurrentEnergy => currentEnergy;
     public List<CardData> Hand => hand;
 
+
+    private void OnEnable()
+    {
+        CardExecutor.OnCardExecuteEnd += UpdateProfileUI;
+    }
+
+    private void OnDisEnable()
+    {
+        CardExecutor.OnCardExecuteEnd -= UpdateProfileUI;
+    }
+
     /// <summary>
     /// Damage - Hp 감소
     /// </summary>
     /// <param name="amount">피해량</param>
     public virtual void TakeDamage(int amount)
     {
+        /*
         int absorbed = Mathf.Min(currentBlock, amount);
         currentBlock -= absorbed;
         int remaining = amount - absorbed;
         currentHp = Mathf.Max(0, currentHp - remaining); // Hp 음수 방지
+        */
         currentHp -= amount;
     }
 
@@ -72,4 +85,9 @@ public abstract class Actor: MonoBehaviour
     /// 초기화
     /// </summary>
     public abstract void Initialize();
+
+    /// <summary>
+    /// 프로필 UI 업데이터
+    /// </summary>
+    public abstract void UpdateProfileUI();
 }

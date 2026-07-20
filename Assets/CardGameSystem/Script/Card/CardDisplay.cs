@@ -61,7 +61,7 @@ public class CardDisplay : MonoBehaviour, IPointerClickHandler, IPointerEnterHan
             canvasGroup.alpha = 1f;
             energyText.text = $"{card.energyCost.ToString()}";
             iconImage.sprite = iconSprite[(int)card.cardType];
-            // valueText.text
+            valueText.text = card.effect;
             descriptionText.text = card.description;
         }
         else // cardData 부재 시 카드 투명화
@@ -104,7 +104,7 @@ public class CardDisplay : MonoBehaviour, IPointerClickHandler, IPointerEnterHan
     private void UpdateClickedUI(bool isSelected)
     {
         if(isSelected) 
-            image.color = Color.blue;
+            image.color = Color.coral;
         else
             image.color = Color.white;
     }

@@ -2,15 +2,22 @@ using UnityEngine;
 
 public class CardGameManager : MonoBehaviour
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
+    private RoundFlowManager roundFlowManager;
+    private bool isWIn = false;
+
+    private void Awake()
+    {
+        roundFlowManager = GetComponentInChildren<RoundFlowManager>();
+    }
     void Start()
     {
-        
+        RunCardGame();
     }
 
-    // Update is called once per frame
-    void Update()
+    private void RunCardGame()
     {
-        
+        roundFlowManager.StartRound();
     }
+
+    // 최종 승패 판정에 따른 처리
 }
