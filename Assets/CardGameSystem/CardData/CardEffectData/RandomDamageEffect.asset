@@ -13,4 +13,4 @@ MonoBehaviour:
   m_Name: RandomDamageEffect
   m_EditorClassIdentifier: Assembly-CSharp::DamageEffect
   amount:
-    randomArray: 0300000006000000
+    randomArray: 0300000007000000

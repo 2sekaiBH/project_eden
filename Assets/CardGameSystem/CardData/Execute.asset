@@ -10,13 +10,13 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 1c13dab7a990a8249959515d8c16c972, type: 3}
-  m_Name: Card
+  m_Name: Execute
   m_EditorClassIdentifier: Assembly-CSharp::Card
-  cardId: 0
-  cardName: "\uACF5\uACA9-4\uCE74\uB4DC"
+  cardId: 3
+  cardName: Execute
   cardType: 0
-  energyCost: 1
-  effect: "\uACF5\uACA9 -4"
-  description: "4 \uACF5\uACA9"
-  effects:
-  - {fileID: 11400000, guid: b3181539cf79ac3438f185f162783b41, type: 2}
+  energyCost: 2
+  effect: -8 or -3
+  description: "\uC0C1\uB300 \uCCB4\uB825\uC774 15\uC774\uD558\uB77C\uBA74 -8\uC744
+    \uADF8 \uC678\uC758 \uACBD\uC6B0\uC5D0\uB294 -3\uC744 \uD569\uB2C8\uB2E4."
+  effects: []
