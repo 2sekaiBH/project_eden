@@ -54,15 +54,6 @@ public abstract class Actor: MonoBehaviour
     }
 
     /// <summary>
-    /// TrueDamage - 방어 반영 x 절대 공격
-    /// </summary>
-    /// /// <param name="amount">피해량</param>
-    public virtual void TakeTrueDamage(int amount)
-    {
-        currentHp = Mathf.Max(0, currentHp - amount);
-    }
-
-    /// <summary>
     /// Heal - Hp 증가
     /// </summary>
     /// <param name="amount">치료할 양</param>
