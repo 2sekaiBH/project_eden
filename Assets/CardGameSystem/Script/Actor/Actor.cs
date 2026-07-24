@@ -13,7 +13,7 @@ public abstract class Actor: MonoBehaviour
     [Header("Reference")]
     [SerializeField] protected ProfileUpdator profileUpdator;
     protected new string name;
-    public int currentHp;
+    protected int currentHp;
     protected int currentBlock = 0;
     protected int currentEnergy = 4;
     protected List<CardData> hand = new List<CardData>();
@@ -43,13 +43,13 @@ public abstract class Actor: MonoBehaviour
     /// <param name="amount">피해량</param>
     public virtual void TakeDamage(int amount)
     {
+        Debug.Log($"{name}: {amount} 피해 중 {currentBlock} 막음");
         int absorbed = Mathf.Min(currentBlock, amount);
         currentBlock -= absorbed;
         int remaining = amount - absorbed;
         currentHp = Mathf.Max(0, currentHp - remaining); // Hp 음수 방지
 
-        Debug.Log($"{name}: {amount} 피해 중 {currentBlock} 막음. 현재 체력 {currentHp}");
-        
+        Debug.Log($"{name}: 현재 체력: {currentHp}");
         UpdateProfileUI();
     }
 

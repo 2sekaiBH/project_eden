@@ -30,7 +30,6 @@ public class CardExecutor : MonoBehaviour
         foreach (CardData card in cardList)
         {
             card.effects.ForEach((effect) => effect.Execute(context)); // 카드 effect 실행
-            caster.TrySpendEnergy(card.energyCost); // energy 소비
         }
     }
 }
