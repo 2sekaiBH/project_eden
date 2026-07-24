@@ -109,20 +109,19 @@ public class TurnFlowManager : MonoBehaviour
             yield return new WaitUntil(() => isPlayerSubmitted);
             Debug.Log("player가 낸 카드: " + string.Join(", ", playerSelectedCards.Select(p => p.name)));
 
-            // 5. 적 카드 제출
+            // 5. 플레이어 카드 실행
+            cardExecutor.CardExecute(playerSelectedCards, playerActor, opponentActor);
+
+            // 6. 적 카드 제출
             currentState = FlowState.OpponentSelect;
             opponentActor.SelectCard();
             yield return new WaitUntil(() => isOpponentSubmitted);
             Debug.Log("상대편이 낸 카드: " + string.Join(", ", opponentSelectedCards.Select(p => p.name)));
 
-            // 6. 카드 실행
-            // 플레이어 카드 실행
-            cardExecutor.CardExecute(playerSelectedCards, playerActor, opponentActor);
-
-            // 적 카드 실행
+            // 7. 적 카드 실행
             cardExecutor.CardExecute(opponentSelectedCards, opponentActor, playerActor);
 
-            // 7. 승리 판정
+            // 8. 승리 판정
             if (opponentActor.CurrentHp <= 0)
             {
                 Debug.Log("승리");
@@ -131,7 +130,7 @@ public class TurnFlowManager : MonoBehaviour
                 yield break; // turn 코루틴 종료
             }
 
-            // 8. 턴 종료
+            // 9. 턴 종료
             InitializeState(); // 상태 변수 초기화
             OnTurnEnd?.Invoke(currentTurn);
 
