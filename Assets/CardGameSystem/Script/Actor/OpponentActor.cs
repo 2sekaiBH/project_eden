@@ -10,7 +10,7 @@ public class OpponentActor : Actor
     [SerializeField] private OpponentData opponentData; // name, Hp
 
     public event Action<List<CardData>> OnOpponentEndSelect;
-    void Start()
+    void Awake()
     {
         name = opponentData.name;
         Initialize();

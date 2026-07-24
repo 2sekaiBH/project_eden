@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.PlayerLoop;
 
 /// <summary>
 /// 플레이어 행동 제어 스크립트
@@ -26,10 +27,10 @@ public class PlayerActor : Actor
         handManager.StartSelect(hand, this);
     }
 
-    void Start()
+    void Awake()
     {
-        Initialize();
         name = "Player"; // 디버깅용 - 커스텀 name으로 변경
+        Initialize();
         UpdateProfileUI();
     }
 

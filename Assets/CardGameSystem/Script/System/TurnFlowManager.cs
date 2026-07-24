@@ -99,21 +99,23 @@ public class TurnFlowManager : MonoBehaviour
             opponentActor.EnergyIntialize(); // 적 에너지 초기화
 
             UpdateUI(); // Turn 정보 UI 갱신
+
+            // 3. 평타 공격 - DefaultAttackController에서 담당
             OnTurnStart?.Invoke(currentTurn); 
 
-            // 3. 플레이어 카드 제출
+            // 4. 플레이어 카드 제출
             currentState = FlowState.PlayerSelect;
             playerActor.SelectCard(); 
             yield return new WaitUntil(() => isPlayerSubmitted);
             Debug.Log("player가 낸 카드: " + string.Join(", ", playerSelectedCards.Select(p => p.name)));
 
-            // 4. 적 카드 제출
+            // 5. 적 카드 제출
             currentState = FlowState.OpponentSelect;
             opponentActor.SelectCard();
             yield return new WaitUntil(() => isOpponentSubmitted);
             Debug.Log("상대편이 낸 카드: " + string.Join(", ", opponentSelectedCards.Select(p => p.name)));
 
-            // 5. 카드 실행
+            // 6. 카드 실행
             // 플레이어 카드 실행
             cardExecutor.CardExecute(playerSelectedCards, playerActor, opponentActor);
 
