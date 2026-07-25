@@ -30,6 +30,9 @@ public class TurnFlowManager : MonoBehaviour
     // 플레이어 카드 제출 확인용 플래그
     private bool isPlayerSubmitted = false;
 
+    // Npc 효과 적용 확인용 플래그
+    private bool isNpcEffectInProgress = false;
+
     // 적 카드 제출 확인용 플래그
     private bool isOpponentSubmitted = false;
 
@@ -38,6 +41,9 @@ public class TurnFlowManager : MonoBehaviour
 
     // 적에서 제출한 카드
     private List<CardData> opponentSelectedCards = new List<CardData>();
+
+    // 유저가 선택한 npc 슬롯
+    private NpcData selectedNpcData;
 
     public enum FlowState
     {
@@ -101,11 +107,11 @@ public class TurnFlowManager : MonoBehaviour
             UpdateUI(); // Turn 정보 UI 갱신
 
             // 3. 평타 공격 - DefaultAttackController에서 담당
-            OnTurnStart?.Invoke(currentTurn); 
+            OnTurnStart?.Invoke(currentTurn);
 
-            // 4. 플레이어 카드 제출
+            // 4. 플레이어 카드 제출, Npc 효과 처리
             currentState = FlowState.PlayerSelect;
-            playerActor.SelectCard(); 
+            playerActor.SelectCard();
             yield return new WaitUntil(() => isPlayerSubmitted);
             Debug.Log("player가 낸 카드: " + string.Join(", ", playerSelectedCards.Select(p => p.name)));
 
