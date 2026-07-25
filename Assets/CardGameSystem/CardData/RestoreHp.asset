@@ -10,13 +10,13 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 1c13dab7a990a8249959515d8c16c972, type: 3}
-  m_Name: Card 6
+  m_Name: RestoreHp
   m_EditorClassIdentifier: Assembly-CSharp::Card
-  cardId: 6
-  cardName: "\uACF5\uACA9-4\uCE74\uB4DC"
-  cardType: 0
+  cardId: 5
+  cardName: System Restore
+  cardType: 1
   energyCost: 2
-  effect: "\uACF5\uACA9 -4"
-  description: "4 \uACF5\uACA9"
+  effect: +5
+  description: "\uCCB4\uB825\uC744 5\uD68C\uBCF5\uD569\uB2C8\uB2E4."
   effects:
-  - {fileID: 11400000, guid: b3181539cf79ac3438f185f162783b41, type: 2}
+  - {fileID: 11400000, guid: b8091bf39f90d6c49a96b79404c76515, type: 2}

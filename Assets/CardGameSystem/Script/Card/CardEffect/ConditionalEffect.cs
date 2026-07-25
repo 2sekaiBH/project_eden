@@ -1,5 +1,6 @@
 using CardSystem.Effects;
 using CardSystem.Runtime;
+using System;
 using UnityEngine;
 
 /// <summary>
@@ -17,7 +18,20 @@ public class ConditinalEffect : CardEffectData
     {
         int damage;
 
-        if(context.)
+        if(context.target.CurrentHp <= threshold)
+        {
+            damage = BonusDamage;
+            
+ 
+        }
+
+        else {
+            damage = normalDamage;
+        }
+        
+        context.target.TakeDamage(damage);
+        Debug.Log($"공격했음 {damage}");
+
     }
 
 }

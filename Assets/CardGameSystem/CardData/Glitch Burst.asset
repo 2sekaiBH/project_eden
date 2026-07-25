@@ -16,7 +16,7 @@ MonoBehaviour:
   cardName: Glitch Burst
   cardType: 0
   energyCost: 1
-  effect: "-3 ~ -7\uB79C\uB364 \uD53C\uD574\uB97C \uC785\uD799\uB2C8\uB2E4."
-  description: -3 ~ -7
+  effect: -3 ~ -7
+  description: "-3 ~ -7\uC758 \uB79C\uB364 \uD53C\uD574\uB97C \uC785\uD799\uB2C8\uB2E4"
   effects:
   - {fileID: 11400000, guid: 088687844585955428b0df6a8c9ab226, type: 2}
