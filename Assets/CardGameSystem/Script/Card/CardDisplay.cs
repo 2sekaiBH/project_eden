@@ -1,5 +1,6 @@
 using System;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
@@ -19,19 +20,22 @@ public class CardDisplay : MonoBehaviour, IPointerClickHandler, IPointerEnterHan
     [SerializeField] private Image iconImage;
     [SerializeField] private TextMeshProUGUI valueText;
     [SerializeField] private TextMeshProUGUI descriptionText;
+    [SerializeField] private Image image;
+    [SerializeField] private CanvasGroup canvasGroup;
 
     [SerializeField] private Sprite[] iconSprite; // 0: Attack 1: Defense 2: Special 순서 맞춰서 - 자동화 필요..
 
-    public event Action<CardDisplay> OnCardSelected;
+    public event Action<CardDisplay> OnCardSelected; // HandManager, CardSelectOnPanelController에서 구독
 
-    private Image image;
-    private CanvasGroup canvasGroup;
     private bool isSelected = false;
+
 
     private void Awake()
     {
-        image = GetComponent<Image>();
-        canvasGroup = GetComponent<CanvasGroup>();
+        if(image == null)
+            image = GetComponent<Image>();
+        if(canvasGroup == null)
+            canvasGroup = GetComponent<CanvasGroup>();
     }
 
     private void OnEnable()
@@ -68,26 +72,30 @@ public class CardDisplay : MonoBehaviour, IPointerClickHandler, IPointerEnterHan
     /// </summary>
     private void UpdateCardDisplay()
     {
-        if(card != null) // cardData 존재 시 반영
-        {
-            canvasGroup.alpha = 1f;
-            energyText.text = $"{card.energyCost.ToString()}";
-            iconImage.sprite = iconSprite[(int)card.cardType];
-            valueText.text = card.effect;
-            descriptionText.text = card.description;
-        }
-        else // cardData 부재 시 카드 투명화
-        {
-            canvasGroup.alpha = 0;
-        }
+        if (card == null) return;
+
+         canvasGroup.alpha = 1f;
+         energyText.text = $"{card.energyCost.ToString()}";
+         iconImage.sprite = iconSprite[(int)card.cardType];
+         valueText.text = card.effect;
+         descriptionText.text = card.description;
+    }
+
+    /// <summary>
+    /// CardData 부재 시 오브젝트 비활성화
+    /// </summary>
+    public void UpdateVisibleDisplay()
+    {
+        if(card == null)
+            gameObject.SetActive(false);
     }
 
     /// <summary>
     /// 카드 제거를 UI에 반영
     /// </summary>
-    public void UpdateDiscardCard()
+    public void UpdateActiveCard(bool active)
     {
-        gameObject.SetActive(false);
+        gameObject.SetActive(active);
     }
 
     /// <summary>

@@ -12,4 +12,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 92a37db9b88bfde4e8af2853f6463c2e, type: 3}
   m_Name: NoaEffect
   m_EditorClassIdentifier: Assembly-CSharp::NoaEffect
-  extraEnergy: 3
+  extraEnergy: 2

@@ -16,7 +16,7 @@ public abstract class Actor: MonoBehaviour
     protected int currentHp;
     protected int currentBlock = 0;
     protected int currentEnergy = 4;
-    protected List<CardData> hand = new List<CardData>();
+    public List<CardData> hand = new List<CardData>();
     public int CurrentHp => currentHp;
     public int CurrentBlock => currentBlock;
     public int CurrentEnergy => currentEnergy;
@@ -151,4 +151,5 @@ public abstract class Actor: MonoBehaviour
     /// 프로필 UI 업데이터
     /// </summary>
     public abstract void UpdateProfileUI();
+
 }

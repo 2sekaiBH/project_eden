@@ -235,6 +235,8 @@ MonoBehaviour:
   iconImage: {fileID: 990546255253756855}
   valueText: {fileID: 3370727147038598539}
   descriptionText: {fileID: 1650427436843303098}
+  image: {fileID: 4348795310302240828}
+  canvasGroup: {fileID: 8710934786050455164}
   iconSprite:
   - {fileID: 2887157185773614050, guid: 7aec92aaa9a1c6d4385e005ea529cc4f, type: 3}
   - {fileID: -3850161368994453836, guid: 7aec92aaa9a1c6d4385e005ea529cc4f, type: 3}

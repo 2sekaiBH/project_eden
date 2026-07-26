@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 /// <summary>
@@ -18,7 +20,7 @@ public class PendingEffectManager : MonoBehaviour
         else
             Destroy(this.gameObject);
 
-        roundPendingEffect = new RoundPendingEffect(null);
+        roundPendingEffect = new RoundPendingEffect();
         turnPendingEffect = new TurnPendingEffect();
     }
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -30,14 +32,17 @@ public class PendingEffectManager : MonoBehaviour
     public void SetRoundPendingEffect(CardData cardData = null)
     {
         Debug.Log($"roundPendingState에 {cardData.name} 추가됨.");
-        roundPendingEffect.extraCard = cardData;
+        roundPendingEffect.AddExtraCard(cardData);
     }
 
 
     public void ApplyRoundPendingState(PlayerActor playerActor, OpponentActor opponentActor)
     {
-        playerActor.AddCard(roundPendingEffect.extraCard);
-        Debug.Log($"라운드 시작 - 플레이어에게 {roundPendingEffect.extraCard} 카드 전달, 플레이어 카드 수: {playerActor.Hand.Count}");
+        if(roundPendingEffect.extraCards.Count > 0)
+        {
+            roundPendingEffect.extraCards.ForEach((card) => playerActor.AddCard(card));
+            Debug.Log($"라운드 시작 - 플레이어에게 {roundPendingEffect.extraCards.Select((card) => card.name)} 카드 전달, 플레이어 카드 수: {playerActor.Hand.Count}");
+        }
     }
 
     // Update is called once per frame
@@ -60,10 +65,16 @@ public class TurnPendingEffect
 [System.Serializable]
 public class RoundPendingEffect
 {
-    public CardData extraCard;
+    public List<CardData> extraCards = new List<CardData>();
 
-    public RoundPendingEffect(CardData extraCard)
+    public RoundPendingEffect()
     {
-        this.extraCard = extraCard;
+        
+    }
+
+    public List<CardData> AddExtraCard(CardData extraCard)
+    {
+        extraCards.Add(extraCard);
+        return extraCards;
     }
 }

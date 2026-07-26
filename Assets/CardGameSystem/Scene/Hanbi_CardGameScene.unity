@@ -813,6 +813,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: CardPrefab (4)
       objectReference: {fileID: 0}
+    - target: {fileID: 5874848249378192769, guid: ab96d6354a9e4784ebe710adfa841f4a, type: 3}
+      propertyPath: image
+      value: 
+      objectReference: {fileID: 1874030597}
+    - target: {fileID: 5874848249378192769, guid: ab96d6354a9e4784ebe710adfa841f4a, type: 3}
+      propertyPath: canvasGroup
+      value: 
+      objectReference: {fileID: 1874030596}
     - target: {fileID: 6772675291031137135, guid: ab96d6354a9e4784ebe710adfa841f4a, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -1478,6 +1486,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerActor
   profileUpdator: {fileID: 1215725471}
+  hand: []
   handManager: {fileID: 1840005979}
   maxEnergy: 4
   maxHp: 15
@@ -1651,6 +1660,14 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 5874848249378192769, guid: ab96d6354a9e4784ebe710adfa841f4a, type: 3}
+      propertyPath: image
+      value: 
+      objectReference: {fileID: 1874030597}
+    - target: {fileID: 5874848249378192769, guid: ab96d6354a9e4784ebe710adfa841f4a, type: 3}
+      propertyPath: canvasGroup
+      value: 
+      objectReference: {fileID: 1874030596}
     - target: {fileID: 6772675291031137135, guid: ab96d6354a9e4784ebe710adfa841f4a, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -1933,6 +1950,14 @@ PrefabInstance:
       propertyPath: m_Color.r
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 5874848249378192769, guid: ab96d6354a9e4784ebe710adfa841f4a, type: 3}
+      propertyPath: image
+      value: 
+      objectReference: {fileID: 1874030597}
+    - target: {fileID: 5874848249378192769, guid: ab96d6354a9e4784ebe710adfa841f4a, type: 3}
+      propertyPath: canvasGroup
+      value: 
+      objectReference: {fileID: 1874030596}
     - target: {fileID: 6772675291031137135, guid: ab96d6354a9e4784ebe710adfa841f4a, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -2796,6 +2821,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::OpponentActor
   profileUpdator: {fileID: 1884793872}
+  hand: []
   opponentData: {fileID: 11400000, guid: c72f93917f9ddc6478d877dc3c5a6725, type: 2}
 --- !u!4 &1399398173
 Transform:
@@ -3549,6 +3575,24 @@ MonoBehaviour:
   - {fileID: 718575291}
   - {fileID: 1211057943}
   cardPrefab: {fileID: 1619126981389201015, guid: ab96d6354a9e4784ebe710adfa841f4a, type: 3}
+  player: {fileID: 777149920}
+  affordableCards: []
+--- !u!225 &1874030596 stripped
+CanvasGroup:
+  m_CorrespondingSourceObject: {fileID: 8710934786050455164, guid: ab96d6354a9e4784ebe710adfa841f4a, type: 3}
+  m_PrefabInstance: {fileID: 1152680070}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1874030597 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4348795310302240828, guid: ab96d6354a9e4784ebe710adfa841f4a, type: 3}
+  m_PrefabInstance: {fileID: 1152680070}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
 --- !u!1 &1884793870
 GameObject:
   m_ObjectHideFlags: 0
@@ -3718,6 +3762,14 @@ PrefabInstance:
       propertyPath: m_Enabled
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 5874848249378192769, guid: ab96d6354a9e4784ebe710adfa841f4a, type: 3}
+      propertyPath: image
+      value: 
+      objectReference: {fileID: 1973944347}
+    - target: {fileID: 5874848249378192769, guid: ab96d6354a9e4784ebe710adfa841f4a, type: 3}
+      propertyPath: canvasGroup
+      value: 
+      objectReference: {fileID: 1973944346}
     - target: {fileID: 6772675291031137135, guid: ab96d6354a9e4784ebe710adfa841f4a, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -3835,6 +3887,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 147568eed8fa8e749b5ed6083f8d83ad, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CardDisplay
+--- !u!225 &1973944346 stripped
+CanvasGroup:
+  m_CorrespondingSourceObject: {fileID: 8710934786050455164, guid: ab96d6354a9e4784ebe710adfa841f4a, type: 3}
+  m_PrefabInstance: {fileID: 1973944341}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1973944347 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4348795310302240828, guid: ab96d6354a9e4784ebe710adfa841f4a, type: 3}
+  m_PrefabInstance: {fileID: 1973944341}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
 --- !u!1001 &2048294204
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -4016,13 +4084,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fd567c7008da49040b2a20722925730b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CardSelectOnPanelController
+  cards: []
   cardDisplays:
   - {fileID: 1152680074}
   - {fileID: 2119524243}
   - {fileID: 1973944345}
   - {fileID: 1078983016}
   - {fileID: 335928284}
-  handManager: {fileID: 1840005979}
+  playerHand: {fileID: 1840005979}
+  rectTransform: {fileID: 2073019822}
+  cardPrefab: {fileID: 1619126981389201015, guid: ab96d6354a9e4784ebe710adfa841f4a, type: 3}
 --- !u!1 &2084185892
 GameObject:
   m_ObjectHideFlags: 0
@@ -4177,6 +4248,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: CardPrefab (1)
       objectReference: {fileID: 0}
+    - target: {fileID: 5874848249378192769, guid: ab96d6354a9e4784ebe710adfa841f4a, type: 3}
+      propertyPath: image
+      value: 
+      objectReference: {fileID: 1874030597}
+    - target: {fileID: 5874848249378192769, guid: ab96d6354a9e4784ebe710adfa841f4a, type: 3}
+      propertyPath: canvasGroup
+      value: 
+      objectReference: {fileID: 1874030596}
     - target: {fileID: 6772675291031137135, guid: ab96d6354a9e4784ebe710adfa841f4a, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5

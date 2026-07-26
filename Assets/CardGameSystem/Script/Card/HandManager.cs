@@ -12,15 +12,16 @@ public class HandManager : MonoBehaviour
     [Header("Refernce")]
     [SerializeField] private List<GameObject> cards = new List<GameObject>(); // 카드 오브젝트들
     [SerializeField] private GameObject cardPrefab;
+    [SerializeField] private PlayerActor player;
     private List<CardDisplay> cardDisplays = new List<CardDisplay>(); // 카드 오브젝트에 부착된 CardDisplay
 
     private List<CardData> selectedCards = new List<CardData>(); // 선택된 카드 리스트
-    private PlayerActor player = null;
+
+    public List<CardData> affordableCards = new List<CardData>(); // 이번 턴에서 선택할 수 있는 카드 리스트
+    public List<CardData> AffordableCards => affordableCards;
+
     private bool selectEndFlag = false; // 선택 종료 플래그
     private RectTransform rectTransform;   
-
-    private List<CardData> activeCards = new List<CardData>();
-    public List<CardData> ActiveCards => activeCards; // 현재 선택할 수 있는 카드 - CardSelectOnPanelController에게 전달
 
     public void HandleSelectEndFlag(bool value) // 제출 버튼에서 구독
     {
@@ -34,6 +35,8 @@ public class HandManager : MonoBehaviour
     public static Action<int> OnCardSelect;
     // CardDisplay에서 구독
 
+    private Action<int> _OnRoundEndHandler;
+
     private void Awake()
     {
         cards.ForEach((card) => cardDisplays.Add(card.GetComponent<CardDisplay>()));
@@ -44,13 +47,17 @@ public class HandManager : MonoBehaviour
     private void OnEnable()
     {
         cardDisplays.ForEach((display) => display.OnCardSelected += HandleSelectCard);
-        RoundFlowManager.OnRoundEnd += FillCard;
+
+        _OnRoundEndHandler = ((int _) => { FillCard(); ResetAffordableCards(); });
+        RoundFlowManager.OnRoundEnd += _OnRoundEndHandler;
+        player.OnPlayerDrawCard += OnActorDrawCardHandler;
     }
     // 이벤트 해제
     private void OnDisable()
     {
         cardDisplays.ForEach((display) => display.OnCardSelected -= HandleSelectCard);
-        RoundFlowManager.OnRoundEnd -= FillCard;
+        RoundFlowManager.OnRoundEnd -= _OnRoundEndHandler;
+        player.OnPlayerDrawCard -= OnActorDrawCardHandler;
     }
 
     /// <summary>
@@ -58,34 +65,33 @@ public class HandManager : MonoBehaviour
     /// </summary>
     public void Initialize(List<CardData> cardDatas)
     {
-        activeCards.AddRange(cardDatas);
-
-        for (int i = 0; i < cardDatas.Count - cards.Count; i++)
+        if (cardDatas.Count > cards.Count)
         {
-            GameObject extraCard = Instantiate(cardPrefab, rectTransform, false);
-            cards.Add(extraCard);
-            CardDisplay extraDisplay = extraCard.GetComponent<CardDisplay>();
-            cardDisplays.Add(extraDisplay);
-            extraDisplay.OnCardSelected += HandleSelectCard;
+            for (int i = 0; i < cardDatas.Count - cards.Count + 1; i++) // 5개보다 더 많은 손패 존재 시 카드 오브젝트 새로 생성
+            {
+                GameObject extraCard = Instantiate(cardPrefab, rectTransform, false);
+                cards.Add(extraCard);
+                CardDisplay extraDisplay = extraCard.GetComponent<CardDisplay>();
+                cardDisplays.Add(extraDisplay);
+                extraDisplay.OnCardSelected += HandleSelectCard;
+            }
         }
         for (int i = 0; i < cardDisplays.Count; i++)
         {
             cardDisplays[i].SetCard(cardDatas[i]);
         }
+        cardDisplays.ForEach((display) => display.UpdateVisibleDisplay());
     }
 
     /// <summary>
     /// 카드 선택 시작
     /// </summary>
     /// <param name="handDatas">손패 데이터</param>
-    public void StartSelect(List<CardData> handDatas, PlayerActor playerActor)
+    public void StartSelect(List<CardData> handDatas)
     {
-        this.player = playerActor;
-
         // 상태 변수 초기화
         selectedCards.Clear();
         selectEndFlag = false;
-        activeCards.Clear();
 
         Initialize(handDatas);
 
@@ -146,8 +152,8 @@ public class HandManager : MonoBehaviour
     /// <param name="card">제거할 카드</param>
     private void DiscardCard(CardData card)
     {
-        activeCards.Remove(card);
-        FindCardDisplayByData(card).UpdateDiscardCard();
+        FindCardDisplayByData(card).UpdateActiveCard(false);
+        AffordableCards.Remove(card);
     }
 
     /// <summary>
@@ -173,9 +179,26 @@ public class HandManager : MonoBehaviour
     /// 라운드 종료 이벤트 핸들러
     /// </summary>
     /// <param name="_"></param>
-    private void FillCard(int _)
+    private void FillCard()
     {
         // 카드 오브젝트 활성화
         cards.ForEach((card) => card.SetActive(true));
+    }
+
+    /// <summary>
+    /// 
+    /// </summary>
+    private void ResetAffordableCards()
+    {
+        affordableCards.Clear();
+    }
+
+    /// <summary>
+    /// 라운드 마다 갱신되어야 하는 손패 정보 관리
+    /// </summary>
+    /// <param name="hand">손패</param>
+    private void OnActorDrawCardHandler(List<CardData> hand)
+    {
+        affordableCards.AddRange(hand);
     }
 }

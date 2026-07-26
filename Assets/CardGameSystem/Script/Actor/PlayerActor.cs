@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+using System;
 using UnityEngine;
 using UnityEngine.PlayerLoop;
 
@@ -14,6 +16,8 @@ public class PlayerActor : Actor
     [SerializeField] private int maxEnergy;
     [SerializeField] private int maxHp;
 
+    public event Action<List<CardData>> OnPlayerDrawCard;
+
     public override void Initialize()
     {
         currentHp = maxHp;
@@ -24,7 +28,7 @@ public class PlayerActor : Actor
     // 카드 선택 시작
     public override void SelectCard()
     {
-        handManager.StartSelect(hand, this);
+        handManager.StartSelect(hand);
     }
 
     void Awake()
@@ -34,6 +38,11 @@ public class PlayerActor : Actor
         UpdateProfileUI();
     }
 
+    public override void DrawCards(int amount)
+    {
+        base.DrawCards(amount);
+        OnPlayerDrawCard?.Invoke(hand);
+    }
     public override void UpdateProfileUI()
     {
         profileUpdator.UpdateProfile(name, currentHp, currentBlock, currentEnergy);
@@ -48,7 +57,6 @@ public class PlayerActor : Actor
         if(cardData != null) 
             hand.Add(cardData);
     }
-
 
     public override void EnergyIntialize()
     {
