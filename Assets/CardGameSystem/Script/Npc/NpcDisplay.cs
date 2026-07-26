@@ -1,3 +1,4 @@
+using System;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -12,12 +13,23 @@ public class NpcDisplay : MonoBehaviour
     [SerializeField] TextMeshProUGUI npcNameText;
     [SerializeField] TextMeshProUGUI npcEffectText;
 
-    [SerializeField] Button submitButton;
+    [SerializeField] Button applyBtn;
 
-    private NpcData npcData;
+    public NpcData npcData;
+
+    public static event Action<NpcData> OnNpcSelect;
+
+    private Action<int> OnTurnStartHandler;
+
+    // Start is called once before the first execution of Update after the MonoBehaviour is created
+    void Start()
+    {
+        UpdateNpcDisplay();
+    }
 
     private void OnEnable()
     {
+        OnTurnStartHandler = (int _) => { SetInteractableButton(true); };
         TurnFlowManager.OnTurnStart += OnTurnStartHandler;
     }
 
@@ -25,13 +37,6 @@ public class NpcDisplay : MonoBehaviour
     {
         TurnFlowManager.OnTurnStart -= OnTurnStartHandler;
     }
-
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
-        
-    }
-    
     public void SetNpcData(NpcData npcData)
     {
         this.npcData = npcData;
@@ -49,30 +54,23 @@ public class NpcDisplay : MonoBehaviour
     }
 
     /// <summary>
-    /// Turn 시작 시 npc 사용 버튼 활성화
+    /// npc 선택 버튼에서 관리
     /// </summary>
-    /// <param name="_"></param>
-    private void OnTurnStartHandler(int _)
-    {
-        SetInteractableButton(true);
-    }
-
-    /// <summary>
-    /// 플레이어 cardSubmit 시 비활성화
-    /// 카드 submitButton에서 제어
-    /// </summary>
-    public void OnSelectEndFlag()
-    {
-        SetInteractableButton(false);
-    }
-
     public void OnSubmit()
     {
-        // NpcEffectManager에게 선택 npc 데이터 전달
+        OnNpcSelect?.Invoke(npcData);// NpcEffectManager에게 선택 npc 데이터 전달
     }
 
-    private void SetInteractableButton(bool interactable)
+
+    /// <summary>
+    /// npc 적용 버튼 활성화 제어 메소드
+    /// turn 시작 시 활성화
+    /// 카드 제출 버튼 클릭 시 비활성화(카드 제출 버튼에서 관리)
+    /// </summary>
+    /// <param name="interactable">상호작용 가능 여부</param>
+    public void SetInteractableButton(bool interactable)
     {
-        submitButton.interactable = interactable;
+        applyBtn.interactable = interactable;
     }
+
 }

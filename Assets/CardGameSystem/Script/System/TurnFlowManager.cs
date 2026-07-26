@@ -30,9 +30,6 @@ public class TurnFlowManager : MonoBehaviour
     // 플레이어 카드 제출 확인용 플래그
     private bool isPlayerSubmitted = false;
 
-    // Npc 효과 적용 확인용 플래그
-    private bool isNpcEffectInProgress = false;
-
     // 적 카드 제출 확인용 플래그
     private bool isOpponentSubmitted = false;
 
@@ -91,8 +88,12 @@ public class TurnFlowManager : MonoBehaviour
         // 1. 카드덱에서 각자 카드를 뽑음
         DeckManager.Instance.InitializeDeck(); // deck 초기화
         currentState = FlowState.DrawCards;
+
+        // 카드 뽑기
         playerActor.DrawCards(5);
         opponentActor.DrawCards(5);
+
+        PendingEffectManager.Instance.ApplyRoundPendingState(playerActor, opponentActor); // 이전 턴에서 반영해야할 정보들 반영
         Debug.Log("랜덤 카드 드로우 완료");
 
         while (currentTurn < turnsPerRound)

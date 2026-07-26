@@ -39,6 +39,17 @@ public class PlayerActor : Actor
         profileUpdator.UpdateProfile(name, currentHp, currentBlock, currentEnergy);
     }
 
+    /// <summary>
+    /// 기본 카드 드로우 외 따로 카드를 추가하는 메소드
+    /// </summary>
+    /// <param name="cardData">추가할 카드</param>
+    public void AddCard(CardData cardData)
+    {
+        if(cardData != null) 
+            hand.Add(cardData);
+    }
+
+
     public override void EnergyIntialize()
     {
         SetEnergy(maxEnergy);

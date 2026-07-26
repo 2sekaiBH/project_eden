@@ -1,10 +1,14 @@
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "NOAEffect", menuName = "Scriptable Objects/NOAEffect")]
-public class NOAEffect : NpcEffect
+[CreateAssetMenu(fileName = "NoaEffect", menuName = "Scriptable Objects/CardSystem/NpcEffect/NoaEffect")]
+public class NoaEffect : NpcEffect
 {
-    public override void Apply()
+    [Header("Setting")]
+    [SerializeField] private int extraEnergy;
+
+    public override void Apply(NpcContext context)
     {
-        
+        Debug.Log($"플레이어 에너지 {extraEnergy} 추가");
+        context.playerActor.RefundEnergy(extraEnergy);
     }
 }

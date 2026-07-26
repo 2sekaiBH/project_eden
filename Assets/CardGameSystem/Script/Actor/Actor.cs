@@ -29,12 +29,14 @@ public abstract class Actor: MonoBehaviour
         _handler = (amount) => UpdateProfileUI(); 
         TurnFlowManager.OnTurnStart += _handler; // turn 시작할 때 UI update
         TurnFlowManager.OnTurnEnd += ResetBlock;
+        RoundFlowManager.OnRoundStart += ResetHand;
     }
 
     private void OnDisEnable()
     {
         TurnFlowManager.OnTurnStart -= _handler;
         TurnFlowManager.OnTurnEnd -= ResetBlock;
+        RoundFlowManager.OnRoundStart -= ResetHand;
     }
 
     /// <summary>
@@ -80,6 +82,14 @@ public abstract class Actor: MonoBehaviour
     {
         currentBlock = 0;
         Debug.Log("방어 리셋");
+    }
+
+    /// <summary>
+    /// 손패 리셋 - 매 라운드 시작마다 실행
+    /// </summary>
+    public virtual void ResetHand(int _)
+    {
+        hand.Clear();
     }
 
     /// <summary>

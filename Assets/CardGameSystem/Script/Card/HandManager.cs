@@ -11,11 +11,17 @@ public class HandManager : MonoBehaviour
 {
     [Header("Refernce")]
     [SerializeField] private List<GameObject> cards = new List<GameObject>(); // 카드 오브젝트들
+    [SerializeField] private GameObject cardPrefab;
     private List<CardDisplay> cardDisplays = new List<CardDisplay>(); // 카드 오브젝트에 부착된 CardDisplay
 
     private List<CardData> selectedCards = new List<CardData>(); // 선택된 카드 리스트
-    private PlayerActor player;
+    private PlayerActor player = null;
     private bool selectEndFlag = false; // 선택 종료 플래그
+    private RectTransform rectTransform;   
+
+    private List<CardData> activeCards = new List<CardData>();
+    public List<CardData> ActiveCards => activeCards; // 현재 선택할 수 있는 카드 - CardSelectOnPanelController에게 전달
+
     public void HandleSelectEndFlag(bool value) // 제출 버튼에서 구독
     {
         selectEndFlag = value;
@@ -26,10 +32,12 @@ public class HandManager : MonoBehaviour
     // PlayerActor에서 구독
 
     public static Action<int> OnCardSelect;
+    // CardDisplay에서 구독
 
     private void Awake()
     {
         cards.ForEach((card) => cardDisplays.Add(card.GetComponent<CardDisplay>()));
+        rectTransform = GetComponent<RectTransform>();
     }
 
     // 이벤트 구독
@@ -50,7 +58,17 @@ public class HandManager : MonoBehaviour
     /// </summary>
     public void Initialize(List<CardData> cardDatas)
     {
-        for(int i = 0; i < cardDisplays.Count; i++)
+        activeCards.AddRange(cardDatas);
+
+        for (int i = 0; i < cardDatas.Count - cards.Count; i++)
+        {
+            GameObject extraCard = Instantiate(cardPrefab, rectTransform, false);
+            cards.Add(extraCard);
+            CardDisplay extraDisplay = extraCard.GetComponent<CardDisplay>();
+            cardDisplays.Add(extraDisplay);
+            extraDisplay.OnCardSelected += HandleSelectCard;
+        }
+        for (int i = 0; i < cardDisplays.Count; i++)
         {
             cardDisplays[i].SetCard(cardDatas[i]);
         }
@@ -63,14 +81,16 @@ public class HandManager : MonoBehaviour
     public void StartSelect(List<CardData> handDatas, PlayerActor playerActor)
     {
         this.player = playerActor;
+
         // 상태 변수 초기화
         selectedCards.Clear();
         selectEndFlag = false;
+        activeCards.Clear();
 
         Initialize(handDatas);
 
         StartCoroutine(CoRunSelect());
-    } 
+    }
 
     /// <summary>
     /// 메인 카드 선택 코루틴
@@ -126,6 +146,7 @@ public class HandManager : MonoBehaviour
     /// <param name="card">제거할 카드</param>
     private void DiscardCard(CardData card)
     {
+        activeCards.Remove(card);
         FindCardDisplayByData(card).UpdateDiscardCard();
     }
 

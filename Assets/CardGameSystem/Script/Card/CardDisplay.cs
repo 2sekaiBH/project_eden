@@ -28,8 +28,6 @@ public class CardDisplay : MonoBehaviour, IPointerClickHandler, IPointerEnterHan
     private CanvasGroup canvasGroup;
     private bool isSelected = false;
 
-    private int currentEnergy;
-
     private void Awake()
     {
         image = GetComponent<Image>();
