@@ -111,6 +111,7 @@ public abstract class Actor: MonoBehaviour
     public virtual void DrawCards(int amount)
     {
         hand.AddRange(DeckManager.Instance.DrawRandomCard(amount));
+        //여기서 손패 갱신을 하면 될 것 같아요
     }
 
     /// <summary>
