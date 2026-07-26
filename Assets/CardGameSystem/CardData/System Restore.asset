@@ -10,13 +10,13 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 1c13dab7a990a8249959515d8c16c972, type: 3}
-  m_Name: Optimization
-  m_EditorClassIdentifier: Assembly-CSharp::CardData
-  cardId: 5
-  cardName: Optimization
-  cardType: 2
+  m_Name: System Restore
+  m_EditorClassIdentifier: Assembly-CSharp::Card
+  cardId: 8
+  cardName: System Restore
+  cardType: 1
   energyCost: 2
-  effect: "\uC5D0\uB108\uC9C0 \uD560\uC778"
-  description: "\uC774\uBC88 \uD134 \uC5D0\uB108\uC9C0 \uAC01 -1"
+  effect: +5
+  description: "\uCCB4\uB825 +5"
   effects:
-  - {fileID: 11400000, guid: 41f62ee05b13de945a32827d5308069a, type: 2}
+  - {fileID: 11400000, guid: b8091bf39f90d6c49a96b79404c76515, type: 2}

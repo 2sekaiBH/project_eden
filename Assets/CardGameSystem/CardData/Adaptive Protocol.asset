@@ -16,7 +16,7 @@ MonoBehaviour:
   cardName: Adaptive Protocol
   cardType: 2
   energyCost: 2
-  effect: '-6 && +6 '
-  description: "\uC870\uAC74\uC744 \uB2EC\uC131\uD558\uBA74 \uC0AC\uC6A9 \uAC00\uB2A5"
+  effect: -6 & +6
+  description: "\uC870\uAC74 \uB2EC\uC131 \uC2DC \uC0AC\uC6A9 \uAC00\uB2A5"
   effects:
   - {fileID: 11400000, guid: 088687844585955428b0df6a8c9ab226, type: 2}
