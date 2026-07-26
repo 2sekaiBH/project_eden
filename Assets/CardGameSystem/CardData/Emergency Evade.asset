@@ -10,13 +10,12 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 1c13dab7a990a8249959515d8c16c972, type: 3}
-  m_Name: Card 7
+  m_Name: Emergency Evade
   m_EditorClassIdentifier: Assembly-CSharp::Card
   cardId: 7
-  cardName: "\uACF5\uACA9-4\uCE74\uB4DC"
-  cardType: 0
+  cardName: Emergency Evade
+  cardType: 1
   energyCost: 1
-  effect: "\uACF5\uACA9 -4"
-  description: "4 \uACF5\uACA9"
-  effects:
-  - {fileID: 11400000, guid: b3181539cf79ac3438f185f162783b41, type: 2}
+  effect: "\uAE34\uAE09 \uD68C\uD53C"
+  description: "\uC774\uBC88 \uD134\uC758 \uBC1B\uB294 \uD53C\uD574\uB97C 50% \uAC10\uC18C\uC2DC\uD0B5\uB2C8\uB2E4."
+  effects: []
