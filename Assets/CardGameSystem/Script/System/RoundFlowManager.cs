@@ -60,9 +60,13 @@ public class RoundFlowManager : MonoBehaviour
         {
             // 1. 라운드 시작
             currentRound++;
-            Debug.Log($"{currentRound}라운드 시작");
             UpdateUI(); // UI 반영
+
             OnRoundStart?.Invoke(currentRound);
+
+            UIUpdator.Instance.SetText($"{currentRound}라운드 시작");
+            Debug.Log($"{currentRound}라운드 시작");
+            yield return new WaitForSeconds(1f);
 
             // 2. 턴 시작
             yield return StartCoroutine(turnFlowManager.RunTurn());
@@ -76,13 +80,18 @@ public class RoundFlowManager : MonoBehaviour
 
             // 4. 라운드 종료
             OnRoundEnd?.Invoke(currentRound);
-
+            UIUpdator.Instance.SetText($"{currentRound} 라운드 종료");
+            Debug.Log($"{currentRound} 종료");
+            yield return new WaitForSeconds(1f);
         }
 
         // 5라운드 초과 시 패배
-        Debug.Log("패배");
         OnResultDetermined?.Invoke(false);
-            
+
+        UIUpdator.Instance.SetText($"패배");
+        Debug.Log($"패배");
+        yield return new WaitForSeconds(1f);
+
         yield return null;
     }
 

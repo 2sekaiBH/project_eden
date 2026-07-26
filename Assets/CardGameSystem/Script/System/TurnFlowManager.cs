@@ -94,43 +94,53 @@ public class TurnFlowManager : MonoBehaviour
         opponentActor.DrawCards(5);
 
         PendingEffectManager.Instance.ApplyRoundPendingState(playerActor, opponentActor); // 이전 턴에서 반영해야할 정보들 반영
+        UIUpdator.Instance.SetText($"랜덤 카드 드로우 완료");
         Debug.Log("랜덤 카드 드로우 완료");
+        yield return new WaitForSeconds(1f);
 
         while (currentTurn < turnsPerRound)
         {
             // 2. 턴 시작
             currentTurn++;
-            Debug.Log($"{currentTurn}턴 시작");
             currentState = FlowState.TurnStart;
             playerActor.EnergyIntialize(); // 플레이어 에너지 초기화
             opponentActor.EnergyIntialize(); // 적 에너지 초기화
 
             UpdateUI(); // Turn 정보 UI 갱신
 
+            UIUpdator.Instance.SetText($"{currentTurn}턴 시작");
+            Debug.Log($"{currentTurn}턴 시작");
+            yield return new WaitForSeconds(1f);
+
             // 3. 평타 공격 - DefaultAttackController에서 담당
             OnTurnStart?.Invoke(currentTurn);
+            UIUpdator.Instance.SetText($"평타 공격, 방어 증가");
+            yield return new WaitForSeconds(1f);
 
             // 4. 플레이어 카드 제출, Npc 효과 처리
+            UIUpdator.Instance.SetText($"플레이어 카드 선택");
             currentState = FlowState.PlayerSelect;
             playerActor.SelectCard();
             yield return new WaitUntil(() => isPlayerSubmitted);
             Debug.Log("player가 낸 카드: " + string.Join(", ", playerSelectedCards.Select(p => p.name)));
 
             // 5. 적 카드 제출
+            UIUpdator.Instance.SetText($"적 카드 선택");
             currentState = FlowState.OpponentSelect;
             opponentActor.SelectCard();
             yield return new WaitUntil(() => isOpponentSubmitted);
             Debug.Log("상대편이 낸 카드: " + string.Join(", ", opponentSelectedCards.Select(p => p.name)));
 
             // 6. 카드 실행
-            cardExecutor.CardExecuteControll(playerActor, playerSelectedCards, opponentActor, opponentSelectedCards);
+            yield return cardExecutor.CardExecuteControll(playerActor, playerSelectedCards, opponentActor, opponentSelectedCards);
 
             // 7. 승리 판정
             if (opponentActor.CurrentHp <= 0)
             {
-                Debug.Log("승리");
                 OnPlayerWin?.Invoke();
                 InitializeState();
+                UIUpdator.Instance.SetText($"승리");
+                Debug.Log("승리");
                 yield break; // turn 코루틴 종료
             }
 
