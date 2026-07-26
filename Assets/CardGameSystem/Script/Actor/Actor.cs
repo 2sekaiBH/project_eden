@@ -16,10 +16,11 @@ public abstract class Actor: MonoBehaviour
     protected int currentHp;
     protected int currentBlock = 0;
     protected int currentEnergy = 4;
-    protected List<CardData> hand = new List<CardData>();
+    public List<CardData> hand = new List<CardData>();
     public int CurrentHp => currentHp;
     public int CurrentBlock => currentBlock;
     public int CurrentEnergy => currentEnergy;
+
     public List<CardData> Hand => hand;
     private Action<int> _handler;
 
@@ -27,27 +28,31 @@ public abstract class Actor: MonoBehaviour
     {
         _handler = (amount) => UpdateProfileUI(); 
         TurnFlowManager.OnTurnStart += _handler; // turn 시작할 때 UI update
-
+        TurnFlowManager.OnTurnEnd += ResetBlock;
+        RoundFlowManager.OnRoundStart += ResetHand;
     }
 
     private void OnDisEnable()
     {
         TurnFlowManager.OnTurnStart -= _handler;
+        TurnFlowManager.OnTurnEnd -= ResetBlock;
+        RoundFlowManager.OnRoundStart -= ResetHand;
     }
 
     /// <summary>
-    /// Damage - Hp 감소
+    /// Damage - Hp 감소 (기본 공격)
     /// </summary>
     /// <param name="amount">피해량</param>
     public virtual void TakeDamage(int amount)
     {
-        /*
+        Debug.Log($"{name}: {amount} 피해 중 {currentBlock} 막음");
         int absorbed = Mathf.Min(currentBlock, amount);
         currentBlock -= absorbed;
         int remaining = amount - absorbed;
         currentHp = Mathf.Max(0, currentHp - remaining); // Hp 음수 방지
-        */
-        currentHp -= amount;
+
+        Debug.Log($"{name}: 현재 체력: {currentHp}");
+        UpdateProfileUI();
     }
 
     /// <summary>
@@ -57,6 +62,7 @@ public abstract class Actor: MonoBehaviour
     public virtual void Heal(int amount)
     {
         currentHp += amount;
+        UpdateProfileUI();
     }
 
     /// <summary>
@@ -66,6 +72,24 @@ public abstract class Actor: MonoBehaviour
     public virtual void AddBlock(int amount)
     {
         currentBlock += amount;
+        UpdateProfileUI();
+    }
+
+    /// <summary>
+    /// 방어 리셋 - 매 턴 종료마다 실행
+    /// </summary>
+    public virtual void ResetBlock(int _)
+    {
+        currentBlock = 0;
+        Debug.Log("방어 리셋");
+    }
+
+    /// <summary>
+    /// 손패 리셋 - 매 라운드 시작마다 실행
+    /// </summary>
+    public virtual void ResetHand(int _)
+    {
+        hand.Clear();
     }
 
     /// <summary>
@@ -127,4 +151,5 @@ public abstract class Actor: MonoBehaviour
     /// 프로필 UI 업데이터
     /// </summary>
     public abstract void UpdateProfileUI();
+
 }

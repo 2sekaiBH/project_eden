@@ -10,7 +10,7 @@ public class OpponentActor : Actor
     [SerializeField] private OpponentData opponentData; // name, Hp
 
     public event Action<List<CardData>> OnOpponentEndSelect;
-    void Start()
+    void Awake()
     {
         name = opponentData.name;
         Initialize();
@@ -25,12 +25,17 @@ public class OpponentActor : Actor
 
     /// <summary>
     /// 적의 카드 select 로직
-    /// 손패 중 랜덤으로 하나 뽑기
+    /// 가진 에너지를 최대한 사용하여 카드 제출
     /// </summary>
     public override void SelectCard()
     {
         List<CardData> pickedCard = new List<CardData>();
-        pickedCard.Add(hand[UnityEngine.Random.Range(0, hand.Count)]);
+        int i = 0;
+        while (TrySpendEnergy(hand[i].energyCost))
+        {
+            pickedCard.Add(hand[i]);
+            i++;
+        }
         OnOpponentEndSelect.Invoke(pickedCard);
     }
 

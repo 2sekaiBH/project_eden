@@ -1,4 +1,7 @@
+using System.Collections.Generic;
+using System;
 using UnityEngine;
+using UnityEngine.PlayerLoop;
 
 /// <summary>
 /// 플레이어 행동 제어 스크립트
@@ -13,6 +16,8 @@ public class PlayerActor : Actor
     [SerializeField] private int maxEnergy;
     [SerializeField] private int maxHp;
 
+    public event Action<List<CardData>> OnPlayerDrawCard;
+
     public override void Initialize()
     {
         currentHp = maxHp;
@@ -23,19 +28,34 @@ public class PlayerActor : Actor
     // 카드 선택 시작
     public override void SelectCard()
     {
-        handManager.StartSelect(hand, this);
+        handManager.StartSelect(hand);
     }
 
-    void Start()
+    void Awake()
     {
-        Initialize();
         name = "Player"; // 디버깅용 - 커스텀 name으로 변경
+        Initialize();
         UpdateProfileUI();
     }
 
+    public override void DrawCards(int amount)
+    {
+        base.DrawCards(amount);
+        OnPlayerDrawCard?.Invoke(hand);
+    }
     public override void UpdateProfileUI()
     {
         profileUpdator.UpdateProfile(name, currentHp, currentBlock, currentEnergy);
+    }
+
+    /// <summary>
+    /// 기본 카드 드로우 외 따로 카드를 추가하는 메소드
+    /// </summary>
+    /// <param name="cardData">추가할 카드</param>
+    public void AddCard(CardData cardData)
+    {
+        if(cardData != null) 
+            hand.Add(cardData);
     }
 
     public override void EnergyIntialize()
