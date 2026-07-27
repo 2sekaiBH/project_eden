@@ -10,13 +10,12 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 1c13dab7a990a8249959515d8c16c972, type: 3}
-  m_Name: Card 9
+  m_Name: Optimization
   m_EditorClassIdentifier: Assembly-CSharp::Card
   cardId: 9
-  cardName: "\uACF5\uACA9-4\uCE74\uB4DC"
-  cardType: 0
+  cardName: Optimization
+  cardType: 2
   energyCost: 2
-  effect: "\uB79C\uB364 \uACF5\uACA9"
-  description: "3~6 \uB79C\uB364 \uACF5\uACA9"
-  effects:
-  - {fileID: 11400000, guid: 088687844585955428b0df6a8c9ab226, type: 2}
+  effect: -1
+  description: "\uB2E4\uC74C \uD134 \uAC01 \uCE74\uB4DC \uCF54\uC2A4\uD2B8 -1"
+  effects: []

@@ -20,5 +20,5 @@ MonoBehaviour:
   description: "\uBC29\uC5B4\uB825 +2, \uD761\uC218\uD55C \uC0C1\uB300\uC758 \uACF5\uACA9\uC744
     \uBC18\uC0AC\uD569\uB2C8\uB2E4"
   effects:
-  - {fileID: 11400000, guid: 088687844585955428b0df6a8c9ab226, type: 2}
-  - {fileID: 11400000, guid: b3181539cf79ac3438f185f162783b41, type: 2}
+  - {fileID: 11400000, guid: 87e9fe3c8c18d394bb9503b9116add09, type: 2}
+  - {fileID: 11400000, guid: c0a3530f75c724d4aac3ffde3011c5c6, type: 2}

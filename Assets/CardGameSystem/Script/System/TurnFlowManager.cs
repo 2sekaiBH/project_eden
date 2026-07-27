@@ -19,6 +19,7 @@ public class TurnFlowManager : MonoBehaviour
     [SerializeField] CardExecutor cardExecutor;
     [SerializeField] TextMeshProUGUI turnTextUI;
 
+
     // ----------------------------------------
     // 진행 상태 변수
     // ----------------------------------------
@@ -145,8 +146,13 @@ public class TurnFlowManager : MonoBehaviour
             }
 
             // 8. 턴 종료
+            //Corruption 카드 효과 발동
+            PendingEffectManager.Instance.ConsumeEndturnDamage();
+
             InitializeState(); // 상태 변수 초기화
             OnTurnEnd?.Invoke(currentTurn);
+            playerActor.ResetTurnEffect(); //플레이어에게 적용되는 턴 지속 효과 초기화
+            opponentActor.ResetTurnEffect(); //몹에게 적용되는 턴 지속 효과 초기화
 
             yield return null;
         }
@@ -182,7 +188,7 @@ public class TurnFlowManager : MonoBehaviour
         playerSelectedCards.Clear();
         opponentSelectedCards.Clear();
     }
-    
+
     /// <summary>
     /// UI 업데이터
     /// </summary>

@@ -19,5 +19,4 @@ MonoBehaviour:
   effect: -3
   description: "2\uD134\uAC04 \uD134 \uC885\uB8CC\uC2DC -3\uC758 \uB370\uBBF8\uC9C0\uB97C
     \uC785\uD799\uB2C8\uB2E4"
-  effects:
-  - {fileID: 11400000, guid: b3181539cf79ac3438f185f162783b41, type: 2}
+  effects: []

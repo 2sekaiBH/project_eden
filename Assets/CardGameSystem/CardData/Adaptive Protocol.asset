@@ -10,13 +10,12 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 1c13dab7a990a8249959515d8c16c972, type: 3}
-  m_Name: Card 8
+  m_Name: Adaptive Protocol
   m_EditorClassIdentifier: Assembly-CSharp::Card
   cardId: 8
-  cardName: "\uACF5\uACA9-4\uCE74\uB4DC"
-  cardType: 0
+  cardName: Adaptive Protocol
+  cardType: 2
   energyCost: 1
-  effect: "\uACF5\uACA9 -4"
-  description: "4 \uACF5\uACA9"
-  effects:
-  - {fileID: 11400000, guid: b3181539cf79ac3438f185f162783b41, type: 2}
+  effect: "\uC870\uAC74\uBD80"
+  description: "\uC870\uAC74\uBD80 \uACF5\uACA9"
+  effects: []
