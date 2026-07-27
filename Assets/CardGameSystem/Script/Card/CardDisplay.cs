@@ -45,7 +45,7 @@ public class CardDisplay : MonoBehaviour, IPointerClickHandler, IPointerEnterHan
 
     private void OnDisable()
     {
-        HandManager.OnCardSelect += UpdateAffordableVisual;
+        HandManager.OnCardSelect -= UpdateAffordableVisual;
     }
 
     /// <summary>
@@ -74,20 +74,10 @@ public class CardDisplay : MonoBehaviour, IPointerClickHandler, IPointerEnterHan
     {
         if (card == null) return;
 
-         canvasGroup.alpha = 1f;
          energyText.text = $"{card.energyCost.ToString()}";
          iconImage.sprite = iconSprite[(int)card.cardType];
          valueText.text = card.effect;
          descriptionText.text = card.description;
-    }
-
-    /// <summary>
-    /// CardData 부재 시 오브젝트 비활성화
-    /// </summary>
-    public void UpdateVisibleDisplay()
-    {
-        if(card == null)
-            gameObject.SetActive(false);
     }
 
     /// <summary>
@@ -104,6 +94,7 @@ public class CardDisplay : MonoBehaviour, IPointerClickHandler, IPointerEnterHan
     /// <param name="active"></param>
     public void SetActiveInput(bool active)
     {
+        canvasGroup.alpha = active ? 1f : 0.5f;
         canvasGroup.blocksRaycasts = active;
     }
 

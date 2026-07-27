@@ -81,6 +81,11 @@ public class PlayerActor : Actor
         Debug.Log($"플레이어 손패 {index + 1}번째 카드를 {newCard.name}으로 변경했습니다.");
     }
 
+    public void DiscardCard(CardData card)
+    {
+        hand.Remove(card);
+    }
+
     public override void EnergyIntialize()
     {
         SetEnergy(maxEnergy);
