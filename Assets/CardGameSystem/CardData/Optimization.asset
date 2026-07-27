@@ -18,4 +18,5 @@ MonoBehaviour:
   energyCost: 2
   effect: -1
   description: "\uB2E4\uC74C \uD134 \uAC01 \uCE74\uB4DC \uCF54\uC2A4\uD2B8 -1"
-  effects: []
+  effects:
+  - {fileID: 11400000, guid: e3cc92d0ec5406c47a45ac5d6f1018d5, type: 2}

@@ -34,10 +34,13 @@ public class DefaultAttackController : MonoBehaviour
     /// <param name="_"></param>
     private void DefaultAttack(int _)
     {
-        if(extraDamageAmount > 0)
+        extraDamageAmount = PendingEffectManager.Instance.ConsumeExtraAttack();
+
+        if (extraDamageAmount > 0)
         {
             Debug.Log($"추가 평타 데미지 반영 : 공격 {attackAmount + extraDamageAmount}");
             opponentActor.TakeDamage(attackAmount + extraDamageAmount, null);
+            ExtraAttackEnd();
             return;
         }
         Debug.Log($"평타 공격 {attackAmount}");

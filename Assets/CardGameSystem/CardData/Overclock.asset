@@ -21,3 +21,4 @@ MonoBehaviour:
     \uC704\uB825\uC774 +2\uAC00 \uB429\uB2C8\uB2E4. "
   effects:
   - {fileID: 11400000, guid: b3181539cf79ac3438f185f162783b41, type: 2}
+  - {fileID: 11400000, guid: efbe7dedef38c864280def9ddb53b286, type: 2}

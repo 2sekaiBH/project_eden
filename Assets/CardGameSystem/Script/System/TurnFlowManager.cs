@@ -19,7 +19,6 @@ public class TurnFlowManager : MonoBehaviour
     [SerializeField] CardExecutor cardExecutor;
     [SerializeField] TextMeshProUGUI turnTextUI;
 
-
     // ----------------------------------------
     // 진행 상태 변수
     // ----------------------------------------
@@ -118,6 +117,8 @@ public class TurnFlowManager : MonoBehaviour
             UIUpdator.Instance.SetText($"평타 공격, 방어 증가");
             yield return new WaitForSeconds(1f);
 
+            PendingEffectManager.Instance.ConsumeReduceCost();
+
             // 4. 플레이어 카드 제출, Npc 효과 처리
             UIUpdator.Instance.SetText($"플레이어 카드 선택");
             currentState = FlowState.PlayerSelect;
@@ -135,6 +136,11 @@ public class TurnFlowManager : MonoBehaviour
             // 6. 카드 실행
             yield return cardExecutor.CardExecuteControll(playerActor, playerSelectedCards, opponentActor, opponentSelectedCards);
 
+            //Corruption 카드 효과 발동
+            //카드 효과로 승리할 수 있으므로 판정 앞에 배치
+            PendingEffectManager.Instance.ConsumeEndturnDamage();
+
+
             // 7. 승리 판정
             if (opponentActor.CurrentHp <= 0)
             {
@@ -146,9 +152,6 @@ public class TurnFlowManager : MonoBehaviour
             }
 
             // 8. 턴 종료
-            //Corruption 카드 효과 발동
-            PendingEffectManager.Instance.ConsumeEndturnDamage();
-
             InitializeState(); // 상태 변수 초기화
             OnTurnEnd?.Invoke(currentTurn);
             playerActor.ResetTurnEffect(); //플레이어에게 적용되는 턴 지속 효과 초기화
