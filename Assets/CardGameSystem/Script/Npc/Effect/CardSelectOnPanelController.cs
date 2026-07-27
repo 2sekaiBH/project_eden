@@ -15,8 +15,11 @@ public class CardSelectOnPanelController : MonoBehaviour
     [SerializeField] private RectTransform rectTransform;
     [SerializeField] private GameObject cardPrefab;
 
-    private CardData selectedCard = null;
-    public CardData SelectedCard => selectedCard;
+    private Dictionary<int, CardData> selectedCard = new Dictionary<int, CardData>(); // <index, CardData>
+    /// <summary>
+    /// 선택한 card Index, CardData 딕셔너리
+    /// </summary>
+    public Dictionary<int, CardData> SelectedCard => selectedCard;
 
     private void OnEnable()
     {
@@ -25,6 +28,7 @@ public class CardSelectOnPanelController : MonoBehaviour
 
         cardDisplays.ForEach((display) => display.OnCardSelected += HandleSelectCard);
 
+        cards.ForEach((card) => card.SetActive(true)); // 모든 카드 오브젝트 활성화
         Initialize(playerHand.AffordableCards); // 카드 데이터로 초기화
         cardDisplays.ForEach((display) => display.UpdateVisibleDisplay()); // data 없는 오브젝트 비활성화
     }
@@ -40,7 +44,7 @@ public class CardSelectOnPanelController : MonoBehaviour
     private void Initialize(List<CardData> cardDatas)
     {
         // 상태 변수 초기화
-        selectedCard = null;
+        selectedCard.Clear();
 
         if (cardDatas.Count > cardDisplays.Count)
         {
@@ -61,11 +65,15 @@ public class CardSelectOnPanelController : MonoBehaviour
 
     private void HandleSelectCard(CardDisplay selectDisplay)
     {
-        selectedCard = selectDisplay.CardData;
+        int index = cardDisplays.FindIndex(display => display.Equals(selectDisplay));
+        if (index > -1)
+        {
+            selectedCard.Add(index, selectDisplay.CardData);
+        }
     }
 
     public IEnumerator CoRunSelect()
     {
-        yield return new WaitUntil(() => ( selectedCard ));
+        yield return new WaitUntil(() => ( selectedCard.Count > 0 ));
     }
 }

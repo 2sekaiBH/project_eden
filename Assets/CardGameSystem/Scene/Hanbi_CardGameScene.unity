@@ -272,7 +272,7 @@ PrefabInstance:
     - target: {fileID: 152303664612178208, guid: ba561521e1b01f74d962feba0a8d4764, type: 3}
       propertyPath: npcData
       value: 
-      objectReference: {fileID: 11400000, guid: 60b4e01f95246454e9ede198b07919b9, type: 2}
+      objectReference: {fileID: 11400000, guid: 4e93de86cbf624d49b79d44abc022fea, type: 2}
     - target: {fileID: 2149611244676329214, guid: ba561521e1b01f74d962feba0a8d4764, type: 3}
       propertyPath: m_Name
       value: NpcSlot (3)

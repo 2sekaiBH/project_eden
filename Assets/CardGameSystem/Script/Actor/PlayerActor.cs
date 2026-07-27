@@ -58,6 +58,29 @@ public class PlayerActor : Actor
             hand.Add(cardData);
     }
 
+    /// <summary>
+    /// 손패의 카드를 교체하는 함수
+    /// </summary>
+    /// <param name="index"></param>
+    /// <param name="cardData"></param>
+    public void ReplaceCard(int index = 0, CardData cardData = null)
+    {
+        CardData newCard;
+        if(cardData == null) // 카드를 지정하지 않았으면 랜덤 뽑기
+        {
+            newCard = DeckManager.Instance.DrawExtrCard(1)[0];
+            hand[index] = newCard;
+        }
+        else
+        {
+            newCard = cardData;
+            hand[index] = newCard; // 지정한 카드로 교체
+        }
+        handManager.Initialize(hand); // 손패 UI 갱신 
+        UIUpdator.Instance.SetText($"플레이어 손패 {index + 1}번째 카드를 {newCard.name}으로 변경했습니다.");
+        Debug.Log($"플레이어 손패 {index + 1}번째 카드를 {newCard.name}으로 변경했습니다.");
+    }
+
     public override void EnergyIntialize()
     {
         SetEnergy(maxEnergy);

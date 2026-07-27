@@ -186,7 +186,7 @@ public class HandManager : MonoBehaviour
     }
 
     /// <summary>
-    /// 
+    /// 라운드 종료 시 affordableCards clear
     /// </summary>
     private void ResetAffordableCards()
     {

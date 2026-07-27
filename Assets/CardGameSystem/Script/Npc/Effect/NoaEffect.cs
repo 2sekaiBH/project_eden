@@ -8,7 +8,8 @@ public class NoaEffect : NpcEffect
 
     public override void Apply(NpcContext context)
     {
-        Debug.Log($"플레이어 에너지 {extraEnergy} 추가");
         context.playerActor.RefundEnergy(extraEnergy);
+        UIUpdator.Instance.SetText($"노아 효과 적용 - 플레이어 에너지 {extraEnergy} 추가");
+        Debug.Log($"노아 효과 적용 - 플레이어 에너지 {extraEnergy} 추가");
     }
 }
