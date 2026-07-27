@@ -15,7 +15,8 @@ MonoBehaviour:
   cardId: 8
   cardName: Adaptive Protocol
   cardType: 2
-  energyCost: 1
-  effect: "\uC870\uAC74\uBD80"
+  cardImage: {fileID: 0}
+  energyCost: 2
+  effect: +6 && -6
   description: "\uC870\uAC74\uBD80 \uACF5\uACA9"
   effects: []

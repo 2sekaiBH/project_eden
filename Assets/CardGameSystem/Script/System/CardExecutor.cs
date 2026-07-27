@@ -54,6 +54,8 @@ public class CardExecutor : MonoBehaviour
         foreach (CardData card in cardList)
         {
             card.effects.ForEach((effect) => effect.Execute(context)); // 카드 effect 실행
+            MissionManager.Instance.UseCard(context.caster, card); //이번 턴에 3장 이상의 카드를 사용했는지 확인
+            
             UIUpdator.Instance.SetText($"{caster}의 카드 {cards} 사용");
             Debug.Log($"{caster}의 카드 {cards}");
             yield return new WaitForSeconds(1f);

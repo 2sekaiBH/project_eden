@@ -20,6 +20,7 @@ public abstract class Actor : MonoBehaviour
 
     public List<CardData> hand = new List<CardData>();
 
+
     public int CurrentHp => currentHp;
     public int CurrentBlock => currentBlock;
     public int CurrentEnergy => currentEnergy;
@@ -77,6 +78,7 @@ public abstract class Actor : MonoBehaviour
 
         int remaining = amount - absorbed;
         currentHp = Mathf.Max(0, currentHp - remaining);
+        MissionManager.Instance.TakeDamage(this); //데미지를 입었는지 확인
 
         // 반사 구현
         if (reflect && absorbed > 0 && attacker != null)
@@ -214,4 +216,5 @@ public abstract class Actor : MonoBehaviour
         halfDamage = false;
         reduceCost = false;
     }
+
 }

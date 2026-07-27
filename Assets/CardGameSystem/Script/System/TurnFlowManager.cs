@@ -19,6 +19,7 @@ public class TurnFlowManager : MonoBehaviour
     [SerializeField] CardExecutor cardExecutor;
     [SerializeField] TextMeshProUGUI turnTextUI;
 
+
     // ----------------------------------------
     // 진행 상태 변수
     // ----------------------------------------
@@ -68,6 +69,8 @@ public class TurnFlowManager : MonoBehaviour
         opponentActor.OnOpponentEndSelect += HandleOpponentCardSubmit;
 
         InitializeState();
+
+        
     }
 
     // 이벤트 해제
@@ -140,7 +143,6 @@ public class TurnFlowManager : MonoBehaviour
             //카드 효과로 승리할 수 있으므로 판정 앞에 배치
             PendingEffectManager.Instance.ConsumeEndturnDamage();
 
-
             // 7. 승리 판정
             if (opponentActor.CurrentHp <= 0)
             {
@@ -156,6 +158,8 @@ public class TurnFlowManager : MonoBehaviour
             OnTurnEnd?.Invoke(currentTurn);
             playerActor.ResetTurnEffect(); //플레이어에게 적용되는 턴 지속 효과 초기화
             opponentActor.ResetTurnEffect(); //몹에게 적용되는 턴 지속 효과 초기화
+
+            MissionManager.Instance.EvaluateMission(); //최종적으로 턴이 끝나고 미션 조건을 충족했는지 확인
 
             yield return null;
         }

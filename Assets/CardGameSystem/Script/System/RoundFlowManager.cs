@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using System.Runtime.CompilerServices;
 using TMPro;
 using UnityEngine;
 
@@ -16,6 +17,7 @@ public class RoundFlowManager : MonoBehaviour
     [Header("Reference")]
     [SerializeField] private TextMeshProUGUI roundTextUI;
 
+
     // ----------------------------------------
     // 진행 상태 변수
     // ----------------------------------------
@@ -30,6 +32,7 @@ public class RoundFlowManager : MonoBehaviour
     public static event Action<int> OnRoundEnd;
     public static event Action <bool>OnResultDetermined; // 게임의 승패 판정을 알리는 이벤트 true - win, flase - lose  
 
+
     private void OnDisable()
     {
         turnFlowManager.OnPlayerWin -= HandlePlayerWin;
@@ -39,6 +42,7 @@ public class RoundFlowManager : MonoBehaviour
     {
         turnFlowManager = GetComponent<TurnFlowManager>();
         turnFlowManager.OnPlayerWin += HandlePlayerWin;
+
     }
 
     /// <summary>
@@ -60,6 +64,7 @@ public class RoundFlowManager : MonoBehaviour
         {
             // 1. 라운드 시작
             currentRound++;
+            MissionManager.Instance.GenerateMission(); //미션 생성
             UpdateUI(); // UI 반영
 
             OnRoundStart?.Invoke(currentRound);
