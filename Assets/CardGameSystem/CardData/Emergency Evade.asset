@@ -15,8 +15,10 @@ MonoBehaviour:
   cardId: 7
   cardName: Emergency Evade
   cardType: 1
+  cardImage: {fileID: 396819766125017604, guid: 176b1d042c438564dbbc2c18c5dba87f, type: 3}
   energyCost: 1
   effect: "\uAE34\uAE09 \uD68C\uD53C"
+  isMissionCard: 0
   description: "\uC774\uBC88 \uD134\uC758 \uBC1B\uB294 \uD53C\uD574\uB97C 50% \uAC10\uC18C\uC2DC\uD0B5\uB2C8\uB2E4."
   effects:
   - {fileID: 11400000, guid: 7868c6a6de55b114c8dafac1092b2d1e, type: 2}

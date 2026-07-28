@@ -15,8 +15,10 @@ MonoBehaviour:
   cardId: 3
   cardName: Execute
   cardType: 0
+  cardImage: {fileID: -3943296411657477942, guid: 1bd73487f46e3f94bb65364201caa8fc, type: 3}
   energyCost: 2
   effect: -8 or -3
+  isMissionCard: 0
   description: "\uC0C1\uB300 \uCCB4\uB825\uC774 15\uC774\uD558\uB77C\uBA74 -8\uC744
     \uADF8 \uC678\uC758 \uACBD\uC6B0\uC5D0\uB294 -3\uC744 \uD569\uB2C8\uB2E4."
   effects:

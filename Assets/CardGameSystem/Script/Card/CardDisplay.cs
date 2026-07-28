@@ -56,7 +56,7 @@ public class CardDisplay : MonoBehaviour, IPointerClickHandler, IPointerEnterHan
         card = newCard;
         UpdateCardDisplay();
     }
-
+    
     /// <summary>
     /// 상태 초기화
     /// </summary>
@@ -74,11 +74,8 @@ public class CardDisplay : MonoBehaviour, IPointerClickHandler, IPointerEnterHan
     {
         if (card == null) return;
 
-         canvasGroup.alpha = 1f;
-         energyText.text = $"{card.energyCost.ToString()}";
-         iconImage.sprite = iconSprite[(int)card.cardType];
-         valueText.text = card.effect;
-         descriptionText.text = card.description;
+        image.sprite = card.cardImage; //카드 이미지 설정
+
     }
 
     /// <summary>

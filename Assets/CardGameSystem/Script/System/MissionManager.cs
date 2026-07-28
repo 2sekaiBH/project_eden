@@ -46,7 +46,7 @@ public class MissionManager : MonoBehaviour
 
     public MissionType Mission => mission;
 
-    [SerializeField] private TMP_Text missionText; //미션 내용을 띄울 텍스트
+    [SerializeField] private TMP_Text missionText; //미션 내용을 띄울 텍스트, 성공 시 이 부분을 달성! 으로 바꿈
 
 
     //시작할 때 새롭게 미션을 생성하고 진행도 저장할 객체를 만듦
@@ -144,7 +144,24 @@ public bool Check(MissionProgress progress)
         playerProgress.complete = Check(playerProgress);
         opponentProgress.complete = Check(opponentProgress);
 
+        if (playerProgress.complete)
+        {
+            missionText.text = "달성!"; //플레이어가 미션 성공 시 미션 내용 텍스트 내용을 달성으로 바꿈
+        }
+
+        else
+            missionText.text = "실패";
+
         Debug.Log($" 플레이어는 {playerProgress.complete}, 몹은 {opponentProgress.complete}");
     }
+    
+    //플레이어와 보스의 성공 여부 리턴
+
+    public bool IsMissionComplete(Actor actor)
+    {
+        return GetProgress(actor).complete;
+    }
+
+
 
 }

@@ -126,6 +126,13 @@ public class HandManager : MonoBehaviour
         CardData card = display.CardData;
         if (card == null) return;
 
+        //미션 실패 시 아예 카드 선택이 안 됨
+        if (card.isMissionCard && !MissionManager.Instance.IsMissionComplete(player))
+        {
+            UIUpdator.Instance.SetText("미션을 완료해야 사용할 수 있습니다.");
+            return;
+        }
+
         bool alreadySelected = selectedCards.Contains(card);
 
         if (!alreadySelected) // 카드 선택

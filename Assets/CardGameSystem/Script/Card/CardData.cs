@@ -15,6 +15,9 @@ public class CardData : ScriptableObject
     public Sprite cardImage;
     public int energyCost;
     public string effect;
+    //미션 카드인지 확인
+    public bool isMissionCard;
+
     [TextArea] public string description;
 
     public List<CardEffectData> effects;

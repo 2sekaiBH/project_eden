@@ -15,8 +15,10 @@ MonoBehaviour:
   cardId: 4
   cardName: Mirror Shield
   cardType: 1
+  cardImage: {fileID: -177977306489182368, guid: 066513ec14b609b4186fe6d2ebd8e53b, type: 3}
   energyCost: 2
   effect: +2
+  isMissionCard: 0
   description: "\uBC29\uC5B4\uB825 +2, \uD761\uC218\uD55C \uC0C1\uB300\uC758 \uACF5\uACA9\uC744
     \uBC18\uC0AC\uD569\uB2C8\uB2E4"
   effects:
