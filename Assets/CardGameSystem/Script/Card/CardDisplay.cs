@@ -74,10 +74,10 @@ public class CardDisplay : MonoBehaviour, IPointerClickHandler, IPointerEnterHan
     {
         if (card == null) return;
 
-         energyText.text = $"{card.energyCost.ToString()}";
+         /*energyText.text = $"{card.energyCost.ToString()}";
          iconImage.sprite = iconSprite[(int)card.cardType];
          valueText.text = card.effect;
-         descriptionText.text = card.description;
+         descriptionText.text = card.description;*/
         image.sprite = card.cardImage; //카드 이미지 설정
 
     }
