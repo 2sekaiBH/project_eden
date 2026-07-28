@@ -29,7 +29,7 @@ public class ConditinalEffect : CardEffectData
             damage = normalDamage;
         }
         
-        context.target.TakeDamage(damage);
+        context.target.TakeDamage(damage, context.caster);
         Debug.Log($"공격했음 {damage}");
 
     }
