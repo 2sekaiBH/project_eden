@@ -4,7 +4,7 @@ public class NpcContext
 {
     public PlayerActor playerActor { get; }
     public OpponentActor opponentActor { get; }
-    public GameObject gameObject { get; }
+    public GameObject cardSelectUIPanel { get; }
 
     /// <summary>
     /// CardExecute 시 필요한 정보
@@ -15,6 +15,6 @@ public class NpcContext
     {
         this.playerActor = playerActor;
         this.opponentActor = opponentActor;
-        this.gameObject = gameObject;
+        this.cardSelectUIPanel = gameObject;
     }
 }

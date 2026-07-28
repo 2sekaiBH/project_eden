@@ -29,10 +29,10 @@ public class PendingEffectManager : MonoBehaviour
 
     }
 
-    public void SetRoundPendingEffect(CardData cardData = null)
+    public void SetRoundPendingEffect(List<CardData> cardDatas = null)
     {
-        Debug.Log($"roundPendingState¿¡ {cardData.name} Ãß°¡µÊ.");
-        roundPendingEffect.AddExtraCard(cardData);
+        Debug.Log($"roundPendingState¿¡ {cardDatas.Select(card => card.name)} Ãß°¡µÊ.");
+        roundPendingEffect.AddExtraCard(cardDatas);
     }
 
     public void ApplyRoundPendingState(PlayerActor playerActor, OpponentActor opponentActor)
@@ -122,9 +122,9 @@ public class RoundPendingEffect
 
     }
 
-    public List<CardData> AddExtraCard(CardData extraCard)
+    public List<CardData> AddExtraCard(List<CardData> extraCard)
     {
-        extraCards.Add(extraCard);
+        extraCards.AddRange(extraCard);
         return extraCards;
     }
 }

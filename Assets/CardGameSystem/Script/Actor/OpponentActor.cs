@@ -10,6 +10,9 @@ public class OpponentActor : Actor
     [SerializeField] private OpponentData opponentData; // name, Hp
 
     public event Action<List<CardData>> OnOpponentEndSelect;
+
+    private bool isEnabledSelect = true; // 아키텍트의 - 적 턴 스킵 효과 구현을 위해 사용
+
     void Awake()
     {
         name = opponentData.name;
@@ -30,11 +33,14 @@ public class OpponentActor : Actor
     public override void SelectCard()
     {
         List<CardData> pickedCard = new List<CardData>();
-        int i = 0;
-        while (TrySpendEnergy(hand[i].energyCost))
+        if (this.isEnabledSelect)
         {
-            pickedCard.Add(hand[i]);
-            i++;
+            int i = 0;
+            while (TrySpendEnergy(hand[i].energyCost))
+            {
+                pickedCard.Add(hand[i]);
+                i++;
+            }
         }
         OnOpponentEndSelect.Invoke(pickedCard);
     }
@@ -47,5 +53,16 @@ public class OpponentActor : Actor
     public override void EnergyIntialize()
     {
         SetEnergy(opponentData.maxEnergy);
+    }
+
+    /// <summary>
+    /// 아키텍트 효과 구현 - 이번 턴 적 select 스킵
+    /// turn 종료 시 해제
+    /// </summary>
+    /// <param name="active"></param>
+    public void SetActiveOnCurrentTurn(bool active)
+    {
+        isEnabledSelect = active;
+        profileUpdator.UpdateActiveProfile(active);
     }
 }

@@ -25,4 +25,13 @@ public class ProfileUpdator : MonoBehaviour
 
         //profileImg.sprite = profileImgDatas[CardGameManager.Instance.stage + 1]
     }
+
+    /// <summary>
+    /// actor의 활성화 - 비활성화 상태를 UI에 반영
+    /// </summary>
+    /// <param name="active"></param>
+    public void UpdateActiveProfile(bool active)
+    {
+        profileImg.color = active ? new Color(1, 1, 1, 1f) :new Color(1, 1, 1, 0.5f);
+    }
 }
