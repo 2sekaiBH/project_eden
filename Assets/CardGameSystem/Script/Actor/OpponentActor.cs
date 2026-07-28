@@ -36,7 +36,7 @@ public class OpponentActor : Actor
         if (this.isEnabledSelect)
         {
             int i = 0;
-            while (TrySpendEnergy(hand[i].energyCost))
+            while (i < hand.Count && TrySpendEnergy(hand[i].energyCost))
             {
                 pickedCard.Add(hand[i]);
                 i++;

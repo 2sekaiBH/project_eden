@@ -221,7 +221,7 @@ public abstract class Actor : MonoBehaviour
     /// 여러 카드를 인자로 받는 hand Setter
     /// </summary>
     /// <param name="cards"></param>
-    public void SetHand(List<CardData> cards)
+    public virtual void SetHand(List<CardData> cards)
     {
         hand.AddRange(cards);
     }
@@ -230,7 +230,7 @@ public abstract class Actor : MonoBehaviour
     /// 카드 한개용 hand Setter
     /// </summary>
     /// <param name="card"></param>
-    public void SetHand(CardData card)
+    public virtual void SetHand(CardData card)
     {
         hand.Add(card);
     }
@@ -240,7 +240,7 @@ public abstract class Actor : MonoBehaviour
     /// 기본 카드 드로우 외 특정한 카드를 추가하는 메소드
     /// </summary>
     /// <param name="cardData">추가할 카드</param>
-    public void AddCard(CardData cardData)
+    public virtual void AddCard(CardData cardData)
     {
         if (cardData != null)
             SetHand(cardData);
