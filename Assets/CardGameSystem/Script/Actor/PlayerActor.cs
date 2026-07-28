@@ -49,16 +49,6 @@ public class PlayerActor : Actor
     }
 
     /// <summary>
-    /// 기본 카드 드로우 외 따로 카드를 추가하는 메소드
-    /// </summary>
-    /// <param name="cardData">추가할 카드</param>
-    public void AddCard(CardData cardData)
-    {
-        if(cardData != null) 
-            hand.Add(cardData);
-    }
-
-    /// <summary>
     /// 손패의 카드를 교체하는 함수
     /// </summary>
     /// <param name="index"></param>
