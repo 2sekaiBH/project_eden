@@ -173,7 +173,7 @@ public abstract class Actor : MonoBehaviour
     /// </summary>
     public virtual void DrawCards(int amount)
     {
-        hand.AddRange(DeckManager.Instance.DrawRandomCard(amount));
+        SetHand(DeckManager.Instance.DrawRandomCard(amount));
     }
 
     /// <summary>
@@ -215,6 +215,35 @@ public abstract class Actor : MonoBehaviour
         reflect = false;
         halfDamage = false;
         reduceCost = false;
+    }
+
+    /// <summary>
+    /// 여러 카드를 인자로 받는 hand Setter
+    /// </summary>
+    /// <param name="cards"></param>
+    public virtual void SetHand(List<CardData> cards)
+    {
+        hand.AddRange(cards);
+    }
+
+    /// <summary>
+    /// 카드 한개용 hand Setter
+    /// </summary>
+    /// <param name="card"></param>
+    public virtual void SetHand(CardData card)
+    {
+        hand.Add(card);
+    }
+
+
+    /// <summary>
+    /// 기본 카드 드로우 외 특정한 카드를 추가하는 메소드
+    /// </summary>
+    /// <param name="cardData">추가할 카드</param>
+    public virtual void AddCard(CardData cardData)
+    {
+        if (cardData != null)
+            SetHand(cardData);
     }
 
 }

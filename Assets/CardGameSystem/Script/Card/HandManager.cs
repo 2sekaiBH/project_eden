@@ -16,7 +16,7 @@ public class HandManager : MonoBehaviour
     [SerializeField] private PlayerActor player;
     [SerializeField] private RectTransform rectTransform;
 
-    private List<CardDisplay> cardDisplays = new List<CardDisplay>(); // 카드 오브젝트에 부착된 CardDisplay
+    public List<CardDisplay> cardDisplays = new List<CardDisplay>(); // 카드 오브젝트에 부착된 CardDisplay
 
     private List<CardData> selectedCards = new List<CardData>(); // 선택된 카드 리스트
 
@@ -27,7 +27,7 @@ public class HandManager : MonoBehaviour
         selectEndFlag = value;
     }
 
-    public event Action<List<CardData>> OnSelectEnd;
+    public static event Action<List<CardData>> OnSelectEnd;
     // 플레이어 선택 최종 종료 이벤트
     // PlayerActor에서 구독
 
@@ -72,6 +72,11 @@ public class HandManager : MonoBehaviour
 
             cardDisplay.SetCard(cardDatas[i]);
         }
+    }
+
+    public void ReplaceHand(int index = 0, CardData cardData = null)
+    {
+        cardDisplays[index].SetCard(cardData);
     }
 
     /// <summary>
@@ -158,16 +163,6 @@ public class HandManager : MonoBehaviour
     }
 
     /// <summary>
-    /// 데이터로 cardDisplay 찾기
-    /// </summary>
-    /// <param name="card"></param>
-    /// <returns></returns>
-    private CardDisplay FindCardDisplayByData(CardData card)
-    {
-        return cardDisplays.Find((cardDisplay) => (cardDisplay.CardId == card.cardId));
-    }
-
-    /// <summary>
     /// 상태 초기화
     /// </summary>
     private void ResetState()
@@ -181,6 +176,8 @@ public class HandManager : MonoBehaviour
     /// </summary>
     private void DiscardAllCard(int _)
     {
-        cards.ForEach((card) => Destroy(card));
+        cards.ForEach(card => Destroy(card));
+        cards.Clear();
+        cardDisplays.Clear();
     }
 }

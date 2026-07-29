@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.PlayerLoop;
 
 /// <summary>
-/// ÇÃ·¹ÀÌ¾î Çàµ¿ Á¦¾î ½ºÅ©¸³Æ®
+/// ï¿½Ã·ï¿½ï¿½Ì¾ï¿½ ï¿½àµ¿ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Å©ï¿½ï¿½Æ®
 /// </summary>
 public class PlayerActor : Actor
 {
@@ -25,7 +25,7 @@ public class PlayerActor : Actor
         currentEnergy = maxEnergy;
     }
 
-    // Ä«µå ¼±ÅÃ ½ÃÀÛ
+    // Ä«ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
     public override void SelectCard()
     {
         handManager.StartSelect(hand);
@@ -33,40 +33,25 @@ public class PlayerActor : Actor
 
     void Awake()
     {
-        name = "Player"; // µð¹ö±ë¿ë - Ä¿½ºÅÒ nameÀ¸·Î º¯°æ
+        name = "Player"; // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ - Ä¿ï¿½ï¿½ï¿½ï¿½ nameï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
         Initialize();
         UpdateProfileUI();
     }
 
-    public override void DrawCards(int amount)
-    {
-        base.DrawCards(amount);
-        OnPlayerDrawCard?.Invoke(hand);
-    }
     public override void UpdateProfileUI()
     {
         profileUpdator.UpdateProfile(name, currentHp, currentBlock, currentEnergy);
     }
 
     /// <summary>
-    /// ±âº» Ä«µå µå·Î¿ì ¿Ü µû·Î Ä«µå¸¦ Ãß°¡ÇÏ´Â ¸Þ¼Òµå
-    /// </summary>
-    /// <param name="cardData">Ãß°¡ÇÒ Ä«µå</param>
-    public void AddCard(CardData cardData)
-    {
-        if(cardData != null) 
-            hand.Add(cardData);
-    }
-
-    /// <summary>
-    /// ¼ÕÆÐÀÇ Ä«µå¸¦ ±³Ã¼ÇÏ´Â ÇÔ¼ö
+    /// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ Ä«ï¿½å¸¦ ï¿½ï¿½Ã¼ï¿½Ï´ï¿½ ï¿½Ô¼ï¿½
     /// </summary>
     /// <param name="index"></param>
     /// <param name="cardData"></param>
     public void ReplaceCard(int index = 0, CardData cardData = null)
     {
         CardData newCard;
-        if(cardData == null) // Ä«µå¸¦ ÁöÁ¤ÇÏÁö ¾Ê¾ÒÀ¸¸é ·£´ý »Ì±â
+        if(cardData == null) // Ä«ï¿½å¸¦ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ê¾ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ì±ï¿½
         {
             newCard = DeckManager.Instance.DrawExtrCard(1)[0];
             hand[index] = newCard;
@@ -74,11 +59,11 @@ public class PlayerActor : Actor
         else
         {
             newCard = cardData;
-            hand[index] = newCard; // ÁöÁ¤ÇÑ Ä«µå·Î ±³Ã¼
+            hand[index] = newCard; // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ Ä«ï¿½ï¿½ï¿½ ï¿½ï¿½Ã¼
         }
-        handManager.Initialize(hand); // ¼ÕÆÐ UI °»½Å 
-        UIUpdator.Instance.SetText($"ÇÃ·¹ÀÌ¾î ¼ÕÆÐ {index + 1}¹øÂ° Ä«µå¸¦ {newCard.name}À¸·Î º¯°æÇß½À´Ï´Ù.");
-        Debug.Log($"ÇÃ·¹ÀÌ¾î ¼ÕÆÐ {index + 1}¹øÂ° Ä«µå¸¦ {newCard.name}À¸·Î º¯°æÇß½À´Ï´Ù.");
+        handManager.ReplaceHand(index, newCard); // ï¿½ï¿½ï¿½ï¿½ UI ï¿½ï¿½ï¿½ï¿½ 
+        UIUpdator.Instance.SetText($"ï¿½Ã·ï¿½ï¿½Ì¾ï¿½ ï¿½ï¿½ï¿½ï¿½ {index + 1}ï¿½ï¿½Â° Ä«ï¿½å¸¦ {newCard.name}ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ß½ï¿½ï¿½Ï´ï¿½.");
+        Debug.Log($"ï¿½Ã·ï¿½ï¿½Ì¾ï¿½ ï¿½ï¿½ï¿½ï¿½ {index + 1}ï¿½ï¿½Â° Ä«ï¿½å¸¦ {newCard.name}ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ß½ï¿½ï¿½Ï´ï¿½.");
     }
 
     public void DiscardCard(CardData card)
@@ -91,11 +76,19 @@ public class PlayerActor : Actor
         SetEnergy(maxEnergy);
     }
 
-    //¼ÕÆÐ¿¡ »õ·Ó°Ô Ãß°¡µÈ Ä«µå UIÃß°¡
-    public void AddExtraCard(CardData card)
+    // Ä«ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Æ® ï¿½ï¿½È¯ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ refactoring ï¿½Ê¿ï¿½
+    public override void SetHand(CardData card)
     {
-        Debug.Log("AddExtraCard È£Ãâ");
-        OnPlayerDrawCard?.Invoke(new List<CardData> { card });
+        base.SetHand(card);
+        List<CardData> cardList = new List<CardData>();
+        cardList.Add(card);
+        OnPlayerDrawCard?.Invoke(cardList);
+    }
+
+    public override void SetHand(List<CardData> cards)
+    {
+        base.SetHand(cards);
+        OnPlayerDrawCard?.Invoke(cards);
     }
 }
 
