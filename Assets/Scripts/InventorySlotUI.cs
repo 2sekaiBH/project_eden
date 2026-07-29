@@ -1,7 +1,5 @@
 using UnityEngine;
 using UnityEngine.UI;
-using TMPro;
-using Unity.VisualScripting;
 
 
 public class InventorySlotUI : MonoBehaviour
@@ -12,20 +10,11 @@ public class InventorySlotUI : MonoBehaviour
 
     private ItemData currentItem; //ItemData를 불러옴
 
-    //테스트용 아이템!!- 코드 꼭 삭제할 것
-    [SerializeField] private ItemData testItem;
-
-    private void Start()
-    {
-        SetItem(testItem);
-    }
-
     //슬롯 프리펩이 알아서 버튼 컴포넌트를 찾게 해주는 함수
     private void Awake()
     {
         inventoryUI = GetComponentInParent<InventoryUI>();
     }
-
 
     //Slot에 아이템 이미지를 붙여줌
     public void SetItem(ItemData item)
@@ -35,27 +24,29 @@ public class InventorySlotUI : MonoBehaviour
 
         if(item == null)
         {
-      
-            itemIcon.enabled = false;
+            if (itemIcon != null)
+            {
+                itemIcon.sprite = null;
+                itemIcon.enabled = false;
+            }
         }
 
         else
         {
-            itemIcon.enabled = true;
-            itemIcon.sprite = item.itemIcon;
-        
+            Debug.Log("데이터 장착 완료");
+            if (itemIcon != null)
+            { 
+                itemIcon.sprite = item.itemIcon;
+                itemIcon.enabled = true;
+            }
         }
-
-
     }
 
     public void OnClick()
     {
-        if (currentItem == null)
+        if (currentItem == null || inventoryUI == null)
             return;
 
         inventoryUI.ShowItem(currentItem);
     }
-
-
 }
