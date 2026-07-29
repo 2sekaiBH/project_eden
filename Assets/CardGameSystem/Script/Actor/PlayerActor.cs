@@ -38,11 +38,6 @@ public class PlayerActor : Actor
         UpdateProfileUI();
     }
 
-    public override void DrawCards(int amount)
-    {
-        base.DrawCards(amount);
-        OnPlayerDrawCard?.Invoke(hand);
-    }
     public override void UpdateProfileUI()
     {
         profileUpdator.UpdateProfile(name, currentHp, currentBlock, currentEnergy);
@@ -66,7 +61,7 @@ public class PlayerActor : Actor
             newCard = cardData;
             hand[index] = newCard; // 지정한 카드로 교체
         }
-        handManager.Initialize(hand); // 손패 UI 갱신 
+        handManager.ReplaceHand(index, newCard); // 손패 UI 갱신 
         UIUpdator.Instance.SetText($"플레이어 손패 {index + 1}번째 카드를 {newCard.name}으로 변경했습니다.");
         Debug.Log($"플레이어 손패 {index + 1}번째 카드를 {newCard.name}으로 변경했습니다.");
     }
@@ -79,5 +74,20 @@ public class PlayerActor : Actor
     public override void EnergyIntialize()
     {
         SetEnergy(maxEnergy);
+    }
+
+    // 카드 리스트 변환 없는 구조로 refactoring 필요
+    public override void SetHand(CardData card)
+    {
+        base.SetHand(card);
+        List<CardData> cardList = new List<CardData>();
+        cardList.Add(card);
+        OnPlayerDrawCard?.Invoke(cardList);
+    }
+
+    public override void SetHand(List<CardData> cards)
+    {
+        base.SetHand(cards);
+        OnPlayerDrawCard?.Invoke(cards);
     }
 }

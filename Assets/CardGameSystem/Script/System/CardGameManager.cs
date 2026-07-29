@@ -1,3 +1,5 @@
+using NUnit.Framework;
+using System.Collections.Generic;
 using UnityEngine;
 
 /// <summary>
@@ -7,16 +9,36 @@ using UnityEngine;
 /// </summary>
 public class CardGameManager : MonoBehaviour
 {
-    private RoundFlowManager roundFlowManager;
+    [SerializeField] private List<NpcData> npcDataList; // database 참조 형식으로 개선 필요
+
+    [Header("DataBase")]
+    [SerializeField] private OpponentData opponentData;
+    [SerializeField] private NpcDataBase npcDataBase; // 데이터 베이스 참조 후 전달 기능 추후 추가
+
+    [Header("Other Managers")]
+    [SerializeField] private RoundFlowManager roundFlowManager;
+    [SerializeField] private NpcSlotManager npcSlotManager;
+
     private bool isWIn = false;
 
     private void Awake()
     {
-        roundFlowManager = GetComponentInChildren<RoundFlowManager>();
+        if (roundFlowManager == null)
+            GetComponentInChildren<RoundFlowManager>();
     }
     void Start()
     {
+        // 게임 전역 데이터 초기화
+        InitializeGameData();
+
+        // 게임 실행
         RunCardGame();
+    }
+
+    void InitializeGameData()
+    {
+        npcSlotManager.Initialize(npcDataList);
+        // OpponentActor에게 opponentData 전달
     }
 
     private void RunCardGame()

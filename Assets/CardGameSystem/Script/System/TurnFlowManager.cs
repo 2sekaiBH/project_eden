@@ -65,7 +65,7 @@ public class TurnFlowManager : MonoBehaviour
     // 이벤트 구독 및 상태 변수 초기화
     void Start()
     {
-        playerActor.HandManager.OnSelectEnd += HandlePlayerCardSubmit;
+        HandManager.OnSelectEnd += HandlePlayerCardSubmit;
         opponentActor.OnOpponentEndSelect += HandleOpponentCardSubmit;
 
         InitializeState();
@@ -76,7 +76,7 @@ public class TurnFlowManager : MonoBehaviour
     // 이벤트 해제
     private void OnDisable()
     {
-        playerActor.HandManager.OnSelectEnd -= HandlePlayerCardSubmit;
+        HandManager.OnSelectEnd -= HandlePlayerCardSubmit;
         opponentActor.OnOpponentEndSelect -= HandleOpponentCardSubmit;
     }
 
