@@ -1336,6 +1336,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ab2e093214c41c94987b6a7b42bf576a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CardGameManager
+  npcDataList: []
+  opponentData: {fileID: 0}
+  npcDataBase: {fileID: 0}
+  roundFlowManager: {fileID: 0}
+  npcSlotManager: {fileID: 0}
 --- !u!1 &1070706924
 GameObject:
   m_ObjectHideFlags: 0
@@ -1439,7 +1444,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 5925661949435042533, guid: e97531cd56c4db54390f3bb3b20269e4, type: 3}
+  m_Sprite: {fileID: 21300000, guid: e97531cd56c4db54390f3bb3b20269e4, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -2936,7 +2941,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1df2054e504a23c468f4371ac4f64336, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::UIUpdator
-  textUI: {fileID: 1292879053}
+  stateDescriptionText: []
+  rectTransform: {fileID: 0}
 --- !u!222 &1664534603
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -3163,6 +3169,7 @@ MonoBehaviour:
   cardPrefab: {fileID: 1619126981389201015, guid: ab96d6354a9e4784ebe710adfa841f4a, type: 3}
   player: {fileID: 777149920}
   rectTransform: {fileID: 0}
+  cardDisplays: []
 --- !u!1 &1884793870
 GameObject:
   m_ObjectHideFlags: 0
