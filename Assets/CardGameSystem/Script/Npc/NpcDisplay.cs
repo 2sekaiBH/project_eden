@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -20,6 +21,7 @@ public class NpcDisplay : MonoBehaviour
     public static event Action<NpcData> OnNpcSelect;
 
     private Action<int> OnTurnStartHandler;
+    private Action<List<CardData>> OnSelectEndHandler;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -31,11 +33,14 @@ public class NpcDisplay : MonoBehaviour
     {
         OnTurnStartHandler = (int _) => { SetInteractableButton(true); };
         TurnFlowManager.OnTurnStart += OnTurnStartHandler;
+        OnSelectEndHandler = (List<CardData> _) => { SetInteractableButton(false); };
+        HandManager.OnSelectEnd += OnSelectEndHandler;
     }
 
     private void OnDisable()
     {
         TurnFlowManager.OnTurnStart -= OnTurnStartHandler;
+        HandManager.OnSelectEnd -= OnSelectEndHandler;
     }
     public void SetNpcData(NpcData npcData)
     {
@@ -65,7 +70,7 @@ public class NpcDisplay : MonoBehaviour
     /// <summary>
     /// npc 적용 버튼 활성화 제어 메소드
     /// turn 시작 시 활성화
-    /// 카드 제출 버튼 클릭 시 비활성화(카드 제출 버튼에서 관리)
+    /// 카드 제출 버튼 클릭 시 비활성화
     /// </summary>
     /// <param name="interactable">상호작용 가능 여부</param>
     public void SetInteractableButton(bool interactable)

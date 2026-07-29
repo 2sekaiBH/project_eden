@@ -27,7 +27,7 @@ public class HandManager : MonoBehaviour
         selectEndFlag = value;
     }
 
-    public event Action<List<CardData>> OnSelectEnd;
+    public static event Action<List<CardData>> OnSelectEnd;
     // 플레이어 선택 최종 종료 이벤트
     // PlayerActor에서 구독
 
