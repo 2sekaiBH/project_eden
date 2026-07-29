@@ -66,7 +66,7 @@ public class TurnFlowManager : MonoBehaviour
     void Start()
     {
         HandManager.OnSelectEnd += HandlePlayerCardSubmit;
-        opponentActor.OnOpponentEndSelect += HandleOpponentCardSubmit;
+        OpponentActor.OnOpponentEndSelect += HandleOpponentCardSubmit;
 
         InitializeState();
 
@@ -77,7 +77,7 @@ public class TurnFlowManager : MonoBehaviour
     private void OnDisable()
     {
         HandManager.OnSelectEnd -= HandlePlayerCardSubmit;
-        opponentActor.OnOpponentEndSelect -= HandleOpponentCardSubmit;
+        OpponentActor.OnOpponentEndSelect -= HandleOpponentCardSubmit;
     }
 
     /// <summary>

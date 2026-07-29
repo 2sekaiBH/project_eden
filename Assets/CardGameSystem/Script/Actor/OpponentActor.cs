@@ -9,7 +9,7 @@ public class OpponentActor : Actor
 {
     [SerializeField] private OpponentData opponentData; // name, Hp
 
-    public event Action<List<CardData>> OnOpponentEndSelect;
+    public static event Action<List<CardData>> OnOpponentEndSelect;
 
     private bool isEnabledSelect = true; // 아키텍트의 - 적 턴 스킵 효과 구현을 위해 사용
 
