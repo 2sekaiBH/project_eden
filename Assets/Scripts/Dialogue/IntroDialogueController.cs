@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.Events;
 using UnityEngine.UI;
 
 public class IntroDialogueController : MonoBehaviour
@@ -24,6 +25,10 @@ public class IntroDialogueController : MonoBehaviour
 
     [Header("Dialogue JSON")]
     [SerializeField] private TextAsset dialogueJson;
+
+    [Header("Dialogue Flow")]
+    [SerializeField] private bool autoStartOnStart = true;
+    [SerializeField] private UnityEvent onDialogueFinished;
 
     [Header("Screens")]
     [SerializeField] private GameObject prologueScreen;
@@ -59,6 +64,12 @@ public class IntroDialogueController : MonoBehaviour
     [SerializeField] private GameObject dialogueNextHint;
     [SerializeField] private Button dialogueNextButton;
 
+    [Header("Choice UI")]
+    [SerializeField] private GameObject choicePanel;
+    [SerializeField] private Button[] choiceButtons;
+    [SerializeField] private TMP_Text[] choiceTexts;
+
+
     [Header("Character UI")]
     [SerializeField] private GameObject leftCharacterGroup;
     [SerializeField] private Image leftCharacterImage;
@@ -81,7 +92,6 @@ public class IntroDialogueController : MonoBehaviour
     private readonly Dictionary<string, AudioClip> soundByKey = new();
 
     private DialogueNode currentNode;
-    private string playerName = "";
     private bool isTransitioning;
 
     private void Awake()
@@ -98,11 +108,20 @@ public class IntroDialogueController : MonoBehaviour
         nameConfirmButton.onClick.AddListener(ConfirmName);
         nameInputField.onSubmit.AddListener(_ => ConfirmName());
         nameInputField.onValueChanged.AddListener(UpdateNameButtonState);
+
+        choicePanel.SetActive(false);
     }
 
     private void Start()
     {
-        DisplayNode(GetStartId());
+        if (autoStartOnStart)
+        {
+            StartDialogue(GetStartId());
+        }
+        else
+        {
+            SetOnlyScreen(null);
+        }
     }
 
     private void Update()
@@ -113,7 +132,8 @@ public class IntroDialogueController : MonoBehaviour
         }
 
         // 이름 입력 중에는 좌클릭이나 Space로 넘어가지 않음
-        if (currentNode.type == "nameInput")
+        if (currentNode.type == "nameInput" ||
+            currentNode.type == "choice")
         {
             return;
         }
@@ -167,7 +187,12 @@ public class IntroDialogueController : MonoBehaviour
             speakerNameText != null &&
             dialogueText != null &&
             dialogueNextHint != null &&
-            dialogueNextButton != null;
+            dialogueNextButton != null &&
+            choicePanel != null &&
+            choiceButtons != null &&
+            choiceTexts != null &&
+            choiceButtons.Length >= 3 &&
+            choiceTexts.Length >= 3;
 
         if (!valid)
         {
@@ -178,6 +203,7 @@ public class IntroDialogueController : MonoBehaviour
 
         return valid;
     }
+
 
     private void BuildAssetDictionaries()
     {
@@ -267,6 +293,20 @@ public class IntroDialogueController : MonoBehaviour
         return loadedStartId;
     }
 
+    public void StartDialogue(string nodeId)
+    {
+        if (string.IsNullOrWhiteSpace(nodeId))
+        {
+            Debug.LogError("시작할 대사 ID가 비어 있습니다.");
+            return;
+        }
+
+        StopAllCoroutines();
+        isTransitioning = false;
+        HideChoices();
+        DisplayNode(nodeId);
+    }
+
     private void DisplayNode(string nodeId)
     {
         if (string.IsNullOrWhiteSpace(nodeId))
@@ -308,6 +348,10 @@ public class IntroDialogueController : MonoBehaviour
                 yield return ShowDialogueNode(node);
                 break;
 
+            case "choice":
+                yield return ShowChoiceNode(node);
+                break;
+
             default:
                 Debug.LogError(
                     $"지원하지 않는 대사 type입니다: {node.type} / {node.id}"
@@ -320,6 +364,7 @@ public class IntroDialogueController : MonoBehaviour
 
     private IEnumerator ShowPrologueNode(DialogueNode node)
     {
+        HideChoices();
         SetOnlyScreen(prologueScreen);
         SetDimVisibility(usePrologueDim: true);
 
@@ -344,6 +389,7 @@ public class IntroDialogueController : MonoBehaviour
 
     private void ShowNameInputNode(DialogueNode node)
     {
+        HideChoices();
         SetOnlyScreen(nameInputScreen);
         SetDimVisibility(usePrologueDim: false, hideBoth: true);
 
@@ -364,6 +410,7 @@ public class IntroDialogueController : MonoBehaviour
 
     private IEnumerator ShowDialogueNode(DialogueNode node)
     {
+        HideChoices();
         SetOnlyScreen(characterDialogueScreen);
         SetDimVisibility(usePrologueDim: false);
 
@@ -406,7 +453,8 @@ public class IntroDialogueController : MonoBehaviour
     {
         if (isTransitioning ||
             currentNode == null ||
-            currentNode.type == "nameInput")
+            currentNode.type == "nameInput" ||
+            currentNode.type == "choice")
         {
             return;
         }
@@ -440,8 +488,8 @@ public class IntroDialogueController : MonoBehaviour
             return;
         }
 
-        // 입력한 이름 저장
-        playerName = enteredName;
+        // Scene이 바뀌어도 유지되는 공용 상태에 이름 저장
+        GameState.Instance.SetPlayerName(enteredName);
 
         // Game Start 화면이 끝난 뒤 이동할 JSON 노드
         string nextNodeId = currentNode.nextId;
@@ -664,9 +712,7 @@ public class IntroDialogueController : MonoBehaviour
 
     private string ReplacePlayerName(string value)
     {
-        return string.IsNullOrEmpty(value)
-            ? ""
-            : value.Replace("%%", playerName);
+        return GameState.Instance.ReplacePlayerName(value);
     }
 
     private void FinishDialogue()
@@ -676,7 +722,18 @@ public class IntroDialogueController : MonoBehaviour
         prologueNextButton.interactable = false;
         dialogueNextButton.interactable = false;
 
-        Debug.Log("현재 준비된 인트로 대사가 끝났습니다.");
+        HideChoices();
+        SetOnlyScreen(null);
+
+        Debug.Log(
+            $"현재 대사가 끝났습니다. " +
+            $"이름: {GameState.Instance.PlayerName}, " +
+            $"아키텍트: {GameState.Instance.GetAffinity("architect")}, " +
+            $"카인: {GameState.Instance.GetAffinity("cain")}, " +
+            $"노아: {GameState.Instance.GetAffinity("noah")}"
+        );
+
+        onDialogueFinished?.Invoke();
     }
 
 
@@ -761,5 +818,158 @@ public class IntroDialogueController : MonoBehaviour
             1f,
             textFadeDuration
         );
+    }
+    private void HideChoices()
+    {
+        if (choicePanel != null)
+        {
+            choicePanel.SetActive(false);
+        }
+
+        if (choiceButtons == null)
+        {
+            return;
+        }
+
+        foreach (Button button in choiceButtons)
+        {
+            if (button == null)
+            {
+                continue;
+            }
+
+            button.onClick.RemoveAllListeners();
+            button.interactable = false;
+        }
+    }
+    private IEnumerator ShowChoiceNode(DialogueNode node)
+    {
+        SetOnlyScreen(characterDialogueScreen);
+        SetDimVisibility(usePrologueDim: false);
+
+        dialogueNextHint.SetActive(false);
+        dialogueNextButton.interactable = false;
+
+        ApplyCharacter(
+            node.leftCharacter,
+            leftCharacterGroup,
+            leftCharacterImage
+        );
+
+        ApplyCharacter(
+            node.rightCharacter,
+            rightCharacterGroup,
+            rightCharacterImage
+        );
+
+        yield return SetDimAlpha(
+            talkDim,
+            node.dimAlpha,
+            node.fadeDim,
+            node.fadeDuration
+        );
+
+        string speaker =
+            ReplacePlayerName(node.speaker);
+
+        speakerNameText.text = speaker;
+
+        speakerNameText.gameObject.SetActive(
+            !string.IsNullOrWhiteSpace(speaker)
+        );
+
+        yield return ReplaceTextWithFade(
+            dialogueText,
+            ReplacePlayerName(node.text)
+        );
+
+        ShowChoices(node);
+    }
+
+    private void ShowChoices(DialogueNode node)
+    {
+        if (node.choices == null ||
+            node.choices.Length == 0)
+        {
+            Debug.LogError(
+                $"선택지 데이터가 없습니다: {node.id}"
+            );
+
+            return;
+        }
+
+        choicePanel.SetActive(true);
+
+        for (int i = 0; i < choiceButtons.Length; i++)
+        {
+            Button button = choiceButtons[i];
+            TMP_Text text = choiceTexts[i];
+
+            button.onClick.RemoveAllListeners();
+
+            if (i >= node.choices.Length)
+            {
+                button.gameObject.SetActive(false);
+                continue;
+            }
+
+            button.gameObject.SetActive(true);
+            button.interactable = true;
+
+            ChoiceData choice = node.choices[i];
+
+            text.text =
+                ReplacePlayerName(choice.text);
+
+            int capturedIndex = i;
+
+            button.onClick.AddListener(
+                () => SelectChoice(capturedIndex)
+            );
+        }
+    }
+
+    private void SelectChoice(int choiceIndex)
+    {
+        if (isTransitioning ||
+            currentNode == null ||
+            currentNode.type != "choice" ||
+            currentNode.choices == null ||
+            choiceIndex < 0 ||
+            choiceIndex >= currentNode.choices.Length)
+        {
+            return;
+        }
+
+        isTransitioning = true;
+
+        ChoiceData selectedChoice =
+            currentNode.choices[choiceIndex];
+
+        ChangeAffinity(
+            selectedChoice.affinityTarget,
+            selectedChoice.affinityDelta
+        );
+
+        HideChoices();
+
+        string nextNodeId =
+            selectedChoice.nextId;
+
+        isTransitioning = false;
+
+        DisplayNode(nextNodeId);
+    }
+
+    private void ChangeAffinity(
+        string target,
+        int delta)
+    {
+        GameState.Instance.ChangeAffinity(target, delta);
+    }
+
+    public int GetAffinity(string target)
+    {
+        return GameState.Instance.GetAffinity(target);
     }
 }
