@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 
 /// <summary>
@@ -70,7 +71,7 @@ public class TurnFlowManager : MonoBehaviour
 
         InitializeState();
 
-        
+
     }
 
     // 이벤트 해제
@@ -129,6 +130,10 @@ public class TurnFlowManager : MonoBehaviour
             yield return new WaitUntil(() => isPlayerSubmitted);
             Debug.Log("player가 낸 카드: " + string.Join(", ", playerSelectedCards.Select(p => p.name)));
 
+            GaugeManager.Instance.SameCardType(playerSelectedCards); //같은 종류의 카드만 사용했는지 확인
+            GaugeManager.Instance.AllEnergy(playerActor); //이번 턴에 에너지를 다 썼는지 확인
+            GaugeManager.Instance.UseAdaptive(playerSelectedCards); //조건부 카드를 사용했는지 확인
+          
             // 5. 적 카드 제출
             UIUpdator.Instance.SetText($"적 카드 선택");
             currentState = FlowState.OpponentSelect;
@@ -138,6 +143,15 @@ public class TurnFlowManager : MonoBehaviour
 
             // 6. 카드 실행
             yield return cardExecutor.CardExecuteControll(playerActor, playerSelectedCards, opponentActor, opponentSelectedCards);
+
+
+            //집중 게이지를 다 채웠을 경우의 공격 발동)
+            if (GaugeManager.Instance.CurrentGauge >= GaugeManager.Instance.MaxGauge)
+            {
+                GaugeManager.Instance.Burst();
+                opponentActor.TakeDamage(15, playerActor); //데미지 15를 가함
+            }
+
 
             //Corruption 카드 효과 발동
             //카드 효과로 승리할 수 있으므로 판정 앞에 배치
@@ -173,6 +187,8 @@ public class TurnFlowManager : MonoBehaviour
         playerSelectedCards.AddRange(pickedCard);
         isPlayerSubmitted = true;
     }
+
+ 
 
     /// <summary>
     /// 적의 제출이 완료됐을 때 실행되는 핸들러

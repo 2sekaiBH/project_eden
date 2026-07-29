@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Card
   cardId: 6
   cardName: Memory Reload
-  cardType: 0
+  cardType: 2
   cardImage: {fileID: -7884011467707679736, guid: 99e3b76f42ed0ba4e92996d4c23175e0, type: 3}
   energyCost: 1
   effect: "\uB4DC\uB85C\uC6B0"
