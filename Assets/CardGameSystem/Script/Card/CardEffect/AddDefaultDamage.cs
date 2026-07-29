@@ -1,6 +1,7 @@
 using CardSystem.Effects;
 using CardSystem.Runtime;
 using UnityEngine;
+using UnityEngine.Rendering;
 
 /// <summary>
 /// 평타 데미지 추가 모듈
@@ -10,7 +11,8 @@ public class AddDefaultDamage : CardEffectData
 {
     public override void Execute(CardContext context)
     {
-        PendingEffectManager.Instance.AddExtraAttack(2); //평타 공격 강화 설정
+        if(context.caster is PlayerActor)
+            PendingEffectManager.Instance.AddExtraAttack(2); //카드 시전자가 플레이어인 경우에만 평타 강화 실행
 
     }
 

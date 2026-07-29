@@ -90,4 +90,13 @@ public class PlayerActor : Actor
     {
         SetEnergy(maxEnergy);
     }
+
+    //손패에 새롭게 추가된 카드 UI추가
+    public void AddExtraCard(CardData card)
+    {
+        Debug.Log("AddExtraCard 호출");
+        OnPlayerDrawCard?.Invoke(new List<CardData> { card });
+    }
 }
+
+

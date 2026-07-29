@@ -52,7 +52,8 @@ public class PendingEffectManager : MonoBehaviour
     // 평타 공격 강화
     public void AddExtraAttack(int damage)
     {
-        turnPendingEffect.extraDefaultDamage = damage;
+         turnPendingEffect.extraDefaultDamage = damage;
+        
     }
 
     // 턴 끝마다 공격 설정

@@ -60,6 +60,8 @@ public class HandManager : MonoBehaviour
     /// </summary>
     public void Initialize(List<CardData> cardDatas)
     {
+        Debug.Log($"Initialize »£√‚! {cardDatas.Count}¿Â");
+
         for (int i = 0; i < cardDatas.Count; i++)
         {
             GameObject cardObject = Instantiate(cardPrefab, rectTransform, false);
