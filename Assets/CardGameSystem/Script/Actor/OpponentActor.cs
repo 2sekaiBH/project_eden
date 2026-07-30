@@ -17,13 +17,16 @@ public class OpponentActor : Actor
     {
         name = opponentData.name;
         Initialize();
-        UpdateProfileUI();
+        // UpdateProfileUI();
     }
     public override void Initialize()
     {
+        maxHp = opponentData.totalHp;
         currentHp = opponentData.totalHp;
         currentBlock = 0;
         currentEnergy = opponentData.maxEnergy;
+
+        profileUpdator.InitializeUpdator(opponentData.totalHp, opponentData.maxEnergy); // UI 초기화도 진행
     }
 
     /// <summary>

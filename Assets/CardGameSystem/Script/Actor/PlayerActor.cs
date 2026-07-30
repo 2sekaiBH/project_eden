@@ -14,15 +14,18 @@ public class PlayerActor : Actor
 
     [Header("Setting")]
     [SerializeField] private int maxEnergy;
-    [SerializeField] private int maxHp;
+    [SerializeField] private int maxHpAmount;
 
     public event Action<List<CardData>> OnPlayerDrawCard;
 
     public override void Initialize()
     {
+        maxHp = maxHpAmount;
         currentHp = maxHp;
         currentBlock = 0;
         currentEnergy = maxEnergy;
+        
+        profileUpdator.InitializeUpdator(maxHp, maxEnergy); // UI 초기화도 진행
     }
 
     // 카드 선택 시작
@@ -35,7 +38,7 @@ public class PlayerActor : Actor
     {
         name = "Player"; // 디버깅용 - 커스텀 name으로 변경
         Initialize();
-        UpdateProfileUI();
+        // UpdateProfileUI();
     }
 
     public override void UpdateProfileUI()

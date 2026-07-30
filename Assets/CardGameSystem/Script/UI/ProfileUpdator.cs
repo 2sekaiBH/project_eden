@@ -7,11 +7,14 @@ using UnityEngine.UI;
 /// </summary>
 public class ProfileUpdator : MonoBehaviour
 {
-    [Header("Reference")]
+    [Header("UI Reference")]
     [SerializeField] private Image profileImg;
     [SerializeField] private TextMeshProUGUI nameUI;
     [SerializeField] private TextMeshProUGUI hpUI;
     [SerializeField] private TextMeshProUGUI energyUI = null;
+
+    [Header("UI Updator Reference")]
+    [SerializeField] private HpBlockUIUpdator hpBlockUIUpdator;
 
     [Header("Data")]
     [SerializeField] private Sprite[] profileImgDatas;
@@ -23,7 +26,14 @@ public class ProfileUpdator : MonoBehaviour
         if(energyUI != null)
             energyUI.text = $"energy: {energy}";
 
+        hpBlockUIUpdator.RefreshAnimated(hp, block);
+
         //profileImg.sprite = profileImgDatas[CardGameManager.Instance.stage + 1]
+    }
+
+    public void InitializeUpdator(int maxHp, int maxEnergy)
+    {
+        hpBlockUIUpdator.Initialize(maxHp);
     }
 
     /// <summary>
