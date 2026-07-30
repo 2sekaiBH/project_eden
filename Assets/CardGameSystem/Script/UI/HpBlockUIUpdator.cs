@@ -3,6 +3,7 @@ using System.Collections;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using static UnityEngine.GraphicsBuffer;
 
 public class HpBlockUIUpdator : MonoBehaviour
 {
@@ -18,7 +19,8 @@ public class HpBlockUIUpdator : MonoBehaviour
     private int currentHp;
     private int currentBlock;
 
-    private Coroutine refreshAnimCo;
+    private Coroutine refreshHpCo;
+    private Coroutine refreshBlockCo;
 
     private int maxHp; 
 
@@ -55,30 +57,20 @@ public class HpBlockUIUpdator : MonoBehaviour
     }
 
 
-    public void RefreshAnimated(int currentHp, int currentBlock)
+    public void RefreshAnimated(int currrentHp, int currentBlock)
     {
-        this.currentHp = currentHp;
+        this.currentHp = currrentHp;
         this.currentBlock = currentBlock;
 
         CalcFractions(out float hpFrac, out float blockFrac);
 
-        Debug.Log($"refreshAnimCo : {refreshAnimCo}");
-        if (refreshAnimCo != null) StopCoroutine(refreshAnimCo);
-        refreshAnimCo = StartCoroutine(AnimateSequential(hpFrac, blockFrac));
+        if (refreshHpCo != null) { StopCoroutine(refreshHpCo); }
+        if (refreshBlockCo != null) { StopCoroutine(refreshBlockCo); }
+
+        refreshBlockCo = StartCoroutine(AnimateFill(blockFillImage, hpFrac + blockFrac));
+        refreshHpCo = StartCoroutine(AnimateFill(hpFillImage, hpFrac));
 
         UpdateOverflowText(hpFrac, blockFrac);
-    }
-
-    /// <summary>
-    /// block 애니메이션이 완전히 끝난 뒤에 hp 애니메이션을 시작한다.
-    /// (block 소모 -> 다 소모된 뒤 hp 감소 하는 연출을 명확히 보여주기 위함)
-    /// </summary>
-    private IEnumerator AnimateSequential(float hpTarget, float blockFrac)
-    {
-        float blockTarget = hpTarget + blockFrac;
-
-        yield return AnimateFill(blockFillImage, blockTarget);
-        yield return AnimateFill(hpFillImage, hpTarget);
     }
 
     private IEnumerator AnimateFill(Image img, float target)

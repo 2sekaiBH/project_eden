@@ -217,6 +217,6 @@ public class TurnFlowManager : MonoBehaviour
     /// </summary>
     private void UpdateUI()
     {
-        turnTextUI.text = $"현재 턴: {currentTurn}";
+        turnTextUI.text = $"{currentTurn} 턴";
     }
 }
