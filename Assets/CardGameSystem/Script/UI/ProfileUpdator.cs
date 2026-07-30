@@ -19,10 +19,11 @@ public class ProfileUpdator : MonoBehaviour
     [Header("Data")]
     [SerializeField] private Sprite[] profileImgDatas;
 
+    private int maxHp;
     public void UpdateProfile(string name, int hp, int block, int energy = -1)
     {
         nameUI.text = name;
-        hpUI.text = $"hp: {hp}, block: {block}";
+        hpUI.text = $"<sprite=1> <color=#EB4F51><b>{hp}</b></color><color=#DE7D82>/<size=60%>{maxHp}</size></color> <sprite=2> <color=#55C1FF>{block}</color>";
         if(energyUI != null)
             energyUI.text = $"energy: {energy}";
 
@@ -33,6 +34,8 @@ public class ProfileUpdator : MonoBehaviour
 
     public void InitializeUpdator(int maxHp, int maxEnergy)
     {
+        this.maxHp = maxHp;
+
         hpBlockUIUpdator.Initialize(maxHp);
     }
 
