@@ -93,4 +93,15 @@ public class PlayerActor : Actor
         base.SetHand(cards);
         OnPlayerDrawCard?.Invoke(cards);
     }
+
+    /// <summary>
+    /// 런타임 중 player의 maxEnergy 초기화 경우 사용
+    /// UI에 표시되는 maxEnergy를 update
+    /// </summary>
+    /// <param name="maxEnergy">변화되는 수치</param>
+    public void SetMaxEnergy(int amount)
+    {
+        this.maxEnergy += amount;
+        profileUpdator.InitializeUpdator(maxHp, maxEnergy);
+    }
 }
