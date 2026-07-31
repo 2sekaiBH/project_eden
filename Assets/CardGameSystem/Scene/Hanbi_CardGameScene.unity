@@ -714,6 +714,14 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.x
       value: 1205.7418
       objectReference: {fileID: 0}
+    - target: {fileID: 1772089441034490820, guid: 61ffc24d06a464341bde844296c15b78, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 75
+      objectReference: {fileID: 0}
+    - target: {fileID: 1772089441034490820, guid: 61ffc24d06a464341bde844296c15b78, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 44
+      objectReference: {fileID: 0}
     - target: {fileID: 1937465549049673700, guid: 61ffc24d06a464341bde844296c15b78, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
@@ -970,6 +978,18 @@ PrefabInstance:
       propertyPath: playerActor
       value: 
       objectReference: {fileID: 2127880076}
+    - target: {fileID: 4335067437758049356, guid: 61ffc24d06a464341bde844296c15b78, type: 3}
+      propertyPath: m_Spacing.y
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 4335067437758049356, guid: 61ffc24d06a464341bde844296c15b78, type: 3}
+      propertyPath: m_CellSize.y
+      value: 100
+      objectReference: {fileID: 0}
+    - target: {fileID: 4335067437758049356, guid: 61ffc24d06a464341bde844296c15b78, type: 3}
+      propertyPath: m_StartCorner
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4390530112932948911, guid: 61ffc24d06a464341bde844296c15b78, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0

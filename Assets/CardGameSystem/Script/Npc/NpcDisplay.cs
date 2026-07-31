@@ -64,6 +64,9 @@ public class NpcDisplay : MonoBehaviour
     public void OnSubmit()
     {
         OnNpcSelect?.Invoke(npcData);// NpcEffectManager에게 선택 npc 데이터 전달
+
+        SetInteractableButton(false); // 1회성 구현 -> 제출 버튼 클릭 시 버튼 비활성화
+        TurnFlowManager.OnTurnStart -= OnTurnStartHandler; // 버튼 활성 핸들러 해제
     }
 
 

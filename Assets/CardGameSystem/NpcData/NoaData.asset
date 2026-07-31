@@ -13,6 +13,6 @@ MonoBehaviour:
   m_Name: NoaData
   m_EditorClassIdentifier: Assembly-CSharp::NpcData
   name: Noa
-  effectDescription: "\uC774\uBC88 \uD134 \uC5D0\uB108\uC9C0 3 \uCD94\uAC00"
+  effectDescription: "\uC774\uBC88 \uD134 \uAC00\uC6A9 \uC5D0\uB108\uC9C0 + 2"
   npcProfileImage: {fileID: -656642670871498679, guid: 7aec92aaa9a1c6d4385e005ea529cc4f, type: 3}
   effect: {fileID: 11400000, guid: 17452a7068b461841ac795cf0ec22b1f, type: 2}

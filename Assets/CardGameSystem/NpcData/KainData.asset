@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: KainData
   m_EditorClassIdentifier: Assembly-CSharp::NpcData
   name: "\uCE74\uC778"
-  effectDescription: "\uD604\uC7AC \uC190\uD328\uC5D0\uC11C \uCE74\uB4DC 1\uC7A5
-    \uAD50\uCCB4"
+  effectDescription: "\uD604\uC7AC \uC190\uD328\uC5D0\uC11C \uCE74\uB4DC 1\uC7A5\uC744
+    \uAD50\uCCB4\uD55C\uB2E4"
   npcProfileImage: {fileID: 5405103440312816447, guid: a04a8aeccf912b040ab7fbcd67fd009b, type: 3}
   effect: {fileID: 11400000, guid: cd9906cc0ebe9c4419eff33656d0c17b, type: 2}
