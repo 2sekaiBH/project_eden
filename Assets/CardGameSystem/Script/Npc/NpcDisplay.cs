@@ -20,7 +20,7 @@ public class NpcDisplay : MonoBehaviour
 
     public static event Action<NpcData> OnNpcSelect;
 
-    private Action<int> OnTurnStartHandler;
+    private Action OnPlayerStartSelectHandler;
     private Action<List<CardData>> OnSelectEndHandler;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -31,15 +31,15 @@ public class NpcDisplay : MonoBehaviour
 
     private void OnEnable()
     {
-        OnTurnStartHandler = (int _) => { SetInteractableButton(true); };
-        TurnFlowManager.OnTurnStart += OnTurnStartHandler;
+        OnPlayerStartSelectHandler = () => { SetInteractableButton(true); };
+        PlayerActor.OnPlayerStartSelect += OnPlayerStartSelectHandler;
         OnSelectEndHandler = (List<CardData> _) => { SetInteractableButton(false); };
         HandManager.OnSelectEnd += OnSelectEndHandler;
     }
 
     private void OnDisable()
     {
-        TurnFlowManager.OnTurnStart -= OnTurnStartHandler;
+        PlayerActor.OnPlayerStartSelect -= OnPlayerStartSelectHandler;
         HandManager.OnSelectEnd -= OnSelectEndHandler;
     }
     public void SetNpcData(NpcData npcData)
@@ -66,7 +66,7 @@ public class NpcDisplay : MonoBehaviour
         OnNpcSelect?.Invoke(npcData);// NpcEffectManager에게 선택 npc 데이터 전달
 
         SetInteractableButton(false); // 1회성 구현 -> 제출 버튼 클릭 시 버튼 비활성화
-        TurnFlowManager.OnTurnStart -= OnTurnStartHandler; // 버튼 활성 핸들러 해제
+        PlayerActor.OnPlayerStartSelect -= OnPlayerStartSelectHandler; // 버튼 활성 핸들러 해제
     }
 
 

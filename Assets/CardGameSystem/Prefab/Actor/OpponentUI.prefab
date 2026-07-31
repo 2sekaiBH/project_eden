@@ -133,6 +133,7 @@ MonoBehaviour:
   nameUI: {fileID: 4824801047160167083}
   hpUI: {fileID: 689328897045161695}
   energyUI: {fileID: 0}
+  maxEnergyUI: {fileID: 0}
   hpBlockUIUpdator: {fileID: 4254333369329506494}
   profileImgDatas: []
 --- !u!1 &1913722382597726921
@@ -451,8 +452,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 1}
   m_AnchorMax: {x: 0.5, y: 1}
-  m_AnchoredPosition: {x: -490.06, y: -81}
-  m_SizeDelta: {x: 99.4099, y: 50}
+  m_AnchoredPosition: {x: -529.81476, y: -81}
+  m_SizeDelta: {x: 147.0394, y: 50}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!222 &7875662425799864660
 CanvasRenderer:
@@ -711,9 +712,13 @@ PrefabInstance:
       propertyPath: m_Name
       value: Hp_Block_Slider
       objectReference: {fileID: 0}
+    - target: {fileID: 4082550584459879071, guid: 597e98dcd1957ab4ab494490c77e2230, type: 3}
+      propertyPath: m_LocalScale.x
+      value: -1
+      objectReference: {fileID: 0}
     - target: {fileID: 8732569856590780455, guid: 597e98dcd1957ab4ab494490c77e2230, type: 3}
       propertyPath: m_HorizontalAlignment
-      value: 4
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8865490981611878930, guid: 597e98dcd1957ab4ab494490c77e2230, type: 3}
       propertyPath: m_Pivot.x

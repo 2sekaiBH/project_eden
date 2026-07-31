@@ -17,6 +17,7 @@ public class PlayerActor : Actor
     [SerializeField] private int maxHpAmount;
 
     public event Action<List<CardData>> OnPlayerDrawCard;
+    public static event Action OnPlayerStartSelect; // 플레이어 카드 선택 시작 이벤트 - npc slot btn, submit btn에서 구독
 
     public override void Initialize()
     {
@@ -25,12 +26,13 @@ public class PlayerActor : Actor
         currentBlock = 0;
         currentEnergy = maxEnergy;
         
-        profileUpdator.InitializeUpdator(maxHp, maxEnergy); // UI 초기화도 진행
+        profileUpdator.InitializeUpdator(maxHp, maxEnergy); // profileUpdator 초기화
     }
 
     // 카드 선택 시작
     public override void SelectCard()
     {
+        OnPlayerStartSelect?.Invoke();
         handManager.StartSelect(hand);
     }
 
@@ -38,7 +40,7 @@ public class PlayerActor : Actor
     {
         name = "Player"; // 디버깅용 - 커스텀 name으로 변경
         Initialize();
-        // UpdateProfileUI();
+        UpdateProfileUI();
     }
 
     public override void UpdateProfileUI()
