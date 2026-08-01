@@ -26,7 +26,7 @@ Transform:
   m_GameObject: {fileID: 2547250603123175551}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.018, y: -1.866, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 0.23154256, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -119,7 +119,7 @@ Transform:
   m_GameObject: {fileID: 4794432498916526745}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.02, y: -0.15, z: 0}
+  m_LocalPosition: {x: -0.053, y: 1.849, z: 0}
   m_LocalScale: {x: 1.6, y: 3.1, z: 1.790438}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -276,7 +276,7 @@ SpriteRenderer:
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
-  m_SpriteSortPoint: 0
+  m_SpriteSortPoint: 1
   m_BlendShapeWeights: []
 --- !u!114 &5507581996065000993
 MonoBehaviour:
@@ -510,6 +510,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerJumpWithSlide
   jumpForce: 5
+  slideForce: 5
+  jumpCoolTime: 1
+  slideCoolTime: 1
+  slideDuration: 0.7
   groundLayer:
     serializedVersion: 2
     m_Bits: 64
@@ -612,17 +616,17 @@ BoxCollider2D:
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: 0, y: 0.010122001}
+  m_Offset: {x: 0, y: 1.9023438}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0.5, y: 0.5}
+    pivot: {x: 0.5, y: 0}
     oldSize: {x: 1.4143035, y: 3.8046875}
     newSize: {x: 1, y: 1}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
-  m_Size: {x: 1.4143035, y: 3.7844434}
+  m_Size: {x: 1.4143035, y: 3.8046875}
   m_EdgeRadius: 0
 --- !u!95 &7930459813053568219
 Animator:

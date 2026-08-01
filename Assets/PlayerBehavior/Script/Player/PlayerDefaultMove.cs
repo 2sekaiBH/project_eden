@@ -22,6 +22,7 @@ public class PlayerDefaultMove : MonoBehaviour
     private Rigidbody2D rb;
     private SpriteRenderer spriteRender;
     private float lastInputDir = 0f;
+    public float LastInputDir => lastInputDir;
     private bool leftHeld = false;
     private bool rightHeld = false;
 
@@ -38,6 +39,8 @@ public class PlayerDefaultMove : MonoBehaviour
     {
         PlayerJumpWithSlide.onJump += BlockDash;
         PlayerJumpWithSlide.onLand += AllowDash;
+        PlayerJumpWithSlide.onSlide += BlockMove;
+        PlayerJumpWithSlide.onSlideEnd += AllowMove;
     }
 
 
@@ -45,6 +48,8 @@ public class PlayerDefaultMove : MonoBehaviour
     {
         PlayerJumpWithSlide.onJump -= BlockDash;
         PlayerJumpWithSlide.onLand -= AllowDash;
+        PlayerJumpWithSlide.onSlide -= BlockMove;
+        PlayerJumpWithSlide.onSlideEnd -= AllowMove;
     }
 
     public void BlockDash()
@@ -66,6 +71,15 @@ public class PlayerDefaultMove : MonoBehaviour
     public void AllowMove()
     {
         blockMoving = false;
+        isWalking = false;
+        /*
+        // 슬라이드 중 눌리거나 떼진 입력을 반영해 강제 재동기화
+        bool actualMoving = leftHeld || rightHeld;
+        if (actualMoving != isWalking)
+        {
+            isWalking = actualMoving;
+            OnWalk?.Invoke(isWalking);
+        }*/
     }
 
 
@@ -146,6 +160,7 @@ public class PlayerDefaultMove : MonoBehaviour
             _moveInput = 0f;
         }
 
+        
         // 상태가 바뀔 때만 이벤트 발생
         if(wantsToMove != isWalking)
         {

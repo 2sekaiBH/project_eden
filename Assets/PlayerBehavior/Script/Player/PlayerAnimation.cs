@@ -1,5 +1,6 @@
 using System;
 using System.Runtime.InteropServices;
+using System.Transactions;
 using Unity.VisualScripting;
 using UnityEditor;
 using UnityEngine;
@@ -30,6 +31,8 @@ public class PlayerAnimation : MonoBehaviour
         PlayerDefaultMove.OnRun += HandleRun;
         PlayerJumpWithSlide.onLand += HandleLand;
         PlayerJumpWithSlide.onJump += HandleJump;
+        PlayerJumpWithSlide.onSlide += HandleSlide;
+        PlayerJumpWithSlide.onSlideEnd += HandleSlideEnd;
     }
 
     void OnDisable()
@@ -38,6 +41,8 @@ public class PlayerAnimation : MonoBehaviour
         PlayerDefaultMove.OnRun -= HandleRun;
         PlayerJumpWithSlide.onLand -= HandleLand;
         PlayerJumpWithSlide.onJump -= HandleJump;
+        PlayerJumpWithSlide.onSlide -= HandleSlide;
+        PlayerJumpWithSlide.onSlideEnd -= HandleSlideEnd; 
     }
 
     // ------ 걷기 애니메이션  ------ //
@@ -45,7 +50,8 @@ public class PlayerAnimation : MonoBehaviour
     {
         isMovingInput = isWalking; // 점프 시 idle 상태인지, walk 상태인지 기록
 
-        if (currentAnim == AnimState.jumping)
+        Debug.Log(currentAnim);
+        if (currentAnim == AnimState.jumping || currentAnim == AnimState.sliding)
             return;
 
         currentAnim = isWalking ? AnimState.walking : AnimState.idle;
@@ -71,10 +77,28 @@ public class PlayerAnimation : MonoBehaviour
     // ------ 착지 -> 점프 이전 state로 전환 ------ //
     private void HandleLand()
     {
-        if (currentAnim != AnimState.jumping) // 점프 상태일 때만 검사
+        if (currentAnim != AnimState.jumping || currentAnim == AnimState.sliding) // 점프 상태일 때만 검사
             return;
         // 착지 시점에 기억해둔 isMovingInput으로 복귀할 상태 결정
         currentAnim = isMovingInput ? AnimState.walking : AnimState.idle;
         animator.SetTrigger(isMovingInput ? "walkTrigger" : "idleTrigger");
+    }
+
+    // ------ 슬라이드 애니메이션  ------ //
+    private void HandleSlide()
+    {
+        currentAnim = AnimState.sliding;
+        animator.SetTrigger("slideTrigger");
+    }
+
+    // ------ 슬라이드 종료 -> idle 상태로 전환 ------ //
+    private void HandleSlideEnd()
+    {
+
+        if (currentAnim != AnimState.sliding) // 슬라이드 상태일 때만 처리
+            return;
+
+        currentAnim = AnimState.idle;
+        animator.SetTrigger("idleTrigger");
     }
 }
