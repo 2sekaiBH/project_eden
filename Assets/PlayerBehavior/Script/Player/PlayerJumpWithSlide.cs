@@ -5,14 +5,18 @@ using UnityEngine.InputSystem;
 
 public class PlayerJumpWithSlide : MonoBehaviour
 {
-    [Header("Player Jump Settings")]
+    [Header("[Settings]")]
+    [Header("[Jump]")]
     [SerializeField] private float jumpForce = 50f;
-    [SerializeField] private float slideForce = 50f;
     [SerializeField] private float jumpCoolTime = 2f;
+    [Header("[Slide]")]
+    [SerializeField] private float slideForce = 50f;
     [SerializeField] private float slideCoolTime = 2f;
     [SerializeField] private float slideDuration = 1f;
+    [SerializeField] private Vector2 slideColliderOffset = new Vector2(1, 0.7f);
+    [SerializeField] private Vector2 slideColliderSize = new Vector2(4.3f, 1.4f);
 
-    [Header("Reference")]
+    [Header("[Reference]")]
     [SerializeField] private LayerMask groundLayer;
     [SerializeField] private Transform groundCheck;
 
@@ -27,7 +31,7 @@ public class PlayerJumpWithSlide : MonoBehaviour
 
     private Rigidbody2D rb;
     private PlayerDefaultMove defaultMove;
-    private Collider2D playerCollider;
+    private BoxCollider2D playerCollider;
 
     private bool isSliding = false;
 
@@ -35,11 +39,17 @@ public class PlayerJumpWithSlide : MonoBehaviour
     private bool isSlideEnable = true;
     private float sliderTimer = 0f;
 
+    private Vector2 baseColliderOffset = default;
+    private Vector2 baseColliderSize = default;
+
     void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
-        playerCollider = GetComponent<Collider2D>();
         defaultMove = GetComponent<PlayerDefaultMove>();
+        playerCollider = GetComponent<BoxCollider2D>();
+
+        baseColliderOffset = playerCollider.offset;
+        baseColliderSize = playerCollider.size;
     }
 
     void FixedUpdate()
@@ -61,6 +71,9 @@ public class PlayerJumpWithSlide : MonoBehaviour
             sliderTimer -= Time.fixedDeltaTime;
             if (sliderTimer <= 0f)
             {
+                playerCollider.offset = baseColliderOffset;
+                playerCollider.size = baseColliderSize;
+
                 isSliding = false;
                 isJumpEnable = true;
                 onSlideEnd?.Invoke();
@@ -111,7 +124,9 @@ public class PlayerJumpWithSlide : MonoBehaviour
             sliderTimer = slideDuration;
 
             onSlide?.Invoke(); // 애니메이션 적용
-            rb.AddForceX(slideForce * direction, ForceMode2D.Impulse); 
+            playerCollider.offset = slideColliderOffset;
+            playerCollider.size = slideColliderSize;
+            rb.AddForceX(slideForce * direction, ForceMode2D.Impulse); // 대시
         }
     }   
 

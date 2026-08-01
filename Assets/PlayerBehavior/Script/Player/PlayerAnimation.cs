@@ -50,7 +50,6 @@ public class PlayerAnimation : MonoBehaviour
     {
         isMovingInput = isWalking; // 점프 시 idle 상태인지, walk 상태인지 기록
 
-        Debug.Log(currentAnim);
         if (currentAnim == AnimState.jumping || currentAnim == AnimState.sliding)
             return;
 

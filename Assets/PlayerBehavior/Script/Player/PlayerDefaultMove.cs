@@ -6,7 +6,7 @@ using UnityEngine.InputSystem;
 public class PlayerDefaultMove : MonoBehaviour
 {
     [Header("Player Horizontal Movement Settings")]
-    [SerializeField] private float moveSpeed = 5f;
+    [SerializeField] private float baseMoveSpeed = 5f;
     [SerializeField] private float dashValue = 1.5f;
 
     private float _moveInput;
@@ -25,10 +25,14 @@ public class PlayerDefaultMove : MonoBehaviour
     public float LastInputDir => lastInputDir;
     private bool leftHeld = false;
     private bool rightHeld = false;
+    private bool isDashHeld = false; // 대시 키가 물리적으로 눌려있는지
 
     private bool blockDash = false;
     private bool blockMoving = false;
-    
+
+    // 실제 이동에 사용할 속도는 항상 이 프로퍼티로 계산
+    private float CurrentMoveSpeed => (isDashHeld && !blockDash) ? baseMoveSpeed * dashValue : baseMoveSpeed; // 실시간으로 달리기 상태 감지
+
     void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
@@ -55,11 +59,13 @@ public class PlayerDefaultMove : MonoBehaviour
     public void BlockDash()
     {
         blockDash = true;
+        UpdateDashState();
     }
 
     public void AllowDash()
     {
         blockDash = false;
+        UpdateDashState();
     }
 
     // 플레이어 이동 비활성화 - 외부 스크립트에서 플레이어 이동 제어할 때 사용.
@@ -72,14 +78,6 @@ public class PlayerDefaultMove : MonoBehaviour
     {
         blockMoving = false;
         isWalking = false;
-        /*
-        // 슬라이드 중 눌리거나 떼진 입력을 반영해 강제 재동기화
-        bool actualMoving = leftHeld || rightHeld;
-        if (actualMoving != isWalking)
-        {
-            isWalking = actualMoving;
-            OnWalk?.Invoke(isWalking);
-        }*/
     }
 
 
@@ -114,18 +112,26 @@ public class PlayerDefaultMove : MonoBehaviour
     // ------ 플레이어 달리기  ------ //
     public void OnDash(InputAction.CallbackContext context)
     {
-        // 점프 중일 때 dash 막기
-        if (blockDash == true) return;
-
         if (context.performed)
         {
-            moveSpeed *= dashValue;
-            OnRun?.Invoke(true);
+            isDashHeld = true;
         }
         else if (context.canceled)
         {
-            moveSpeed /= dashValue;
-            OnRun?.Invoke(false);
+            isDashHeld = false;
+        }
+        UpdateDashState();
+    }
+
+    // ------ 달리기 상태 갱신 ------ //
+    private bool wasDashing = false;
+    private void UpdateDashState()
+    {
+        bool isDashingNow = isDashHeld && !blockDash;
+        if(isDashingNow != wasDashing) // 상태가 변할 떄 실행
+        {
+            wasDashing = isDashingNow;
+            OnRun.Invoke(isDashingNow);
         }
     }
 
@@ -168,6 +174,6 @@ public class PlayerDefaultMove : MonoBehaviour
             OnWalk?.Invoke(isWalking);
         }
 
-        rb.linearVelocityX = _moveInput * moveSpeed;
+        rb.linearVelocityX = _moveInput * CurrentMoveSpeed;
     }
 }
