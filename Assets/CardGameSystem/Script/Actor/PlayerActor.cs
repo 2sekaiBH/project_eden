@@ -14,20 +14,25 @@ public class PlayerActor : Actor
 
     [Header("Setting")]
     [SerializeField] private int maxEnergy;
-    [SerializeField] private int maxHp;
+    [SerializeField] private int maxHpAmount;
 
     public event Action<List<CardData>> OnPlayerDrawCard;
+    public static event Action OnPlayerStartSelect; // ÇÃ·¹ÀÌ¾î Ä«µå ¼±ÅÃ ½ÃÀÛ ÀÌº¥Æ® - npc slot btn, submit btn¿¡¼­ ±¸µ¶
 
     public override void Initialize()
     {
+        maxHp = maxHpAmount;
         currentHp = maxHp;
         currentBlock = 0;
         currentEnergy = maxEnergy;
+        
+        profileUpdator.InitializeUpdator(maxHp, maxEnergy); // profileUpdator ÃÊ±âÈ­
     }
 
     // Ä«ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
     public override void SelectCard()
     {
+        OnPlayerStartSelect?.Invoke();
         handManager.StartSelect(hand);
     }
 
@@ -89,6 +94,17 @@ public class PlayerActor : Actor
     {
         base.SetHand(cards);
         OnPlayerDrawCard?.Invoke(cards);
+    }
+
+    /// <summary>
+    /// ·±Å¸ÀÓ Áß playerÀÇ maxEnergy ÃÊ±âÈ­ °æ¿ì »ç¿ë
+    /// UI¿¡ Ç¥½ÃµÇ´Â maxEnergy¸¦ update
+    /// </summary>
+    /// <param name="maxEnergy">º¯È­µÇ´Â ¼öÄ¡</param>
+    public void SetMaxEnergy(int amount)
+    {
+        this.maxEnergy += amount;
+        profileUpdator.InitializeUpdator(maxHp, maxEnergy);
     }
 }
 

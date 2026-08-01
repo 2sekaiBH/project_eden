@@ -14,6 +14,7 @@ public abstract class Actor : MonoBehaviour
     [SerializeField] protected ProfileUpdator profileUpdator;
 
     protected new string name;
+    protected int maxHp;
     protected int currentHp;
     protected int currentBlock = 0;
     protected int currentEnergy = 4;
@@ -95,7 +96,7 @@ public abstract class Actor : MonoBehaviour
     /// </summary>
     public virtual void Heal(int amount)
     {
-        currentHp += amount;
+        currentHp = Mathf.Min(currentHp + amount, maxHp);
         UpdateProfileUI();
     }
 

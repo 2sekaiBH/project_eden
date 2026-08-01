@@ -122,6 +122,6 @@ public class RoundFlowManager : MonoBehaviour
     /// </summary>
     private void UpdateUI()
     {
-        roundTextUI.text = $"현재 라운드: {currentRound}";
+        roundTextUI.text = $"{currentRound} 라운드";
     }
 }

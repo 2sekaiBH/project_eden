@@ -7,23 +7,46 @@ using UnityEngine.UI;
 /// </summary>
 public class ProfileUpdator : MonoBehaviour
 {
-    [Header("Reference")]
+    [Header("UI Reference")]
     [SerializeField] private Image profileImg;
     [SerializeField] private TextMeshProUGUI nameUI;
     [SerializeField] private TextMeshProUGUI hpUI;
     [SerializeField] private TextMeshProUGUI energyUI = null;
+    [SerializeField] private TextMeshProUGUI maxEnergyUI = null;
+
+    [Header("UI Updator Reference")]
+    [SerializeField] private HpBlockUIUpdator hpBlockUIUpdator;
 
     [Header("Data")]
     [SerializeField] private Sprite[] profileImgDatas;
 
+    private int maxHp;
+    private int maxEnergy;
+
     public void UpdateProfile(string name, int hp, int block, int energy = -1)
     {
         nameUI.text = name;
-        hpUI.text = $"hp: {hp}, block: {block}";
+        hpUI.text = $"<sprite=1><b>{hp}</b>/<size=60%>{maxHp}</size>   <sprite=2> {block}";
         if(energyUI != null)
-            energyUI.text = $"energy: {energy}";
+            energyUI.text = $"{energy}";
+
+        hpBlockUIUpdator.RefreshAnimated(hp, block);
 
         //profileImg.sprite = profileImgDatas[CardGameManager.Instance.stage + 1]
+    }
+
+    public void InitializeUpdator(int maxHp = -1, int maxEnergy = -1)
+    {
+        if(maxHp != -1)
+            this.maxHp = maxHp;
+
+        if (maxEnergy != -1)
+            this.maxEnergy = maxEnergy;
+
+        if (maxEnergyUI != null)
+            maxEnergyUI.text = $"{maxEnergy}";
+
+        hpBlockUIUpdator.Initialize(maxHp);
     }
 
     /// <summary>
