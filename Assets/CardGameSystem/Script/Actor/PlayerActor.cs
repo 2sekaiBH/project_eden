@@ -14,20 +14,25 @@ public class PlayerActor : Actor
 
     [Header("Setting")]
     [SerializeField] private int maxEnergy;
-    [SerializeField] private int maxHp;
+    [SerializeField] private int maxHpAmount;
 
     public event Action<List<CardData>> OnPlayerDrawCard;
+    public static event Action OnPlayerStartSelect; // 플레이어 카드 선택 시작 이벤트 - npc slot btn, submit btn에서 구독
 
     public override void Initialize()
     {
+        maxHp = maxHpAmount;
         currentHp = maxHp;
         currentBlock = 0;
         currentEnergy = maxEnergy;
+        
+        profileUpdator.InitializeUpdator(maxHp, maxEnergy); // profileUpdator 초기화
     }
 
     // 카드 선택 시작
     public override void SelectCard()
     {
+        OnPlayerStartSelect?.Invoke();
         handManager.StartSelect(hand);
     }
 
@@ -89,5 +94,16 @@ public class PlayerActor : Actor
     {
         base.SetHand(cards);
         OnPlayerDrawCard?.Invoke(cards);
+    }
+
+    /// <summary>
+    /// 런타임 중 player의 maxEnergy 초기화 경우 사용
+    /// UI에 표시되는 maxEnergy를 update
+    /// </summary>
+    /// <param name="maxEnergy">변화되는 수치</param>
+    public void SetMaxEnergy(int amount)
+    {
+        this.maxEnergy += amount;
+        profileUpdator.InitializeUpdator(maxHp, maxEnergy);
     }
 }

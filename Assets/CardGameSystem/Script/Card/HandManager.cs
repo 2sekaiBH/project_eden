@@ -34,7 +34,6 @@ public class HandManager : MonoBehaviour
     public static Action<int> OnCardSelect;
     // CardDisplay에서 구독
 
-    private Action<int> _OnRoundEndHandler;
 
     private void Awake()
     {

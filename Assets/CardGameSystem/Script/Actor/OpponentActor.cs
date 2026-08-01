@@ -21,9 +21,12 @@ public class OpponentActor : Actor
     }
     public override void Initialize()
     {
+        maxHp = opponentData.totalHp;
         currentHp = opponentData.totalHp;
         currentBlock = 0;
         currentEnergy = opponentData.maxEnergy;
+
+        profileUpdator.InitializeUpdator(opponentData.totalHp, opponentData.maxEnergy); // profileUpdator √ ±‚»≠
     }
 
     /// <summary>
