@@ -1,34 +1,55 @@
 using System;
+using System.Collections;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
 public class PlayerJumpWithSlide : MonoBehaviour
 {
-    [Header("Player Jump Settings")]
-    [SerializeField] private float jumpForce = 10f;
+    [Header("[Settings]")]
+    [Header("[Jump]")]
+    [SerializeField] private float jumpForce = 50f;
+    [SerializeField] private float jumpCoolTime = 2f;
+    [Header("[Slide]")]
+    [SerializeField] private float slideForce = 50f;
+    [SerializeField] private float slideCoolTime = 2f;
+    [SerializeField] private float slideDuration = 1f;
+    [SerializeField] private Vector2 slideColliderOffset = new Vector2(1, 0.7f);
+    [SerializeField] private Vector2 slideColliderSize = new Vector2(4.3f, 1.4f);
 
-    [Header("Reference")]
+    [Header("[Reference]")]
     [SerializeField] private LayerMask groundLayer;
     [SerializeField] private Transform groundCheck;
 
     public static event Action onJump;
     public static event Action onLand;
+    public static event Action onSlide;
+    public static event Action onSlideEnd;
+    
 
     private bool isGrounded;
     private bool wasGrounded; // 이전 프레임 접지 상태
 
-    private bool isSliding;
     private Rigidbody2D rb;
     private PlayerDefaultMove defaultMove;
-    private Collider2D playerCollider;
+    private BoxCollider2D playerCollider;
 
-    private bool jumpSlideBlock = false;
+    private bool isSliding = false;
+
+    private bool isJumpEnable = true;
+    private bool isSlideEnable = true;
+    private float sliderTimer = 0f;
+
+    private Vector2 baseColliderOffset = default;
+    private Vector2 baseColliderSize = default;
 
     void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
-        playerCollider = GetComponent<Collider2D>();
         defaultMove = GetComponent<PlayerDefaultMove>();
+        playerCollider = GetComponent<BoxCollider2D>();
+
+        baseColliderOffset = playerCollider.offset;
+        baseColliderSize = playerCollider.size;
     }
 
     void FixedUpdate()
@@ -38,30 +59,53 @@ public class PlayerJumpWithSlide : MonoBehaviour
         if(isGrounded && !wasGrounded) // 공중 -> 지상으로 바뀐 프레임
         {
             onLand?.Invoke();
+            isSlideEnable = true;
+            StartCoroutine(CoRunJumpCoolTime()); // 점프 end 시 cool 타임 처리
         }
 
         wasGrounded = isGrounded;
+
+
+        if (isSliding) // slide 종료
+        {
+            sliderTimer -= Time.fixedDeltaTime;
+            if (sliderTimer <= 0f)
+            {
+                playerCollider.offset = baseColliderOffset;
+                playerCollider.size = baseColliderSize;
+
+                isSliding = false;
+                isJumpEnable = true;
+                onSlideEnd?.Invoke();
+                StartCoroutine(CoRunSlideRunTime());
+            }
+        }
     }
 
-    // 플레이어 점프, 슬라이드 비활성화
+    /// <summary>
+    /// 외부에서 slide, jump 제어 시 사용
+    /// </summary>
     public void BlockJumpAndSlide()
     {
-        jumpSlideBlock = true;
+        isJumpEnable = false;
+        isSlideEnable = false;
     }
 
     public void AllowJumpSlide()
     {
-        jumpSlideBlock = false;
+        isJumpEnable = true;
+        isSlideEnable = true;
     }
 
     // ------ 플레이어 점프  ------ //
     public void OnJump(InputAction.CallbackContext context)
     {
-        if (jumpSlideBlock) return;
+        if (!isJumpEnable) return;
 
         if (context.performed && isGrounded)
         {
-            rb.linearVelocityY = jumpForce;
+            isSlideEnable = false; // 점프 중 슬라이드 막기
+            rb.AddForceY(jumpForce, ForceMode2D.Impulse);
             onJump?.Invoke();
         }
     }
@@ -69,14 +113,34 @@ public class PlayerJumpWithSlide : MonoBehaviour
     // ------ 플레이어 슬라이드  ------ //
     public void OnSlide(InputAction.CallbackContext context)
     {
-        if (jumpSlideBlock) return;
+        if (!isSlideEnable) return;
 
-        float direction = defaultMove.moveInput;
-        if (context.performed && isGrounded && isSliding)
+        float direction = defaultMove.LastInputDir;
+        if (context.performed && isGrounded)
         {
-            // playerCollider 조정 및 애니메이션 적용
+            isJumpEnable = false; // 슬라이드 중 점프 막기
+            isSlideEnable = false; // 중복 슬라이드 방지
+            isSliding = true;
+            sliderTimer = slideDuration;
+
+            onSlide?.Invoke(); // 애니메이션 적용
+            playerCollider.offset = slideColliderOffset;
+            playerCollider.size = slideColliderSize;
+            rb.AddForceX(slideForce * direction, ForceMode2D.Impulse); // 대시
         }
     }   
+
+    private IEnumerator CoRunJumpCoolTime()
+    {
+        yield return new WaitForSeconds(jumpCoolTime);
+        isJumpEnable = true;
+    }
+
+    private IEnumerator CoRunSlideRunTime()
+    {
+        yield return new WaitForSeconds(slideCoolTime);
+        isSlideEnable = true;
+    }
 
     // isGrounded checking gizmos
     void OnDrawGizmos()
