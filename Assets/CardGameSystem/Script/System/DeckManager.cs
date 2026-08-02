@@ -55,7 +55,7 @@ public class DeckManager : MonoBehaviour
         for (int i = 0; i < amount; i++)
         {
             random = Random.Range(0, CardDataBase.cardDataBase.Count);
-            pickedCardDeck.Add(CardDataBase.cardDataBase[random]);
+            pickedCardDeck.Add(Instantiate(CardDataBase.cardDataBase[random])); //extra로 뽑는 카드는 복사본으로 생성
         }
         return pickedCardDeck;
     }

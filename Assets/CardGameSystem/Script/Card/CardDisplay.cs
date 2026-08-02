@@ -3,6 +3,7 @@ using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.Rendering;
 using UnityEngine.UI;
 
 /// <summary>
@@ -129,6 +130,16 @@ public class CardDisplay : MonoBehaviour, IPointerClickHandler, IPointerEnterHan
         bool affordable = isSelected || currentEnergy >= card.energyCost;
         canvasGroup.alpha = affordable ? 1f : 0.5f;
     }
+
+    //CardDisplay에 무료 카드 여부 저장(Reload를 통해 생성된 객체에만 적용하기 위함)
+    private bool isFree = false;
+
+    public bool IsFree => isFree;
+    public void SetFree(bool value)
+    {
+        isFree = value;
+    }
+  
 
     private void Hover()
     {

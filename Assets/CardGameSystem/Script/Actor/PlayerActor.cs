@@ -64,7 +64,7 @@ public class PlayerActor : Actor
         else
         {
             newCard = cardData;
-            hand[index] = newCard; // ������ ī��� ��ü
+            hand[index] = newCard; // ������ ī���?��ü
         }
         handManager.ReplaceHand(index, newCard); // ���� UI ���� 
         UIUpdator.Instance.SetText($"�÷��̾� ���� {index + 1}��° ī�带 {newCard.name}���� �����߽��ϴ�.");

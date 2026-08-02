@@ -48,6 +48,12 @@ public class OpponentActor : Actor
         OnOpponentEndSelect.Invoke(pickedCard);
     }
 
+    //적이 제출한 카드 삭제
+    public void DiscardCard(CardData card)
+    {
+        hand.Remove(card);
+    }
+
     public override void UpdateProfileUI()
     {
         profileUpdator.UpdateProfile(name, currentHp, currentBlock);

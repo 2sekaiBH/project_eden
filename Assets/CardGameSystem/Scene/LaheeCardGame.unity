@@ -1100,7 +1100,7 @@ MonoBehaviour:
   hand: []
   handManager: {fileID: 1840005979}
   maxEnergy: 4
-  maxHp: 15
+  maxHpAmount: 0
 --- !u!4 &777149921
 Transform:
   m_ObjectHideFlags: 0
@@ -1337,9 +1337,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CardGameManager
   npcDataList: []
-  opponentData: {fileID: 0}
-  npcDataBase: {fileID: 0}
-  roundFlowManager: {fileID: 0}
+  opponentData: {fileID: 11400000, guid: c72f93917f9ddc6478d877dc3c5a6725, type: 2}
+  npcDataBase: {fileID: 11400000, guid: 38e646e5aab00f44ebbe4634d5e08ef5, type: 2}
+  roundFlowManager: {fileID: 554694997}
   npcSlotManager: {fileID: 0}
 --- !u!1 &1070706924
 GameObject:
@@ -1519,6 +1519,8 @@ MonoBehaviour:
   nameUI: {fileID: 1423166378}
   hpUI: {fileID: 2084185894}
   energyUI: {fileID: 116865501}
+  maxEnergyUI: {fileID: 0}
+  hpBlockUIUpdator: {fileID: 0}
   profileImgDatas: []
 --- !u!1 &1229769737
 GameObject:
@@ -3225,6 +3227,8 @@ MonoBehaviour:
   nameUI: {fileID: 45245362}
   hpUI: {fileID: 761305736}
   energyUI: {fileID: 0}
+  maxEnergyUI: {fileID: 0}
+  hpBlockUIUpdator: {fileID: 0}
   profileImgDatas: []
 --- !u!1 &2004148402
 GameObject:

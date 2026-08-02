@@ -35,6 +35,7 @@ public class HandManager : MonoBehaviour
     // CardDisplay에서 구독
 
 
+
     private void Awake()
     {
         if(rectTransform == null) rectTransform = GetComponent<RectTransform>();
@@ -179,4 +180,7 @@ public class HandManager : MonoBehaviour
         cards.Clear();
         cardDisplays.Clear();
     }
+
+
+
 }

@@ -121,7 +121,7 @@ public class TurnFlowManager : MonoBehaviour
             UIUpdator.Instance.SetText($"평타 공격, 방어 증가");
             yield return new WaitForSeconds(1f);
 
-            PendingEffectManager.Instance.ConsumeReduceCost();
+            PendingEffectManager.Instance.ConsumeReduceCost(); //카드 코스트 -1
 
             // 4. 플레이어 카드 제출, Npc 효과 처리
             UIUpdator.Instance.SetText($"플레이어 카드 선택");
@@ -197,6 +197,11 @@ public class TurnFlowManager : MonoBehaviour
     private void HandleOpponentCardSubmit(List<CardData> pickedCard)
     {
         opponentSelectedCards.AddRange(pickedCard);
+        foreach (CardData card in pickedCard) //적이 사용한 카드 삭제
+        {
+            opponentActor.DiscardCard(card);
+        }
+
         isOpponentSubmitted = true;
     }
 

@@ -20,6 +20,7 @@ public abstract class Actor : MonoBehaviour
     protected int currentEnergy = 4;
 
     public List<CardData> hand = new List<CardData>();
+  
 
 
     public int CurrentHp => currentHp;

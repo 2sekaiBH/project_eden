@@ -66,13 +66,13 @@ public class MissionManager : MonoBehaviour
         switch (mission)
         {
             case MissionType.NoDamage:
-                return "이번 턴에 피해 받지 않기";
+                return "  └  이번 턴에 피해 받지 않기";
 
             case MissionType.Use3Cards:
-                return "이번 턴에 카드 3장 이상 사용하기";
+                return "  └  이번 턴에 카드 3장 이상 사용";
 
             case MissionType.OnlyOneCard:
-                return "이번 턴에 1E 카드만 사용하기";
+                return "  └  이번 턴에 1E 카드만 사용";
 
             default:
                 return "";
@@ -146,11 +146,11 @@ public bool Check(MissionProgress progress)
 
         if (playerProgress.complete)
         {
-            missionText.text = "달성!"; //플레이어가 미션 성공 시 미션 내용 텍스트 내용을 달성으로 바꿈
+            missionText.text = "└ 달성!"; //플레이어가 미션 성공 시 미션 내용 텍스트 내용을 달성으로 바꿈
         }
 
         else
-            missionText.text = "실패";
+            missionText.text = "└ 실패";
 
         Debug.Log($" 플레이어는 {playerProgress.complete}, 몹은 {opponentProgress.complete}");
     }

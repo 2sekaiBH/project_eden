@@ -1,21 +1,23 @@
 using NUnit.Framework;
 using System;
 using UnityEngine;
+using UnityEngine.UI;
 using System.Collections.Generic;
+using TMPro;
 
 public class GaugeManager : MonoBehaviour
 {
     public static GaugeManager Instance;
 
     [SerializeField] private int currentGauge = 0;
-    [SerializeField] public int maxGauge = 12;
-    [SerializeField] public Sprite gaugeImage;
-    [SerializeField] public Sprite maxGaugeImage;
+    [SerializeField] private int maxGauge = 12;
+    [SerializeField] private Image gaugeImage;
+    [SerializeField] private Image maxGaugeImage;
+    [SerializeField] private TMP_Text gaugePercentText;
 
     public int CurrentGauge => currentGauge;
     public int MaxGauge => maxGauge;
 
-    public event Action<int, int> OnGaugeChange; //집중 게이지가 변하면 바꼈다고 알려줄 이벤트
     public event Action OnBurst; //게이지가 최대치에 도달했는지 알려줄 이벤트
 
 
@@ -28,22 +30,45 @@ public class GaugeManager : MonoBehaviour
 
         else
             Destroy(gameObject);
+
+        UpdateGaugeUI();
     }
 
     //게이지 초기화
     public void ResetGauge()
     {
         currentGauge = 0;
-        OnGaugeChange?.Invoke(currentGauge, maxGauge);
+        UpdateGaugeUI();
     }
 
     //게이지 증가 함수
     public void AddGauge(int amount)
     {
         currentGauge = Mathf.Min(currentGauge + amount, maxGauge); //게이지가 최대치를 넘지 않도록 함
-        OnGaugeChange?.Invoke(currentGauge, maxGauge); //게이지 변화를 알려줌
+        UpdateGaugeUI();
         Debug.Log($"현재 게이지: {currentGauge}");
 
+    }
+
+//게이지 UI변경
+    private void UpdateGaugeUI()
+    {
+        float percent = (float)currentGauge / maxGauge;
+
+        targetFill = percent;
+        gaugePercentText.text = $": {Mathf.RoundToInt(percent * 100)}%";
+
+    }
+
+    private float targetFill = 0f;
+    [SerializeField] private float gaugeSpeed = 1f; //게이지 차는 속도 조절
+
+    private void Update() //게이지가 차오르고 내려가는 거 업데이트, 유니티가 자동으로 업데이트 해줌
+    {
+        maxGaugeImage.fillAmount = Mathf.MoveTowards(
+            maxGaugeImage.fillAmount,
+            targetFill,
+            gaugeSpeed * Time.deltaTime);
     }
 
     //게이지 최대 도달 시 공격을 수행하는 함수! 이후 게이지는 초기화
