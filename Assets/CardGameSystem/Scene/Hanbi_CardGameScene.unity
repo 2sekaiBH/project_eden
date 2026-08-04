@@ -523,6 +523,10 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 199977415746821939, guid: 61ffc24d06a464341bde844296c15b78, type: 3}
+      propertyPath: m_fontSize
+      value: 50
+      objectReference: {fileID: 0}
+    - target: {fileID: 199977415746821939, guid: 61ffc24d06a464341bde844296c15b78, type: 3}
       propertyPath: m_fontColor.b
       value: 1
       objectReference: {fileID: 0}
@@ -1010,6 +1014,10 @@ PrefabInstance:
       propertyPath: playerActor
       value: 
       objectReference: {fileID: 2127880076}
+    - target: {fileID: 4257190053931129511, guid: 61ffc24d06a464341bde844296c15b78, type: 3}
+      propertyPath: m_fontSize
+      value: 50
+      objectReference: {fileID: 0}
     - target: {fileID: 4279031616399215264, guid: 61ffc24d06a464341bde844296c15b78, type: 3}
       propertyPath: m_AnchoredPosition.x
       value: 60
@@ -2004,11 +2012,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 9189637356608502301, guid: 61ffc24d06a464341bde844296c15b78, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: -0.000061035
+      value: 0.000024517
       objectReference: {fileID: 0}
     - target: {fileID: 9189637356608502301, guid: 61ffc24d06a464341bde844296c15b78, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -45
+      value: -46
       objectReference: {fileID: 0}
     - target: {fileID: 9189647579609949967, guid: 61ffc24d06a464341bde844296c15b78, type: 3}
       propertyPath: m_AnchoredPosition.x

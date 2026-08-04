@@ -622,8 +622,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: name
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: b84e68a7ca2c3da42be7a6b708a217ae, type: 2}
-  m_sharedMaterial: {fileID: 507446322244123020, guid: b84e68a7ca2c3da42be7a6b708a217ae, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 5c70db82b4e7a7d4788d0f8962e253e9, type: 2}
+  m_sharedMaterial: {fileID: -140013676533186212, guid: 5c70db82b4e7a7d4788d0f8962e253e9, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -647,7 +647,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 49
+  m_fontSize: 50
   m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -711,6 +711,10 @@ PrefabInstance:
     - target: {fileID: 1871756998154512534, guid: 597e98dcd1957ab4ab494490c77e2230, type: 3}
       propertyPath: m_Name
       value: Hp_Block_Slider
+      objectReference: {fileID: 0}
+    - target: {fileID: 3731744817365768523, guid: 597e98dcd1957ab4ab494490c77e2230, type: 3}
+      propertyPath: m_Name
+      value: extraBlockText
       objectReference: {fileID: 0}
     - target: {fileID: 4082550584459879071, guid: 597e98dcd1957ab4ab494490c77e2230, type: 3}
       propertyPath: m_LocalScale.x

@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 47bc638d4fe947c458003afaeaa87743, type: 3}
   m_Name: NoaData
   m_EditorClassIdentifier: Assembly-CSharp::NpcData
-  name: Noa
+  name: "\uB178\uC544"
   effectDescription: "\uC774\uBC88 \uD134 \uAC00\uC6A9 \uC5D0\uB108\uC9C0 + 2"
   npcProfileImage: {fileID: -656642670871498679, guid: 7aec92aaa9a1c6d4385e005ea529cc4f, type: 3}
   effect: {fileID: 11400000, guid: 17452a7068b461841ac795cf0ec22b1f, type: 2}
