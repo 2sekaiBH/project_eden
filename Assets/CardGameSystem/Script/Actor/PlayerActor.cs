@@ -67,7 +67,7 @@ public class PlayerActor : Actor
             hand[index] = newCard; // 지정한 카드로 교체
         }
         handManager.ReplaceHand(index, newCard); // 손패 UI 갱신 
-        UIUpdator.Instance.SetText($"플레이어 손패 {index + 1}번째 카드를 {newCard.name}으로 변경했습니다.");
+        UIUpdator.Instance.SetText($"플레이어 손패 {index + 1}번째 카드를 {newCard.name}으로 변경했습니다.", CasterType.Player);
         Debug.Log($"플레이어 손패 {index + 1}번째 카드를 {newCard.name}으로 변경했습니다.");
     }
 
@@ -106,4 +106,11 @@ public class PlayerActor : Actor
         this.maxEnergy += amount;
         profileUpdator.InitializeUpdator(maxHp, maxEnergy);
     }
+}
+
+public enum Caster
+{
+    Player,
+    Opponent,
+    System
 }
