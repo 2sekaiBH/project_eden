@@ -30,16 +30,16 @@ public class EveEffect : NpcEffect
 
             yield return panelController.CoRunSelect(); // 카드 선택 시작
 
-            selectdCard = panelController.SelectedCard.Values.Select(cardData => cardData).ToList();
+            selectdCard = panelController.SelectedCard.Select(cardData => cardData.Item2).ToList();
 
             PendingEffectManager.Instance.SetRoundPendingEffect(selectdCard); // pendingEffect에 해당 카드 저장
             cardSelectUIPanel.SetActive(false); // 선택 패널 비활성화
         }
-
-        UIUpdator.Instance.SetText($"이브 효과 적용 - 선택한 {selectdCard.Select(card => card.name)}을(를) 다음 라운드 손패에 추가합니다.");
-        Debug.Log("이브 효과 적용 - 선택한 {selectdCard.Select(card => card.name)}을(를) 다음 라운드 손패에 추가합니다.");
-
         yield return ExecuteRoutine();
+
+        UIUpdator.Instance.SetText($"이브: 선택한 {selectdCard[0].name}을(를) 다음 라운드 손패에 추가");
+        Debug.Log($"이브 효과 적용 - 선택한 {selectdCard[0].name}을(를) 다음 라운드 손패에 추가합니다.");
+
     }
 
 }

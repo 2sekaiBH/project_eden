@@ -118,7 +118,7 @@ public class TurnFlowManager : MonoBehaviour
 
             // 3. 평타 공격 - DefaultAttackController에서 담당
             OnTurnStart?.Invoke(currentTurn);
-            UIUpdator.Instance.SetText($"평타 공격 <sprite=1>-2, 방어 증가<sprite=2>+1", CasterType.Player);
+            UIUpdator.Instance.SetText($"평타 발동: <sprite=1>-2, <sprite=2>+1", CasterType.Player);
             yield return new WaitForSeconds(1f);
 
             PendingEffectManager.Instance.ConsumeReduceCost();

@@ -15,11 +15,11 @@ public class CardSelectOnPanelController : MonoBehaviour
 
     private List<GameObject> cards = new List<GameObject>(); // 카드 게임 오브젝트
     private List<CardDisplay> cardDisplays = new List<CardDisplay>(); // 카드 오브젝트에 부착된 CardDisplay
-    private Dictionary<int, CardData> selectedCard = new Dictionary<int, CardData>(); // <index, CardData>
+    private List<(int, CardData)> selectedCard = new List<(int, CardData)>(); // <index, CardData>
     /// <summary>
     /// 선택한 card Index, CardData 딕셔너리
     /// </summary>
-    public Dictionary<int, CardData> SelectedCard => selectedCard;
+    public List<(int, CardData)> SelectedCard => selectedCard;
 
     private void OnEnable()
     {
@@ -61,7 +61,7 @@ public class CardSelectOnPanelController : MonoBehaviour
         int index = cardDisplays.FindIndex(display => display.Equals(selectDisplay));
         if (index > -1)
         {
-            selectedCard.Add(index, selectDisplay.CardData);
+            selectedCard.Add((index, selectDisplay.CardData));
         }
     }
 

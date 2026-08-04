@@ -60,11 +60,17 @@ public class CardExecutor : MonoBehaviour
             card.effects.ForEach((effect) => effect.Execute(context)); // 카드 effect 실행
             MissionManager.Instance.UseCard(context.caster, card); //이번 턴에 3장 이상의 카드를 사용했는지 확인
             if (caster is PlayerActor)
+            
                 cast = CasterType.Player;
+
+
             else if (caster is OpponentActor)
+
                 cast = CasterType.Opponent;
-            UIUpdator.Instance.SetText($"{caster}: 카드 {card.name} 사용!", cast);
-            Debug.Log($"{caster}의 카드 {cards} 실행");
+
+            
+            UIUpdator.Instance.SetText($"{caster.Name}: {card.name} 카드 사용!", cast);
+            Debug.Log($"{caster.name}의 카드 {cards} 실행");
             yield return new WaitForSeconds(1f);
         }
     }
