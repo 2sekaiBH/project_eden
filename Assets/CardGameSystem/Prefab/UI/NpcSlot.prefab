@@ -240,8 +240,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: Npc
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: b84e68a7ca2c3da42be7a6b708a217ae, type: 2}
-  m_sharedMaterial: {fileID: 507446322244123020, guid: b84e68a7ca2c3da42be7a6b708a217ae, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 5c70db82b4e7a7d4788d0f8962e253e9, type: 2}
+  m_sharedMaterial: {fileID: -140013676533186212, guid: 5c70db82b4e7a7d4788d0f8962e253e9, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -265,8 +265,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 34.48
-  m_fontSizeBase: 34.48
+  m_fontSize: 29.9
+  m_fontSizeBase: 29.9
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18

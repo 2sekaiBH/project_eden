@@ -18,7 +18,7 @@ public class ArchitectEffect : NpcEffect
             TurnFlowManager.OnTurnEnd -= Handler;
         }
         TurnFlowManager.OnTurnEnd += Handler;
-        UIUpdator.Instance.SetText("카인 효과 적용 - 이번 턴 적 스킵");
+        UIUpdator.Instance.SetText("아키텍트: 이번 턴 적 스킵");
         Debug.Log("카인 효과 적용 - 이번 턴 적 스킵");
     }
 }

@@ -18,6 +18,7 @@ public class KainEffect : NpcEffect
         // 코루틴 사용이므로 비워두기
     }
 
+    List<CardData> newCards;
     public override IEnumerator ApplyRoutine(NpcContext context)
     {
         Debug.Log("카인 효과 적용");
@@ -30,12 +31,14 @@ public class KainEffect : NpcEffect
 
             yield return panelController.CoRunSelect(); // 카드 선택 시작
 
-            Dictionary<int, CardData> selectedCards = panelController.SelectedCard;
+            List<(int, CardData)> selectedCards = panelController.SelectedCard;
             foreach (var (index,cardData) in selectedCards)
             {
-                context.playerActor.ReplaceCard(index);
+                newCards.Add(context.playerActor.ReplaceCard(index));
             }
 
+            UIUpdator.Instance.SetText($"카인: 선택한 {selectedCards[0].Item2.name} 카드를 {newCards[0].name} 카드로 변경");
+            newCards.Clear();
             gameObject.SetActive(false); // 선택 패널 비활성화
         }
         yield return ExecuteRoutine();
