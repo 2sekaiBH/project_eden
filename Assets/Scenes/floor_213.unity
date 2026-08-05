@@ -371,7 +371,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dbe147a576c36c040a08c9ff15cc9889, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::InteractableObject
-  interactionId: 6
+  interactionId: 7
   interactionType: 0
   sprite1: {fileID: -5158351327573750697, guid: 7f9ef8ec4a1580b49a97ffc40d90ece9, type: 3}
   sprite2: {fileID: -5158351327573750697, guid: 7f9ef8ec4a1580b49a97ffc40d90ece9, type: 3}

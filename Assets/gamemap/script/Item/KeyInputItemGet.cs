@@ -37,9 +37,9 @@ public class KeyInputItemGet : MonoBehaviour
     {
         isGranted = true;
 
-        if (ItemAcquisitionUI.Instance != null)
+        if (ItemVideoUI.Instance != null)
         {
-            ItemAcquisitionUI.Instance.ShowAcquisitionPopup(itemId);
+            ItemVideoUI.Instance.PlayRareItemVideo(itemId);
         }
     }
 }

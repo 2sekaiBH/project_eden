@@ -15,12 +15,12 @@ public class PasswordUI : MonoBehaviour
     [SerializeField] private TextMeshProUGUI[] digitTexts;
 
     [Header("색상 연출")]
-    [SerializeField] private Color activeDigitColor = Color.yellow; // 현재 선택 중인 자릿수 색상
+    [SerializeField] private Color activeDigitColor = new Color(59f/255f, 255f/255f, 255f/255f); // 현재 선택 중인 자릿수 색상
     [SerializeField] private Color normalDigitColor = Color.white;  // 대기 중인 자릿수 색상
 
     [Header("비밀번호 설정")]
     [SerializeField] private string correctPassword = "5321"; // 정답 비밀번호
-    [SerializeField] private string nextSceneName = "1Stage_MiddleBoss";
+    [SerializeField] private string nextSceneName = "CardGameScene";
 
     private int[] currentDigits;  // 각 자릿수의 현재 숫자
     private int currentFocusIndex = 0; // 현재 조종 중인 자릿수 인덱스

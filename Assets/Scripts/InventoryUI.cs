@@ -13,7 +13,7 @@ public class InventoryUI : MonoBehaviour
 
     [SerializeField] private Image itemDetailIcon;
     [SerializeField] private TextMeshProUGUI itemName;
-    [SerializeField] private TextMeshProUGUI itemDescription;
+    [SerializeField] private Text itemDescription;
 
     private void Awake()
     {
