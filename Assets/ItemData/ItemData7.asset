@@ -13,7 +13,10 @@ MonoBehaviour:
   m_Name: ItemData7
   m_EditorClassIdentifier: Assembly-CSharp::ItemData
   id: 7
-  itemName: 
+  itemName: "\uC30D\uC131 \uAE30\uC5B5 \uACB0\uC815"
   itemIcon: {fileID: 0}
-  ItemDetailIcon: {fileID: 0}
-  itemDescription: 
+  ItemDetailIcon: {fileID: -5158351327573750697, guid: 7f9ef8ec4a1580b49a97ffc40d90ece9, type: 3}
+  itemDescription: "\uB450 \uAC1C\uC758 \uBCC4\uC774 \uC11C\uB85C\uB97C \uACF5\uC804\uD558\uB4EF
+    \uC5BD\uD78C \uACB0\uC815 \uAD6C\uC870. \uB0B4\uBD80\uC5D0\uB294 \uC815\uCCB4\uB97C
+    \uC54C \uC218 \uC5C6\uB294 \uC0DD\uCCB4 \uAE30\uC5B5 \uD30C\uD615\uC774 \uBCF4\uC874\uB418\uC5B4
+    \uC788\uB2E4."

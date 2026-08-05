@@ -13,7 +13,8 @@ MonoBehaviour:
   m_Name: ItemData6
   m_EditorClassIdentifier: Assembly-CSharp::ItemData
   id: 6
-  itemName: 
+  itemName: "\uD56D\uC131 \uC528\uC557"
   itemIcon: {fileID: 0}
   ItemDetailIcon: {fileID: 0}
-  itemDescription: 
+  itemDescription: "\uBE5B\uC744 \uC783\uC740 \uBCC4\uC758 \uC911\uC2EC\uBD80\uC5D0\uC11C
+    \uCD94\uCD9C\uB41C \uC0DD\uBA85 \uBCF4\uC874 \uD575"
