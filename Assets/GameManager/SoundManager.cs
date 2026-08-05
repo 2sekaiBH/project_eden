@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Audio;
 
 public enum EBgm
 {
@@ -32,6 +33,7 @@ public class SoundManager : MonoBehaviour
     [Header("Reference")]
     [SerializeField] private AudioSource sfxPlayer; // SFX 재생용 AudioSource
     [SerializeField] private AudioSource bgmPlayer; // BGM 재생용 AudioSource
+    [SerializeField] private AudioMixer mixer;
 
     [Header("Audio Clips")]
     [SerializeField] private AudioClip[] bgmClips;
@@ -98,4 +100,13 @@ public class SoundManager : MonoBehaviour
         }
     }
 
+    public void SetBgmVolume(float volume)
+    {
+        mixer.SetFloat("BgmVolumeParam", Mathf.Log10(volume) * 20);
+    }
+
+    public void SetSfxVolume(float volume)
+    {
+        mixer.SetFloat("SfxVolumeParam", Mathf.Log10(volume) * 20);
+    }
 }
