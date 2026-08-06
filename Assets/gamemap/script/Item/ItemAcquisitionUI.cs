@@ -5,31 +5,19 @@ public class ItemAcquisitionUI : MonoBehaviour
 {
     public static ItemAcquisitionUI Instance { get; private set; }
 
-    [System.Serializable]
-    public struct ItemUIData
-    {
-        public int id;             // 1: 의문의 캔, 2: 전단지, 3: 고물 로봇, 4: 안내 칩
-        public string itemName;    // 아이템 이름
-        [TextArea(3, 5)]
-        public string itemDesc;
-        public Sprite itemIcon;    // 아이템 이미지 스프라이트
-    }
-
-    [Header("아이템 데이터베이스")]
-    [SerializeField] private ItemUIData[] itemDatabase;
-
     [Header("UI 컴포넌트 연결")]
-    [SerializeField] private GameObject popupPanel;       // UI 패널 부모 오브젝트
-    [SerializeField] private Image iconImage;             // 아이템 아이콘 이미지 칸
-    [SerializeField] private Text itemInfoText; // "[아이템이름]을(를) 획득했습니다!" 텍스트 칸
-    [SerializeField] private Text itemDescText;
+    [SerializeField] private GameObject popupPanel;
+    [SerializeField] private Image ItemDetailIcon;
+    [SerializeField] private Text itemInfoText;
+
+    private int currentAcquiredItemId;
 
     private void Awake()
     {
         if (Instance == null)
         {
             Instance = this;
-            DontDestroyOnLoad(gameObject); // 씬 전환 시 파괴 방지
+            DontDestroyOnLoad(gameObject);
         }
         else
         {
@@ -37,56 +25,68 @@ public class ItemAcquisitionUI : MonoBehaviour
             return;
         }
 
-        if (popupPanel != null) popupPanel.SetActive(false); // 게임 시작 시엔 꺼둠
+        if (popupPanel != null) popupPanel.SetActive(false);
     }
 
-    // ID로 데이터베이스를 조회하는 함수
-    private ItemUIData FindItemDataByID(int id)
-    {
-        foreach (var data in itemDatabase)
-        {
-            if (data.id == id) return data;
-        }
-        return new ItemUIData { id = id, itemName = "미지의 아이템", itemDesc = "정체를 알 수 없다.", itemIcon = null };
-    }
-
-    // 팝업창 열기 (InteractableObject가 호출함)
     public void ShowAcquisitionPopup(int id)
     {
-        ItemUIData targetData = FindItemDataByID(id);
-
-        // UI 정보 갈아끼우기
-        if (itemInfoText != null)
-            itemInfoText.text = $"[{targetData.itemName}]";
-
-        if (itemDescText != null)
-            itemDescText.text = targetData.itemDesc;
-
-        if (iconImage != null)
+        if (ItemDatabase.Instance == null)
         {
-            if (targetData.itemIcon != null)
+            return;
+        }
+
+        ItemData targetData = ItemDatabase.Instance.GetItemByID(id);
+
+        if (targetData == null)
+        {
+            return;
+        }
+
+        currentAcquiredItemId = id;
+
+        itemInfoText.text = $"[{targetData.itemName}]";
+
+        if (ItemDetailIcon != null)
+        {
+            if (targetData.ItemDetailIcon != null)
             {
-                iconImage.gameObject.SetActive(true);
-                iconImage.sprite = targetData.itemIcon;
-                iconImage.SetNativeSize(); // 아이콘 이미지의 원본 크기로 조정
+                ItemDetailIcon.gameObject.SetActive(true);
+                ItemDetailIcon.sprite = targetData.ItemDetailIcon;
+                ItemDetailIcon.SetNativeSize();
             }
             else
             {
-                iconImage.gameObject.SetActive(false);
+                ItemDetailIcon.gameObject.SetActive(false);
             }
         }
 
-        // 팝업창 활성화
         if (popupPanel != null) popupPanel.SetActive(true);
-
-        Time.timeScale = 0f; 
+        Time.timeScale = 0f;
     }
 
-    // ★ [확인] 버튼에 연결할 패널 닫기 함수
     public void OnClickConfirmButton()
     {
-        if (popupPanel != null) popupPanel.SetActive(false);
+        if (Inventory.Instance != null)
+        {
+            Inventory.Instance.AddItemByID(currentAcquiredItemId);
+            Debug.Log("아이템이 인벤토리에 추가되었습니다.");
+        }
+        else
+        {
+            Debug.LogError("아이템을 찾을 수 없습니다");
+        }
 
-        Time.timeScale = 1f; 
+        if (popupPanel != null) popupPanel.SetActive(false);
+        Time.timeScale = 1f;
     }
+
+    public ItemData GetUIDataByID(int id)
+    {
+        if (ItemDatabase.Instance != null)
+        {
+            return ItemDatabase.Instance.GetItemByID(id);
+        }
+        return null;
+    }
+
 }
