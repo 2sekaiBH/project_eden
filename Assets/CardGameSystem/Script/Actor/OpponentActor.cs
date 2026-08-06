@@ -9,29 +9,65 @@ public class OpponentActor : Actor
 {
     [SerializeField] private OpponentData opponentData; // name, Hp
 
-    public event Action<List<CardData>> OnOpponentEndSelect;
-    void Start()
+    public static event Action<List<CardData>> OnOpponentEndSelect;
+
+    private bool isEnabledSelect = true; // 아키텍트의 - 적 턴 스킵 효과 구현을 위해 사용
+
+    void Awake()
     {
-        name = opponentData.name;
         Initialize();
         UpdateProfileUI();
     }
     public override void Initialize()
     {
+        name = opponentData.name;
+        maxHp = opponentData.totalHp;
         currentHp = opponentData.totalHp;
         currentBlock = 0;
         currentEnergy = opponentData.maxEnergy;
+
+        profileUpdator.InitializeUpdator(opponentData.totalHp, opponentData.maxEnergy); // profileUpdator 초기화
     }
 
     /// <summary>
     /// 적의 카드 select 로직
-    /// 손패 중 랜덤으로 하나 뽑기
+    /// 가진 에너지를 최대한 사용하여 카드 제출
     /// </summary>
     public override void SelectCard()
     {
         List<CardData> pickedCard = new List<CardData>();
-        pickedCard.Add(hand[UnityEngine.Random.Range(0, hand.Count)]);
+        if (this.isEnabledSelect)
+        {
+            int i = 0;
+            while (i < hand.Count)
+            {
+                CardData card = hand[i];
+                
+                //조건부카드 사용 가능 확인, 사용 불가 시 내지 못하고 건너뜀
+                if(card.isMissionCard && !MissionManager.Instance.IsMissionComplete(this))
+                {
+                    i++;
+                    continue;
+                }
+
+                //에너지 부족시 역시 건너뜀
+                if(!TrySpendEnergy(card.energyCost))
+                {
+                    i++;
+                    continue;
+                }
+
+                pickedCard.Add(hand[i]);
+                i++;
+            }
+        }
         OnOpponentEndSelect.Invoke(pickedCard);
+    }
+
+    //적이 제출한 카드 삭제
+    public void DiscardCard(CardData card)
+    {
+        hand.Remove(card);
     }
 
     public override void UpdateProfileUI()
@@ -42,5 +78,16 @@ public class OpponentActor : Actor
     public override void EnergyIntialize()
     {
         SetEnergy(opponentData.maxEnergy);
+    }
+
+    /// <summary>
+    /// 아키텍트 효과 구현 - 이번 턴 적 select 스킵
+    /// turn 종료 시 해제
+    /// </summary>
+    /// <param name="active"></param>
+    public void SetActiveOnCurrentTurn(bool active)
+    {
+        isEnabledSelect = active;
+        profileUpdator.UpdateActiveProfile(active);
     }
 }

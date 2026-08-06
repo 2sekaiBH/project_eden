@@ -11,11 +11,19 @@ public class CardData : ScriptableObject
     public int cardId;
     public string cardName;
     public CardType cardType;
+    //카드 이미지
+    public Sprite cardImage;
     public int energyCost;
     public string effect;
+    //미션 카드인지 확인
+    public bool isMissionCard;
+
     [TextArea] public string description;
 
     public List<CardEffectData> effects;
+
+  
+
 }
 
 public enum CardType

@@ -1,0 +1,19 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 47bc638d4fe947c458003afaeaa87743, type: 3}
+  m_Name: EveData
+  m_EditorClassIdentifier: Assembly-CSharp::NpcData
+  name: "\uC774\uBE0C"
+  effectDescription: "\uC190\uD328\uC5D0\uC11C \uCE74\uB4DC 1\uC7A5 \uBCF5\uC0AC\uD558\uC5EC
+    \uB2E4\uC74C \uB77C\uC6B4\uB4DC\uC5D0<br>\uC7AC\uC0AC\uC6A9\uD55C\uB2E4"
+  npcProfileImage: {fileID: -5158351327573750697, guid: 7f9ef8ec4a1580b49a97ffc40d90ece9, type: 3}
+  effect: {fileID: 11400000, guid: a4211a5dfab358c4f9ad35127e28ef89, type: 2}

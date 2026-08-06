@@ -1,6 +1,8 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
+using System.Runtime.CompilerServices;
 using UnityEngine;
 
 /// <summary>
@@ -11,38 +13,52 @@ public class HandManager : MonoBehaviour
 {
     [Header("Refernce")]
     [SerializeField] private List<GameObject> cards = new List<GameObject>(); // 카드 오브젝트들
-    private List<CardDisplay> cardDisplays = new List<CardDisplay>(); // 카드 오브젝트에 부착된 CardDisplay
+    [SerializeField] private GameObject cardPrefab;
+    [SerializeField] private PlayerActor player;
+    [SerializeField] private RectTransform rectTransform;
+
+    public List<CardDisplay> cardDisplays = new List<CardDisplay>(); // 카드 오브젝트에 부착된 CardDisplay
 
     private List<CardData> selectedCards = new List<CardData>(); // 선택된 카드 리스트
-    private PlayerActor player;
-    private bool selectEndFlag = false; // 선택 종료 플래그
+
+    private bool selectEndFlag = false; // 선택 종료 플래그  
+
+    //UI용 세팅
+    [SerializeField] private float cardSpacing = 120f; //카드 간경
+    [SerializeField] private float curveHeight = 15f; //카드 높이
+    [SerializeField] private float rotateAngle = 8f; //카드 각도
+
     public void HandleSelectEndFlag(bool value) // 제출 버튼에서 구독
     {
         selectEndFlag = value;
     }
 
-    public event Action<List<CardData>> OnSelectEnd;
+    public static event Action<List<CardData>> OnSelectEnd;
     // 플레이어 선택 최종 종료 이벤트
     // PlayerActor에서 구독
 
     public static Action<int> OnCardSelect;
+    // CardDisplay에서 구독
+
+
 
     private void Awake()
     {
-        cards.ForEach((card) => cardDisplays.Add(card.GetComponent<CardDisplay>()));
+        if(rectTransform == null) rectTransform = GetComponent<RectTransform>();
     }
 
     // 이벤트 구독
     private void OnEnable()
     {
-        cardDisplays.ForEach((display) => display.OnCardSelected += HandleSelectCard);
-        RoundFlowManager.OnRoundEnd += FillCard;
+        RoundFlowManager.OnRoundEnd += DiscardAllCard;
+        player.OnPlayerDrawCard += Initialize;
     }
     // 이벤트 해제
     private void OnDisable()
     {
         cardDisplays.ForEach((display) => display.OnCardSelected -= HandleSelectCard);
-        RoundFlowManager.OnRoundEnd -= FillCard;
+        RoundFlowManager.OnRoundEnd -= DiscardAllCard;
+        player.OnPlayerDrawCard -= Initialize;
     }
 
     /// <summary>
@@ -50,27 +66,39 @@ public class HandManager : MonoBehaviour
     /// </summary>
     public void Initialize(List<CardData> cardDatas)
     {
-        for(int i = 0; i < cardDisplays.Count; i++)
+        Debug.Log($"Initialize 호출! {cardDatas.Count}장");
+
+        for (int i = 0; i < cardDatas.Count; i++)
         {
-            cardDisplays[i].SetCard(cardDatas[i]);
+            GameObject cardObject = Instantiate(cardPrefab, rectTransform, false);
+            cards.Add(cardObject);
+            CardDisplay cardDisplay = cardObject.GetComponent<CardDisplay>();
+            cardDisplays.Add(cardDisplay);
+            cardDisplay.OnCardSelected += HandleSelectCard;
+
+            cardDisplay.SetCard(cardDatas[i]);
         }
+
+        UpdateHandUI();
+    }
+
+    public void ReplaceHand(int index = 0, CardData cardData = null)
+    {
+        cardDisplays[index].SetCard(cardData);
     }
 
     /// <summary>
     /// 카드 선택 시작
     /// </summary>
     /// <param name="handDatas">손패 데이터</param>
-    public void StartSelect(List<CardData> handDatas, PlayerActor playerActor)
+    public void StartSelect(List<CardData> handDatas)
     {
-        this.player = playerActor;
         // 상태 변수 초기화
         selectedCards.Clear();
         selectEndFlag = false;
 
-        Initialize(handDatas);
-
         StartCoroutine(CoRunSelect());
-    } 
+    }
 
     /// <summary>
     /// 메인 카드 선택 코루틴
@@ -80,6 +108,7 @@ public class HandManager : MonoBehaviour
     {
         // 카드 선택 시작
         cardDisplays.ForEach((display) => display.SetActiveInput(true)); // input 활성화
+
         Debug.Log("플레이어 카드 제출 기다리는 중");
         yield return new WaitUntil(() => selectEndFlag); // 제출 버튼 누를 때까지 기다리기
 
@@ -99,6 +128,13 @@ public class HandManager : MonoBehaviour
     {
         CardData card = display.CardData;
         if (card == null) return;
+
+        //조건부 카드 미션 실패 시 아예 카드 선택이 안 됨
+        if (card.isMissionCard && !MissionManager.Instance.IsMissionComplete(player))
+        {
+            UIUpdator.Instance.SetText("미션을 완료해야 사용할 수 있습니다.");
+            return;
+        }
 
         bool alreadySelected = selectedCards.Contains(card);
 
@@ -126,17 +162,12 @@ public class HandManager : MonoBehaviour
     /// <param name="card">제거할 카드</param>
     private void DiscardCard(CardData card)
     {
-        FindCardDisplayByData(card).UpdateDiscardCard();
-    }
+        player.DiscardCard(card);
 
-    /// <summary>
-    /// 데이터로 cardDisplay 찾기
-    /// </summary>
-    /// <param name="card"></param>
-    /// <returns></returns>
-    private CardDisplay FindCardDisplayByData(CardData card)
-    {
-        return cardDisplays.Find((cardDisplay) => (cardDisplay.CardId == card.cardId));
+        GameObject discardedCard = cardDisplays.Find((display) => (display.card.Equals(card))).gameObject;
+        cardDisplays.Remove(discardedCard.GetComponent<CardDisplay>());
+        cards.Remove(discardedCard);
+        Destroy(discardedCard);
     }
 
     /// <summary>
@@ -147,14 +178,36 @@ public class HandManager : MonoBehaviour
         selectedCards.Clear();
         selectEndFlag = false;
     }
+
     /// <summary>
-    /// Discard되어 inactive된 Card Object들 모두 활성화
-    /// 라운드 종료 이벤트 핸들러
+    /// 라운드 종료 시 모든 카드 오브젝트 삭제
     /// </summary>
-    /// <param name="_"></param>
-    private void FillCard(int _)
+    private void DiscardAllCard(int _)
     {
-        // 카드 오브젝트 활성화
-        cards.ForEach((card) => card.SetActive(true));
+        cards.ForEach(card => Destroy(card));
+        cards.Clear();
+        cardDisplays.Clear();
     }
+
+    //손패 UI갱신
+    public void UpdateHandUI()
+    {
+        int count = cardDisplays.Count;
+
+        for (int i = 0; i < count; i++)
+        {
+            RectTransform rt = cardDisplays[i].GetComponent<RectTransform>();
+
+            float offset = i - (count - 1) / 2f;
+
+            float x = offset * cardSpacing;
+            float y = -offset * offset * curveHeight;
+            float angle = -offset * rotateAngle;
+
+            rt.anchoredPosition = new Vector2(x, y);
+            rt.localRotation = Quaternion.Euler(0, 0, angle);
+        }
+    }
+
+
 }

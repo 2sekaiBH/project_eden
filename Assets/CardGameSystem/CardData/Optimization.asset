@@ -1,0 +1,24 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1c13dab7a990a8249959515d8c16c972, type: 3}
+  m_Name: Optimization
+  m_EditorClassIdentifier: Assembly-CSharp::Card
+  cardId: 9
+  cardName: Optimization
+  cardType: 2
+  cardImage: {fileID: -4305777102597569778, guid: 93b3f3a434da37641a87b9dfcd868041, type: 3}
+  energyCost: 2
+  effect: -1
+  isMissionCard: 0
+  description: "\uB2E4\uC74C \uD134 \uAC01 \uCE74\uB4DC \uCF54\uC2A4\uD2B8 -1"
+  effects:
+  - {fileID: 11400000, guid: e3cc92d0ec5406c47a45ac5d6f1018d5, type: 2}

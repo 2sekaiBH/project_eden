@@ -1,80 +1,149 @@
-
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.Assemblies;
+using UnityEngine.Rendering;
 
 /// <summary>
 /// 카드를 사용하는 주체(플레이어, 보스 등)
 /// </summary>
-public abstract class Actor: MonoBehaviour
+public abstract class Actor : MonoBehaviour
 {
     [Header("Reference")]
     [SerializeField] protected ProfileUpdator profileUpdator;
+
     protected new string name;
+    protected int maxHp;
     protected int currentHp;
     protected int currentBlock = 0;
     protected int currentEnergy = 4;
-    protected List<CardData> hand = new List<CardData>();
+
+    public List<CardData> hand = new List<CardData>();
+  
+
+    public string Name => name;
     public int CurrentHp => currentHp;
     public int CurrentBlock => currentBlock;
     public int CurrentEnergy => currentEnergy;
     public List<CardData> Hand => hand;
+
     private Action<int> _handler;
+
+    /// <summary>
+    /// 상대방 데미지 반사 상태
+    /// </summary>
+    private bool reflect = false;
+
+    // 데미지 절반으로 받는 상태
+    private bool halfDamage = false;
+
+    // 에너지가 -1인 상태
+    private bool reduceCost = false;
 
     private void OnEnable()
     {
-        _handler = (amount) => UpdateProfileUI(); 
-        TurnFlowManager.OnTurnStart += _handler; // turn 시작할 때 UI update
+        _handler = (amount) => UpdateProfileUI();
 
+        TurnFlowManager.OnTurnStart += _handler;
+        TurnFlowManager.OnTurnEnd += ResetBlock;
+        RoundFlowManager.OnRoundStart += ResetHand;
     }
 
     private void OnDisEnable()
     {
         TurnFlowManager.OnTurnStart -= _handler;
+        TurnFlowManager.OnTurnEnd -= ResetBlock;
+        RoundFlowManager.OnRoundStart -= ResetHand;
     }
 
     /// <summary>
-    /// Damage - Hp 감소
+    /// Damage - Hp 감소 (기본 공격)
     /// </summary>
-    /// <param name="amount">피해량</param>
-    public virtual void TakeDamage(int amount)
+    public virtual void TakeDamage(int amount, Actor attacker)
     {
-        /*
+        int origin = amount;
+
+        // 데미지 절반 구현
+        if (halfDamage)
+        {
+            amount = Mathf.CeilToInt(amount * 0.5f);
+            Debug.Log($"데미지 절반 적용! {origin} -> {amount}");
+        }
+
+       
         int absorbed = Mathf.Min(currentBlock, amount);
         currentBlock -= absorbed;
+
+        Debug.Log($"{name}: {amount} 피해 중 {absorbed} 막음");
+
+
         int remaining = amount - absorbed;
-        currentHp = Mathf.Max(0, currentHp - remaining); // Hp 음수 방지
-        */
-        currentHp -= amount;
+        currentHp = Mathf.Max(0, currentHp - remaining);
+        MissionManager.Instance.TakeDamage(this); //데미지를 입었는지 확인
+
+        // 반사 구현
+        if (reflect && absorbed > 0 && attacker != null)
+        {
+            attacker.TakeDamage(absorbed, null);
+        }
+
+        Debug.Log($"{name}: 현재 체력: {currentHp}");
+        UpdateProfileUI();
     }
 
     /// <summary>
     /// Heal - Hp 증가
     /// </summary>
-    /// <param name="amount">치료할 양</param>
     public virtual void Heal(int amount)
     {
-        currentHp += amount;
+        currentHp = Mathf.Min(currentHp + amount, maxHp);
+        UpdateProfileUI();
     }
 
     /// <summary>
     /// 방어 증가
     /// </summary>
-    /// <param name="amount">증가할 양</param>
     public virtual void AddBlock(int amount)
     {
         currentBlock += amount;
+        UpdateProfileUI();
+    }
+
+    /// <summary>
+    /// 방어 리셋 - 매 턴 종료마다 실행
+    /// </summary>
+    public virtual void ResetBlock(int _)
+    {
+        currentBlock = 0;
+        Debug.Log("방어 리셋");
+    }
+
+    /// <summary>
+    /// 손패 리셋 - 매 라운드 시작마다 실행
+    /// </summary>
+    public virtual void ResetHand(int _)
+    {
+        hand.Clear();
     }
 
     /// <summary>
     /// 에너지 소비
     /// </summary>
-    /// <param name="amount">소비량</param>
     public virtual bool TrySpendEnergy(int amount)
     {
-        if (currentEnergy < amount) return false;
+        int origin = amount;
+
+        // 실제 카드 코스트를 1 줄임
+        if (reduceCost)
+        {
+            amount = Mathf.Max(0, amount - 1);
+            Debug.Log($"카드 코스트 요래됐수 {origin} -> {amount}");
+        }
+
+        if (currentEnergy < amount)
+            return false;
+
         SetEnergy(currentEnergy - amount);
         return true;
     }
@@ -82,35 +151,36 @@ public abstract class Actor: MonoBehaviour
     /// <summary>
     /// 에너지 추가
     /// </summary>
-    /// <param name="amount">추가할 양</param>
     public virtual void RefundEnergy(int amount)
     {
+        if(reduceCost)
+        {
+            amount = Mathf.Max(0, amount - 1);
+        }
+
         SetEnergy(currentEnergy + amount);
     }
 
     /// <summary>
     /// 에너지 설정
     /// </summary>
-    /// <param name="value"> 설정할 에너지 값</param>
     public void SetEnergy(int value)
     {
         currentEnergy = Mathf.Max(0, value);
-        UpdateProfileUI(); // 에너지 변경 = 프로필 UI 갱신, 항상 같이 일어남을 여기서 보장
+        UpdateProfileUI();
     }
 
     /// <summary>
     /// 에너지 초기화 - 매 턴 시작마다 실행
     /// </summary>
-    /// 
-    public abstract void EnergyIntialize(); 
+    public abstract void EnergyIntialize();
 
     /// <summary>
     /// 덱에서 카드 뽑기
     /// </summary>
-    /// <param name="amount">가져올 카드 수</param>
     public virtual void DrawCards(int amount)
     {
-        hand.AddRange(DeckManager.Instance.DrawRandomCard(amount));
+        SetHand(DeckManager.Instance.DrawRandomCard(amount));
     }
 
     /// <summary>
@@ -127,4 +197,60 @@ public abstract class Actor: MonoBehaviour
     /// 프로필 UI 업데이터
     /// </summary>
     public abstract void UpdateProfileUI();
+
+    // 반사 상태 On
+    public void EnableReflect()
+    {
+        reflect = true;
+    }
+
+    // 데미지 절반 적용
+    public void EnableHalfDamage()
+    {
+        halfDamage = true;
+    }
+
+    // 카드 코스트 -1
+    public void EnableReduceCost()
+    {
+        reduceCost = true;
+    }
+
+    // 턴 동안 지속되는 효과 초기화
+    public void ResetTurnEffect()
+    {
+        reflect = false;
+        halfDamage = false;
+        reduceCost = false;
+    }
+
+    /// <summary>
+    /// 여러 카드를 인자로 받는 hand Setter
+    /// </summary>
+    /// <param name="cards"></param>
+    public virtual void SetHand(List<CardData> cards)
+    {
+        hand.AddRange(cards);
+    }
+
+    /// <summary>
+    /// 카드 한개용 hand Setter
+    /// </summary>
+    /// <param name="card"></param>
+    public virtual void SetHand(CardData card)
+    {
+        hand.Add(card);
+    }
+
+
+    /// <summary>
+    /// 기본 카드 드로우 외 특정한 카드를 추가하는 메소드
+    /// </summary>
+    /// <param name="cardData">추가할 카드</param>
+    public virtual void AddCard(CardData cardData)
+    {
+        if (cardData != null)
+            SetHand(cardData);
+    }
+
 }

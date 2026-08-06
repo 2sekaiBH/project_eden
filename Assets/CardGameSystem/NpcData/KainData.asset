@@ -1,0 +1,19 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 47bc638d4fe947c458003afaeaa87743, type: 3}
+  m_Name: KainData
+  m_EditorClassIdentifier: Assembly-CSharp::NpcData
+  name: "\uCE74\uC778"
+  effectDescription: "\uD604\uC7AC \uC190\uD328\uC5D0\uC11C \uCE74\uB4DC 1\uC7A5\uC744
+    \uAD50\uCCB4\uD55C\uB2E4"
+  npcProfileImage: {fileID: 5405103440312816447, guid: a04a8aeccf912b040ab7fbcd67fd009b, type: 3}
+  effect: {fileID: 11400000, guid: cd9906cc0ebe9c4419eff33656d0c17b, type: 2}
