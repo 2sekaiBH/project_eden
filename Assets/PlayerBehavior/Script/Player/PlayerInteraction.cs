@@ -7,6 +7,7 @@ public class PlayerInteraction : MonoBehaviour
     [SerializeField] private InteractionDetector detector;
     private IWorldInteractable currentInteraction = null;
     private int currentInteractionId = 0;
+    private KeyCode interactionKeyCode = KeyCode.F;
 
     void Awake()
     {
@@ -25,6 +26,18 @@ public class PlayerInteraction : MonoBehaviour
     private void OnDisable()
     {
         detector.OnInteractableChanged -= HandleInteractableChanged;
+        if (KeyManager.Instance != null)
+            KeyManager.Instance.OnKeyChanged += UpdateKeyCode;
+    }
+
+    private void Start()
+    {
+        if (KeyManager.Instance == null)
+        {
+            Debug.LogWarning("KeyManager가 없습니다. - 기본 키로 설정: 상호작용 - F ");
+            return;
+        }
+        KeyManager.Instance.OnKeyChanged += UpdateKeyCode;
     }
 
     // 상호작용 중인지 검사
@@ -38,23 +51,31 @@ public class PlayerInteraction : MonoBehaviour
     }
 
     // ----- 플레이어 상호작용  ------ //
-    public void OnInteraction(InputAction.CallbackContext context)
+    private void OnInteraction()
     {
-        if (context.performed)
-        {
-            // detect된 오브젝트 없을 때
-            if (currentInteraction == null)
-                return;
-            // 상호작용 중복 방지
-            if (isInteracting(currentInteraction.InteractionId))
-                return;
+        // detect된 오브젝트 없을 때
+        if (currentInteraction == null)
+            return;
+        // 상호작용 중복 방지
+        if (isInteracting(currentInteraction.InteractionId))
+            return;
 
-            // interact() 실행
-            if (currentInteraction.CanInteract)
-            {
-                currentInteractionId = currentInteraction.InteractionId;
-                currentInteraction.Interact();
-            }
+        // interact() 실행
+        if (currentInteraction.CanInteract)
+        {
+            currentInteractionId = currentInteraction.InteractionId;
+            currentInteraction.Interact();
         }
-    } 
+    }
+
+    private void Update()
+    {
+        if (Input.GetKeyDown(interactionKeyCode))
+            OnInteraction();
+    }
+
+    private void UpdateKeyCode()
+    {
+        interactionKeyCode = KeyManager.Instance.GetKeyCode(KeyBindingName.Interaction);
+    }
 }

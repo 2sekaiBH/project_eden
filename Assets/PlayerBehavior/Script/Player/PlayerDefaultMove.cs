@@ -33,6 +33,9 @@ public class PlayerDefaultMove : MonoBehaviour
     // 실제 이동에 사용할 속도는 항상 이 프로퍼티로 계산
     private float CurrentMoveSpeed => (isDashHeld && !blockDash) ? baseMoveSpeed * dashValue : baseMoveSpeed; // 실시간으로 달리기 상태 감지
 
+    private KeyCode moveLeftKeyCode = KeyCode.A;
+    private KeyCode moveRIghtKeyCode = KeyCode.D;
+
     void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
@@ -54,6 +57,18 @@ public class PlayerDefaultMove : MonoBehaviour
         PlayerJumpWithSlide.onLand -= AllowDash;
         PlayerJumpWithSlide.onSlide -= BlockMove;
         PlayerJumpWithSlide.onSlideEnd -= AllowMove;
+        if (KeyManager.Instance != null)
+            KeyManager.Instance.OnKeyChanged -= UpdateKeyCode;
+    }
+
+    private void Start()
+    {
+        if (KeyManager.Instance == null)
+        {
+            Debug.LogWarning("KeyManager가 없습니다. - 기본 키로 설정: LeftMove: A, RightMove: D");
+            return;
+        }
+        KeyManager.Instance.OnKeyChanged += UpdateKeyCode;
     }
 
     public void BlockDash()
@@ -82,44 +97,42 @@ public class PlayerDefaultMove : MonoBehaviour
 
 
     // ------ 플레이어 좌측 이동  ------ //
-    public void OnMoveLeft(InputAction.CallbackContext context)
+    private void OnMoveLeft()
     {
-        if (context.performed)
-        {
-            lastInputDir = -1f;
-            leftHeld = true;
-        }
-        else if (context.canceled)
-        {
-            leftHeld = false;
-        }
+        lastInputDir = -1f;
+        leftHeld = true;
+    }
+
+    private void OnMoveLeftEnd()
+    {
+        leftHeld = false;
     }
 
     // ------ 플레이어 우측 이동  ------ //
-    public void OnMoveRight(InputAction.CallbackContext context)
+    private void OnMoveRight()
     {
-        if (context.performed)
-        {
-            lastInputDir = 1f;
-            rightHeld = true;
-        }
-        else if (context.canceled)
-        {
-            rightHeld = false;
-        }
+
+        lastInputDir = 1f;
+        rightHeld = true;
+
+    }
+
+    private void OnMoveRightEnd()
+    {
+        rightHeld = false;
     }
 
     // ------ 플레이어 달리기  ------ //
-    public void OnDash(InputAction.CallbackContext context)
+    private void OnDash()
     {
-        if (context.performed)
-        {
-            isDashHeld = true;
-        }
-        else if (context.canceled)
-        {
-            isDashHeld = false;
-        }
+        isDashHeld = true;
+
+        UpdateDashState();
+    }
+
+    private void OnDashEnd()
+    {
+        isDashHeld = false;
         UpdateDashState();
     }
 
@@ -175,5 +188,27 @@ public class PlayerDefaultMove : MonoBehaviour
         }
 
         rb.linearVelocityX = _moveInput * CurrentMoveSpeed;
+    }
+
+    private void Update()
+    {
+        if (Input.GetKeyDown(moveLeftKeyCode))
+            OnMoveLeft();
+        if (Input.GetKeyUp(moveLeftKeyCode))
+            OnMoveLeftEnd();
+        if (Input.GetKeyDown(moveRIghtKeyCode))
+            OnMoveRight();
+        if(Input.GetKeyUp(moveRIghtKeyCode))
+            OnMoveRightEnd();
+        if (Input.GetKeyDown(KeyCode.LeftShift) || Input.GetKeyDown(KeyCode.RightShift))
+            OnDash();
+        if(Input.GetKeyUp(KeyCode.LeftShift) || Input.GetKeyUp(KeyCode.RightShift))
+            OnDashEnd();
+    }
+
+    private void UpdateKeyCode()
+    {
+        moveLeftKeyCode = KeyManager.Instance.GetKeyCode(KeyBindingName.PlayerLeft);
+        moveRIghtKeyCode = KeyManager.Instance.GetKeyCode(KeyBindingName.PlayerRight);
     }
 }

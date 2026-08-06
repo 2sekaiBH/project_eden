@@ -42,6 +42,9 @@ public class PlayerJumpWithSlide : MonoBehaviour
     private Vector2 baseColliderOffset = default;
     private Vector2 baseColliderSize = default;
 
+    private KeyCode jumpKeyCode = KeyCode.W;
+    private KeyCode slideKeyCode = KeyCode.S;
+
     void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
@@ -50,6 +53,22 @@ public class PlayerJumpWithSlide : MonoBehaviour
 
         baseColliderOffset = playerCollider.offset;
         baseColliderSize = playerCollider.size;
+    }
+
+    private void OnDisable()
+    {
+        if (KeyManager.Instance != null)
+            KeyManager.Instance.OnKeyChanged -= UpdateKeyCode;
+    }
+
+    private void Start()
+    {
+        if (KeyManager.Instance == null)
+        {
+            Debug.LogWarning("KeyManager가 없습니다. - 기본 키로 설정: Jump: W, Slide: S");
+            return;
+        }
+        KeyManager.Instance.OnKeyChanged += UpdateKeyCode;
     }
 
     void FixedUpdate()
@@ -98,11 +117,11 @@ public class PlayerJumpWithSlide : MonoBehaviour
     }
 
     // ------ 플레이어 점프  ------ //
-    public void OnJump(InputAction.CallbackContext context)
+    private void OnJump()
     {
         if (!isJumpEnable) return;
 
-        if (context.performed && isGrounded)
+        if (isGrounded)
         {
             isSlideEnable = false; // 점프 중 슬라이드 막기
             rb.AddForceY(jumpForce, ForceMode2D.Impulse);
@@ -111,12 +130,12 @@ public class PlayerJumpWithSlide : MonoBehaviour
     }
 
     // ------ 플레이어 슬라이드  ------ //
-    public void OnSlide(InputAction.CallbackContext context)
+    private void OnSlide()
     {
         if (!isSlideEnable) return;
 
         float direction = defaultMove.LastInputDir;
-        if (context.performed && isGrounded)
+        if (isGrounded)
         {
             isJumpEnable = false; // 슬라이드 중 점프 막기
             isSlideEnable = false; // 중복 슬라이드 방지
@@ -149,5 +168,19 @@ public class PlayerJumpWithSlide : MonoBehaviour
 
         Gizmos.color = isGrounded ? Color.green : Color.red;
         Gizmos.DrawWireSphere(groundCheck.position, 0.1f);
+    }
+
+    private void Update()
+    {
+        if (Input.GetKeyDown(jumpKeyCode))
+            OnJump();
+        else if(Input.GetKeyDown(slideKeyCode))
+            OnSlide();
+    }
+
+    private void UpdateKeyCode()
+    {
+        jumpKeyCode = KeyManager.Instance.GetKeyCode(KeyBindingName.PlayerJump);
+        slideKeyCode = KeyManager.Instance.GetKeyCode(KeyBindingName.PlayerSlide);
     }
 }
