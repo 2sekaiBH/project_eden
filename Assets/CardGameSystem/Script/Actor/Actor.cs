@@ -22,7 +22,7 @@ public abstract class Actor : MonoBehaviour
     public List<CardData> hand = new List<CardData>();
   
 
-
+    public string Name => name;
     public int CurrentHp => currentHp;
     public int CurrentBlock => currentBlock;
     public int CurrentEnergy => currentEnergy;

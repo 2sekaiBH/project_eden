@@ -42,6 +42,7 @@ public class PendingEffectManager : MonoBehaviour
             roundPendingEffect.extraCards.ForEach((card) => playerActor.AddCard(card));
             Debug.Log($"라운드 시작 - 플레이어에게 {roundPendingEffect.extraCards.Select((card) => card.name)} 카드 전달, 플레이어 카드 수: {playerActor.Hand.Count}");
         }
+        roundPendingEffect.extraCards.Clear(); // 재사용 방지 - 한번 적용 후 clear;
     }
 
     void Update()

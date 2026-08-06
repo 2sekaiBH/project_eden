@@ -38,6 +38,8 @@ public class CardExecutor : MonoBehaviour
         yield return CardExecute(opponentSelectedCards.FindAll(card => card.cardType == CardType.Special), opponentActor, playerActor);
     }
 
+
+    CasterType cast;
     /// <summary>
     /// 카드 실행 로직 - 전달받은 cardData의 effect들을 실행
     /// </summary>
@@ -48,16 +50,27 @@ public class CardExecutor : MonoBehaviour
     {
         string cards = "";
         cardList.ForEach(card => cards += card.description);
-        Debug.Log($"{caster}의 카드 {cards}");
+        Debug.Log($"{caster}의 카드 리스트 {cards}");
 
         CardContext context = new CardContext(caster, target);
+
+        
         foreach (CardData card in cardList)
         {
             card.effects.ForEach((effect) => effect.Execute(context)); // 카드 effect 실행
             MissionManager.Instance.UseCard(context.caster, card); //이번 턴에 3장 이상의 카드를 사용했는지 확인
+            if (caster is PlayerActor)
             
-            UIUpdator.Instance.SetText($"{caster}의 카드 {cards} 사용");
-            Debug.Log($"{caster}의 카드 {cards}");
+                cast = CasterType.Player;
+
+
+            else if (caster is OpponentActor)
+
+                cast = CasterType.Opponent;
+
+            
+            UIUpdator.Instance.SetText($"{caster.Name}: {card.name} 카드 사용!", cast);
+            Debug.Log($"{caster.name}의 카드 {cards} 실행");
             yield return new WaitForSeconds(1f);
         }
     }

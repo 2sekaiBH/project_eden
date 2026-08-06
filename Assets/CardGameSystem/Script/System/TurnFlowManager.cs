@@ -118,28 +118,28 @@ public class TurnFlowManager : MonoBehaviour
 
             // 3. 평타 공격 - DefaultAttackController에서 담당
             OnTurnStart?.Invoke(currentTurn);
-            UIUpdator.Instance.SetText($"평타 공격, 방어 증가");
+            UIUpdator.Instance.SetText($"평타 발동: <sprite=1>-2, <sprite=2>+1", CasterType.Player);
             yield return new WaitForSeconds(1f);
 
             PendingEffectManager.Instance.ConsumeReduceCost(); //카드 코스트 -1
 
             // 4. 플레이어 카드 제출, Npc 효과 처리
-            UIUpdator.Instance.SetText($"플레이어 카드 선택");
             currentState = FlowState.PlayerSelect;
             playerActor.SelectCard();
             yield return new WaitUntil(() => isPlayerSubmitted);
-            Debug.Log("player가 낸 카드: " + string.Join(", ", playerSelectedCards.Select(p => p.name)));
+            Debug.Log("나의 카드 제출: " + string.Join(", ", playerSelectedCards.Select(p => p.name)));
+            //UIUpdator.Instance.SetText($"나의 카드 제출: {string.Join(", ", playerSelectedCards.Select(p => p.name))}", CasterType.Player);
 
             GaugeManager.Instance.SameCardType(playerSelectedCards); //같은 종류의 카드만 사용했는지 확인
             GaugeManager.Instance.AllEnergy(playerActor); //이번 턴에 에너지를 다 썼는지 확인
             GaugeManager.Instance.UseAdaptive(playerSelectedCards); //조건부 카드를 사용했는지 확인
           
             // 5. 적 카드 제출
-            UIUpdator.Instance.SetText($"적 카드 선택");
             currentState = FlowState.OpponentSelect;
             opponentActor.SelectCard();
             yield return new WaitUntil(() => isOpponentSubmitted);
-            Debug.Log("상대편이 낸 카드: " + string.Join(", ", opponentSelectedCards.Select(p => p.name)));
+            Debug.Log("상대 카드 제출: " + string.Join(", ", opponentSelectedCards.Select(p => p.name)));
+            //UIUpdator.Instance.SetText($"상대 카드 제출: {string.Join(", ", opponentSelectedCards.Select(p => p.name))}", CasterType.Opponent);
 
             // 6. 카드 실행
             yield return cardExecutor.CardExecuteControll(playerActor, playerSelectedCards, opponentActor, opponentSelectedCards);

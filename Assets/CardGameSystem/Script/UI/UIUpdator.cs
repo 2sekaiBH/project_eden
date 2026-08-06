@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Rendering.Universal;
 
 public class UIUpdator : MonoBehaviour
 {
@@ -12,7 +13,7 @@ public class UIUpdator : MonoBehaviour
     public static UIUpdator Instance => instance;
     private const int MaxTextCount = 3;
 
-    private Queue<string> textQueue = new Queue<string>(MaxTextCount);
+    private Queue<(string, CasterType)> textQueue = new Queue<(string, CasterType)>(MaxTextCount);
 
     private void Awake()
     {
@@ -25,7 +26,7 @@ public class UIUpdator : MonoBehaviour
             rectTransform = GetComponent<RectTransform>();
     }
 
-    public void SetText(string text)
+    public void SetText(string text, CasterType caster = CasterType.System)
     {
         // 최대 3개만 유지
         if (textQueue.Count >= MaxTextCount)
@@ -33,18 +34,37 @@ public class UIUpdator : MonoBehaviour
             textQueue.Dequeue();
         }
 
-        textQueue.Enqueue(text);
+        textQueue.Enqueue(( text, caster ));
 
         UpdateCurrentTextUI();
     }
 
+
+    Color textColor;
     private void UpdateCurrentTextUI()
     {
         int index = 0;
 
-        foreach (string text in textQueue)
+        foreach (var item in textQueue)
         {
-            stateDescriptionText[index++].text = text;
+            switch (item.Item2)
+            {
+                case (CasterType.Player):
+                    Debug.Log("파란색 되야 된");
+                    textColor = new Color(102f / 255f, 1f, 1f); //플레이어일 시 파란색 text로 표시
+                    break;
+                case (CasterType.Opponent):
+                    textColor = new Color(1f, 152f / 255f, 1f);
+                    break;
+                case (CasterType.System):
+                    textColor = new Color(1f, 1f, 1f);
+                    break;
+            }
+
+            stateDescriptionText[index].color = textColor;
+            stateDescriptionText[index].text = item.Item1;
+            
+            index++;
         }
 
         while (index < MaxTextCount)
@@ -52,4 +72,12 @@ public class UIUpdator : MonoBehaviour
             stateDescriptionText[index++].text = "";
         }
     }
+}
+
+
+public enum CasterType
+{
+    Player,
+    Opponent,
+    System
 }

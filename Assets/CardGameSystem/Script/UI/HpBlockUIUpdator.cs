@@ -97,7 +97,7 @@ public class HpBlockUIUpdator : MonoBehaviour
         if (overflow > 0.001f)
         {
             int overflowValue = Mathf.RoundToInt(overflow * maxHp);
-            blockOverflowText.text = $"<sprite=2> +{overflowValue}";
+            blockOverflowText.text = $"<sprite=2>+{overflowValue}";
             blockOverflowText.gameObject.SetActive(true);
         }
         else

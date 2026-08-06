@@ -17,16 +17,17 @@ public class PlayerActor : Actor
     [SerializeField] private int maxHpAmount;
 
     public event Action<List<CardData>> OnPlayerDrawCard;
-    public static event Action OnPlayerStartSelect; // ÇÃ·¹ÀÌ¾î Ä«µå ¼±ÅÃ ½ÃÀÛ ÀÌº¥Æ® - npc slot btn, submit btn¿¡¼­ ±¸µ¶
+    public static event Action OnPlayerStartSelect; // ï¿½Ã·ï¿½ï¿½Ì¾ï¿½ Ä«ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ìºï¿½Æ® - npc slot btn, submit btnï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
 
     public override void Initialize()
     {
+        name = "Player"; // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ - Ä¿ï¿½ï¿½ï¿½ï¿½ nameï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
         maxHp = maxHpAmount;
         currentHp = maxHp;
         currentBlock = 0;
         currentEnergy = maxEnergy;
         
-        profileUpdator.InitializeUpdator(maxHp, maxEnergy); // profileUpdator ÃÊ±âÈ­
+        profileUpdator.InitializeUpdator(maxHp, maxEnergy); // profileUpdator ï¿½Ê±ï¿½È­
     }
 
     // Ä«ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
@@ -38,7 +39,6 @@ public class PlayerActor : Actor
 
     void Awake()
     {
-        name = "Player"; // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ - Ä¿ï¿½ï¿½ï¿½ï¿½ nameï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
         Initialize();
         UpdateProfileUI();
     }
@@ -53,7 +53,7 @@ public class PlayerActor : Actor
     /// </summary>
     /// <param name="index"></param>
     /// <param name="cardData"></param>
-    public void ReplaceCard(int index = 0, CardData cardData = null)
+    public CardData ReplaceCard(int index = 0, CardData cardData = null)
     {
         CardData newCard;
         if(cardData == null) // Ä«ï¿½å¸¦ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ê¾ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ì±ï¿½
@@ -64,11 +64,12 @@ public class PlayerActor : Actor
         else
         {
             newCard = cardData;
-            hand[index] = newCard; // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ Ä«ï¿½ï¿½ï¿?ï¿½ï¿½Ã¼
+            hand[index] = newCard; // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ Ä«ï¿½ï¿½ï¿½?ï¿½ï¿½Ã¼
         }
         handManager.ReplaceHand(index, newCard); // ï¿½ï¿½ï¿½ï¿½ UI ï¿½ï¿½ï¿½ï¿½ 
-        UIUpdator.Instance.SetText($"ï¿½Ã·ï¿½ï¿½Ì¾ï¿½ ï¿½ï¿½ï¿½ï¿½ {index + 1}ï¿½ï¿½Â° Ä«ï¿½å¸¦ {newCard.name}ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ß½ï¿½ï¿½Ï´ï¿½.");
+        //UIUpdator.Instance.SetText($"ï¿½Ã·ï¿½ï¿½Ì¾ï¿½ ï¿½ï¿½ï¿½ï¿½ {index + 1}ï¿½ï¿½Â° Ä«ï¿½å¸¦ {newCard.name}ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ß½ï¿½ï¿½Ï´ï¿½.", CasterType.Player);
         Debug.Log($"ï¿½Ã·ï¿½ï¿½Ì¾ï¿½ ï¿½ï¿½ï¿½ï¿½ {index + 1}ï¿½ï¿½Â° Ä«ï¿½å¸¦ {newCard.name}ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ß½ï¿½ï¿½Ï´ï¿½.");
+        return newCard;
     }
 
     public void DiscardCard(CardData card)
@@ -97,10 +98,10 @@ public class PlayerActor : Actor
     }
 
     /// <summary>
-    /// ·±Å¸ÀÓ Áß playerÀÇ maxEnergy ÃÊ±âÈ­ °æ¿ì »ç¿ë
-    /// UI¿¡ Ç¥½ÃµÇ´Â maxEnergy¸¦ update
+    /// ï¿½ï¿½Å¸ï¿½ï¿½ ï¿½ï¿½ playerï¿½ï¿½ maxEnergy ï¿½Ê±ï¿½È­ ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½
+    /// UIï¿½ï¿½ Ç¥ï¿½ÃµÇ´ï¿½ maxEnergyï¿½ï¿½ update
     /// </summary>
-    /// <param name="maxEnergy">º¯È­µÇ´Â ¼öÄ¡</param>
+    /// <param name="maxEnergy">ï¿½ï¿½È­ï¿½Ç´ï¿½ ï¿½ï¿½Ä¡</param>
     public void SetMaxEnergy(int amount)
     {
         this.maxEnergy += amount;
@@ -109,3 +110,10 @@ public class PlayerActor : Actor
 }
 
 
+
+public enum Caster
+{
+    Player,
+    Opponent,
+    System
+}

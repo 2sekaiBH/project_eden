@@ -15,12 +15,12 @@ public class OpponentActor : Actor
 
     void Awake()
     {
-        name = opponentData.name;
         Initialize();
         UpdateProfileUI();
     }
     public override void Initialize()
     {
+        name = opponentData.name;
         maxHp = opponentData.totalHp;
         currentHp = opponentData.totalHp;
         currentBlock = 0;
