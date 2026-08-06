@@ -102,11 +102,31 @@ public class SoundManager : MonoBehaviour
 
     public void SetBgmVolume(float volume)
     {
-        mixer.SetFloat("BgmVolumeParam", Mathf.Log10(volume) * 20);
+        mixer.SetFloat("BgmVolumeParam", Mathf.Log10(Mathf.Max(volume, 0.0001f)) * 20);
     }
 
     public void SetSfxVolume(float volume)
     {
-        mixer.SetFloat("SfxVolumeParam", Mathf.Log10(volume) * 20);
+        mixer.SetFloat("SfxVolumeParam", Mathf.Log10(Mathf.Max(volume, 0.0001f)) * 20);
+    }
+
+    public float GetBgmVolume()
+    {
+        if (mixer.GetFloat("BgmVolumeParam", out float dB))
+        {
+            return Mathf.Pow(10f, dB / 20f);
+        }
+
+        return 1f;
+    }
+
+    public float GetSfxVolume()
+    {
+        if (mixer.GetFloat("SfxVolumeParam", out float dB))
+        {
+            return Mathf.Pow(10f, dB / 20f);
+        }
+
+        return 1f;
     }
 }

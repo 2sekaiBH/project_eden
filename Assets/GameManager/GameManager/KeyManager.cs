@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -5,10 +6,24 @@ using UnityEngine;
 public class KeyManager : MonoBehaviour
 {
     private static KeyManager instance;
-    public static KeyManager Instance => instance;
+    public static KeyManager Instance // lazy singleton
+    {
+        get
+        {
+            if(instance == null) 
+            {
+                instance = FindAnyObjectByType<KeyManager>();
+            }
+            return instance;
+        }
+    }
 
     private Dictionary<KeyBindingName, KeyCode> keyMappingDict = new Dictionary<KeyBindingName, KeyCode>();
 
+    /// <summary>
+    /// 키 맵핑 정보가 변경되었음을 알리는 이벤트
+    /// </summary>
+    public event Action OnKeyChanged;
 
     private void Awake()
     {
@@ -17,16 +32,14 @@ public class KeyManager : MonoBehaviour
             Destroy(gameObject);
             return;
         }
-        else
-        {
-            instance = this;
-        }
+
+        instance = this;
         ResetKeyMapping();
     }
 
     void Start()
     {
-
+        GameManager.Instance.SetKeyMappingDataList(ToKeyDataList()); // 초기화된 키맵핑 정보 게임매니저에 저장
     }
 
 
@@ -67,7 +80,9 @@ public class KeyManager : MonoBehaviour
 
         // 2. Dictionary라서 있든 없든 그냥 덮어쓰기 하나로 끝
         keyMappingDict[name] = newKeyCode;
+        OnKeyChanged?.Invoke();
 
+        GameManager.Instance.SetKeyMappingDataList(ToKeyDataList()); // 게임매니저에 저장
         return true;
     }
 

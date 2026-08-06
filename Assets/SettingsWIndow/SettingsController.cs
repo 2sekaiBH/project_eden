@@ -12,15 +12,24 @@ public class SettingsController : MonoBehaviour
 
     private void OnEnable()
     {
+        if(SoundManager.Instance == null)
+        {
+            Debug.LogWarning("SoundManager가 없습니다!");
+            return;
+        }
+
+        Time.timeScale = 0f; // 일시 정지
+
         bgmSlider.onValueChanged.AddListener(SoundManager.Instance.SetBgmVolume);
         sfxSlider.onValueChanged.AddListener(SoundManager.Instance.SetSfxVolume);
 
-        Time.timeScale = 0f;
+        bgmSlider.value = SoundManager.Instance.GetBgmVolume();
+        sfxSlider.value = SoundManager.Instance.GetSfxVolume();
     }
 
     private void OnDisable()
     {
-        Time.timeScale = 1f;
+        Time.timeScale = 1f; // 일시 정지 해제
     }
 
     public void CloseSettingsScene()
