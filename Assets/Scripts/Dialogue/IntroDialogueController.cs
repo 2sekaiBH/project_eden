@@ -120,7 +120,7 @@ public class IntroDialogueController : MonoBehaviour
         }
         else
         {
-            SetOnlyScreen(null);
+            HideDialogueUIForGameplay();
         }
     }
 
@@ -304,6 +304,12 @@ public class IntroDialogueController : MonoBehaviour
         StopAllCoroutines();
         isTransitioning = false;
         HideChoices();
+
+        if (backgroundImage != null)
+        {
+            backgroundImage.gameObject.SetActive(true);
+        }
+
         DisplayNode(nodeId);
     }
 
@@ -565,11 +571,14 @@ public class IntroDialogueController : MonoBehaviour
 
         if (backgroundByKey.TryGetValue(key, out Sprite sprite))
         {
+            backgroundImage.gameObject.SetActive(true);
             backgroundImage.sprite = sprite;
             return;
         }
 
-        Debug.LogWarning($"배경 키가 Inspector에 등록되지 않았습니다: {key}");
+        Debug.LogWarning(
+            $"배경 키가 Inspector에 등록되지 않았습니다: {key}"
+        );
     }
 
     private void ApplyCharacter(
@@ -710,6 +719,52 @@ public class IntroDialogueController : MonoBehaviour
         talkDim.gameObject.SetActive(!usePrologueDim);
     }
 
+    private void HideDialogueUIForGameplay()
+    {
+        isTransitioning = false;
+        currentNode = null;
+
+        // 모든 대화 화면 숨김
+        SetOnlyScreen(null);
+
+        // 선택지 숨김
+        HideChoices();
+
+        // 딤 화면 모두 숨김
+        SetDimVisibility(
+            usePrologueDim: false,
+            hideBoth: true
+        );
+
+        // 대화용 전체 배경 숨김
+        if (backgroundImage != null)
+        {
+            backgroundImage.gameObject.SetActive(false);
+        }
+
+        // 다음 표시 아이콘 숨김
+        if (prologueNextIndicator != null)
+        {
+            prologueNextIndicator.SetActive(false);
+        }
+
+        if (dialogueNextHint != null)
+        {
+            dialogueNextHint.SetActive(false);
+        }
+
+        // 캐릭터 이미지 숨김
+        if (leftCharacterGroup != null)
+        {
+            leftCharacterGroup.SetActive(false);
+        }
+
+        if (rightCharacterGroup != null)
+        {
+            rightCharacterGroup.SetActive(false);
+        }
+    }
+
     private string ReplacePlayerName(string value)
     {
         return GameState.Instance.ReplacePlayerName(value);
@@ -717,13 +772,12 @@ public class IntroDialogueController : MonoBehaviour
 
     private void FinishDialogue()
     {
-        isTransitioning = false;
+        StopAllCoroutines();
 
         prologueNextButton.interactable = false;
         dialogueNextButton.interactable = false;
 
-        HideChoices();
-        SetOnlyScreen(null);
+        HideDialogueUIForGameplay();
 
         Debug.Log(
             $"현재 대사가 끝났습니다. " +
