@@ -53,13 +53,13 @@ public class InteractableObject : MonoBehaviour, IWorldInteractable
         Debug.Log("상호작용을 실행합니다.");
 
         isInteracted = true;
-        // 2. 상호작용이 끝났으므로 스프라이트는 기본 상태(sprite1)로 고정합니다.
+        // 2. 상호작용이 끝났으므로 스프라이트는 기본 상태로 고정.
         if (spriteRenderer != null && sprite1 != null)
         {
             spriteRenderer.sprite = sprite1;
         }
 
-        // 3. [UI 연동] 화면에 획득 팝업 UI를 띄웁니다.
+        // 3. 화면에 팝업 UI를 띄움.
         if (ItemAcquisitionUI.Instance != null)
         {
             ItemAcquisitionUI.Instance.ShowAcquisitionPopup(interactionId);

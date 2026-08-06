@@ -1,11 +1,13 @@
 using System;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.Rendering;
 using UnityEngine.UI;
 
 /// <summary>
-/// Ä«µåÀÇ UI¸¦ °ü¸®ÇÏ´Â ½ºÅ©¸³Æ®
+/// ì¹´ë“œì˜ UIë¥¼ ê´€ë¦¬í•˜ëŠ” ìŠ¤í¬ë¦½íŠ¸
 /// </summary>
 public class CardDisplay : MonoBehaviour, IPointerClickHandler, IPointerEnterHandler, IPointerExitHandler
 {
@@ -19,21 +21,22 @@ public class CardDisplay : MonoBehaviour, IPointerClickHandler, IPointerEnterHan
     [SerializeField] private Image iconImage;
     [SerializeField] private TextMeshProUGUI valueText;
     [SerializeField] private TextMeshProUGUI descriptionText;
+    [SerializeField] private Image image;
+    [SerializeField] private CanvasGroup canvasGroup;
 
-    [SerializeField] private Sprite[] iconSprite; // 0: Attack 1: Defense 2: Special ¼ø¼­ ¸ÂÃç¼­ - ÀÚµ¿È­ ÇÊ¿ä..
+    [SerializeField] private Sprite[] iconSprite; // 0: Attack 1: Defense 2: Special ìˆœì„œ ë§ì¶°ì„œ - ìë™í™” í•„ìš”..
 
-    public event Action<CardDisplay> OnCardSelected;
+    public event Action<CardDisplay> OnCardSelected; // HandManager, CardSelectOnPanelControllerì—ì„œ êµ¬ë…
 
-    private Image image;
-    private CanvasGroup canvasGroup;
     private bool isSelected = false;
 
-    private int currentEnergy;
 
     private void Awake()
     {
-        image = GetComponent<Image>();
-        canvasGroup = GetComponent<CanvasGroup>();
+        if(image == null)
+            image = GetComponent<Image>();
+        if(canvasGroup == null)
+            canvasGroup = GetComponent<CanvasGroup>();
     }
 
     private void OnEnable()
@@ -43,20 +46,20 @@ public class CardDisplay : MonoBehaviour, IPointerClickHandler, IPointerEnterHan
 
     private void OnDisable()
     {
-        HandManager.OnCardSelect += UpdateAffordableVisual;
+        HandManager.OnCardSelect -= UpdateAffordableVisual;
     }
 
     /// <summary>
-    /// ¿ÜºÎ¿¡¼­ Ä«µå¸¦ ¹Ù²Ü ¶§´Â ¹İµå½Ã ÀÌ ÇÔ¼ö¸¦ ÅëÇØ¼­¸¸.
+    /// ì™¸ë¶€ì—ì„œ ì¹´ë“œë¥¼ ë°”ê¿€ ë•ŒëŠ” ë°˜ë“œì‹œ ì´ í•¨ìˆ˜ë¥¼ í†µí•´ì„œë§Œ.
     /// </summary>
     public void SetCard(CardData newCard)
     {
         card = newCard;
         UpdateCardDisplay();
     }
-
+    
     /// <summary>
-    /// »óÅÂ ÃÊ±âÈ­
+    /// ìƒíƒœ ì´ˆê¸°í™”
     /// </summary>
     public void StateReset()
     {
@@ -66,43 +69,40 @@ public class CardDisplay : MonoBehaviour, IPointerClickHandler, IPointerEnterHan
     }
 
     /// <summary>
-    /// card data¸¦ UI¿¡ ¹İ¿µ
+    /// card dataë¥¼ UIì— ë°˜ì˜
     /// </summary>
     private void UpdateCardDisplay()
     {
-        if(card != null) // cardData Á¸Àç ½Ã ¹İ¿µ
-        {
-            canvasGroup.alpha = 1f;
-            energyText.text = $"{card.energyCost.ToString()}";
-            iconImage.sprite = iconSprite[(int)card.cardType];
-            valueText.text = card.effect;
-            descriptionText.text = card.description;
-        }
-        else // cardData ºÎÀç ½Ã Ä«µå Åõ¸íÈ­
-        {
-            canvasGroup.alpha = 0;
-        }
+        if (card == null) return;
+
+         /*energyText.text = $"{card.energyCost.ToString()}";
+         iconImage.sprite = iconSprite[(int)card.cardType];
+         valueText.text = card.effect;
+         descriptionText.text = card.description;*/
+        image.sprite = card.cardImage; //ì¹´ë“œ ì´ë¯¸ì§€ ì„¤ì •
+
     }
 
     /// <summary>
-    /// Ä«µå Á¦°Å¸¦ UI¿¡ ¹İ¿µ
+    /// ì¹´ë“œ ì œê±°ë¥¼ UIì— ë°˜ì˜
     /// </summary>
-    public void UpdateDiscardCard()
+    public void UpdateActiveCard(bool active)
     {
-        gameObject.SetActive(false);
+        gameObject.SetActive(active);
     }
 
     /// <summary>
-    /// ÇÃ·¹ÀÌ¾îÀÇ ÀÎÇ²À» ¹ŞÀ»Áö ¿©ºÎ¸¦ Á¦¾î
+    /// í”Œë ˆì´ì–´ì˜ ì¸í’‹ì„ ë°›ì„ì§€ ì—¬ë¶€ë¥¼ ì œì–´
     /// </summary>
     /// <param name="active"></param>
     public void SetActiveInput(bool active)
     {
+        canvasGroup.alpha = active ? 1f : 0.5f;
         canvasGroup.blocksRaycasts = active;
     }
 
     /// <summary>
-    /// Ä«µå ¼±ÅÃ - ¼±ÅÃÇÏÀÚ¸¶ÀÚ energy cost ¹İ¿µ
+    /// ì¹´ë“œ ì„ íƒ - ì„ íƒí•˜ìë§ˆì energy cost ë°˜ì˜
     /// </summary>
     /// <param name="eventData"></param>
     public void OnPointerClick(PointerEventData eventData)
@@ -111,9 +111,9 @@ public class CardDisplay : MonoBehaviour, IPointerClickHandler, IPointerEnterHan
     }
 
     /// <summary>
-    /// ¼±ÅÃµÈ Ä«µåÀÇ UI º¯°æ
+    /// ì„ íƒëœ ì¹´ë“œì˜ UI ë³€ê²½
     /// </summary>
-    /// <param name="selected">¼±ÅÃ ¿©ºÎ</param>
+    /// <param name="selected">ì„ íƒ ì—¬ë¶€</param>
     public void SetSelectedVisual(bool selected)
     {
         isSelected = selected;
@@ -121,15 +121,16 @@ public class CardDisplay : MonoBehaviour, IPointerClickHandler, IPointerEnterHan
     }
 
     /// <summary>
-    /// ¼±ÅÃ °¡´É ¿©ºÎ UI ¹İ¿µ
+    /// ì„ íƒ ê°€ëŠ¥ ì—¬ë¶€ UI ë°˜ì˜
     /// </summary>
-    /// <param name="currentEnergy">PlayerActorÀÇ currentEnergy</param>
+    /// <param name="currentEnergy">PlayerActorì˜ currentEnergy</param>
     private void UpdateAffordableVisual(int currentEnergy)
     {
         if (card == null) return;
         bool affordable = isSelected || currentEnergy >= card.energyCost;
         canvasGroup.alpha = affordable ? 1f : 0.5f;
     }
+  
 
     private void Hover()
     {
@@ -138,11 +139,11 @@ public class CardDisplay : MonoBehaviour, IPointerClickHandler, IPointerEnterHan
 
     public void OnPointerEnter(PointerEventData eventData)
     {
-        // È£¹ö ±¸Çö
+        // í˜¸ë²„ êµ¬í˜„
     }
 
     public void OnPointerExit(PointerEventData eventData)
     {
-        // È£¹ö ±¸Çö
+        // í˜¸ë²„ êµ¬í˜„
     }
 }

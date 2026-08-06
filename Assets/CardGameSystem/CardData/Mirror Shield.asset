@@ -1,0 +1,26 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1c13dab7a990a8249959515d8c16c972, type: 3}
+  m_Name: Mirror Shield
+  m_EditorClassIdentifier: Assembly-CSharp::Card
+  cardId: 4
+  cardName: Mirror Shield
+  cardType: 1
+  cardImage: {fileID: -177977306489182368, guid: 066513ec14b609b4186fe6d2ebd8e53b, type: 3}
+  energyCost: 2
+  effect: +2
+  isMissionCard: 0
+  description: "\uBC29\uC5B4\uB825 +2, \uD761\uC218\uD55C \uC0C1\uB300\uC758 \uACF5\uACA9\uC744
+    \uBC18\uC0AC\uD569\uB2C8\uB2E4"
+  effects:
+  - {fileID: 11400000, guid: 87e9fe3c8c18d394bb9503b9116add09, type: 2}
+  - {fileID: 11400000, guid: c0a3530f75c724d4aac3ffde3011c5c6, type: 2}

@@ -13,7 +13,9 @@ MonoBehaviour:
   m_Name: ItemData8
   m_EditorClassIdentifier: Assembly-CSharp::ItemData
   id: 8
-  itemName: 
-  itemIcon: {fileID: 0}
-  ItemDetailIcon: {fileID: 0}
-  itemDescription: 
+  itemName: "\uC911\uC131\uC790\uBCC4 \uC5D4\uC9C4"
+  itemIcon: {fileID: 8807161993785814658, guid: bb14b76edc3b7a14cbe29956d1390cc2, type: 3}
+  ItemDetailIcon: {fileID: 3495781391363255307, guid: 408c6a05843bfe24fa882efcdde34379, type: 3}
+  itemDescription: "\uBC29\uC8FC\uC758 \uC8FC \uB3D9\uB825\uC73C\uB85C \uC0AC\uC6A9\uB41C
+    \uCD08\uACE0\uBC00\uB3C4 \uC5D0\uB108\uC9C0 \uCF54\uC5B4. \uD604\uC7AC\uB294
+    \uC644\uC804\uD788 \uC815\uC9C0\uD574 \uC788\uB2E4."

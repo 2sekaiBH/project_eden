@@ -12,7 +12,8 @@ namespace CardSystem.Runtime
         public Actor caster { get; }
         public Actor target { get; }
 
-        
+
+
         // 예: 현재 라운드 수, 랜덤 시드, 전투 로그 등 확장 여지
         public int CurrentRound { get; set; }
 
@@ -20,6 +21,8 @@ namespace CardSystem.Runtime
         {
             this.caster = caster;
             this.target = target;
+
         }
     }
 }
+

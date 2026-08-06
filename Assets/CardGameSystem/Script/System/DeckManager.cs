@@ -43,6 +43,24 @@ public class DeckManager : MonoBehaviour
     }
 
     /// <summary>
+    /// 기본 덱(10장)을 초과하는 extraCard 뽑기 함수
+    /// deck을 거치지 않고 cardDataBase에서 직접 pick
+    /// </summary>
+    /// <param name="amount">뽑을 카드 갯수</param>
+    /// <returns>뽑은 카드</returns>
+    public List<CardData> DrawExtrCard(int amount)
+    {
+        List<CardData> pickedCardDeck = new List<CardData>();
+        int random;
+        for (int i = 0; i < amount; i++)
+        {
+            random = Random.Range(0, CardDataBase.cardDataBase.Count);
+            pickedCardDeck.Add(Instantiate(CardDataBase.cardDataBase[random])); //extra로 뽑는 카드는 복사본으로 생성
+        }
+        return pickedCardDeck;
+    }
+
+    /// <summary>
     /// 초기화
     /// </summary>
     public void InitializeDeck()

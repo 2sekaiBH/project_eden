@@ -1,0 +1,24 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1c13dab7a990a8249959515d8c16c972, type: 3}
+  m_Name: RestoreHp
+  m_EditorClassIdentifier: Assembly-CSharp::Card
+  cardId: 5
+  cardName: System Restore
+  cardType: 1
+  cardImage: {fileID: 4283855288752482956, guid: 2b3f2915e35101c4985199379591d8c1, type: 3}
+  energyCost: 2
+  effect: +5
+  isMissionCard: 0
+  description: "\uCCB4\uB825\uC744 5\uD68C\uBCF5\uD569\uB2C8\uB2E4."
+  effects:
+  - {fileID: 11400000, guid: b8091bf39f90d6c49a96b79404c76515, type: 2}

@@ -1,7 +1,10 @@
+using System.Collections.Generic;
+using System;
 using UnityEngine;
+using UnityEngine.PlayerLoop;
 
 /// <summary>
-/// ÇÃ·¹ÀÌ¾î Çàµ¿ Á¦¾î ½ºÅ©¸³Æ®
+/// ï¿½Ã·ï¿½ï¿½Ì¾ï¿½ ï¿½àµ¿ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Å©ï¿½ï¿½Æ®
 /// </summary>
 public class PlayerActor : Actor
 {
@@ -11,25 +14,32 @@ public class PlayerActor : Actor
 
     [Header("Setting")]
     [SerializeField] private int maxEnergy;
-    [SerializeField] private int maxHp;
+    [SerializeField] private int maxHpAmount;
+
+    public event Action<List<CardData>> OnPlayerDrawCard;
+    public static event Action OnPlayerStartSelect; // ï¿½Ã·ï¿½ï¿½Ì¾ï¿½ Ä«ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ìºï¿½Æ® - npc slot btn, submit btnï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
 
     public override void Initialize()
     {
+        name = "Player"; // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ - Ä¿ï¿½ï¿½ï¿½ï¿½ nameï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
+        maxHp = maxHpAmount;
         currentHp = maxHp;
         currentBlock = 0;
         currentEnergy = maxEnergy;
+        
+        profileUpdator.InitializeUpdator(maxHp, maxEnergy); // profileUpdator ï¿½Ê±ï¿½È­
     }
 
-    // Ä«µå ¼±ÅÃ ½ÃÀÛ
+    // Ä«ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
     public override void SelectCard()
     {
-        handManager.StartSelect(hand, this);
+        OnPlayerStartSelect?.Invoke();
+        handManager.StartSelect(hand);
     }
 
-    void Start()
+    void Awake()
     {
         Initialize();
-        name = "Player"; // µð¹ö±ë¿ë - Ä¿½ºÅÒ nameÀ¸·Î º¯°æ
         UpdateProfileUI();
     }
 
@@ -38,8 +48,72 @@ public class PlayerActor : Actor
         profileUpdator.UpdateProfile(name, currentHp, currentBlock, currentEnergy);
     }
 
+    /// <summary>
+    /// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ Ä«ï¿½å¸¦ ï¿½ï¿½Ã¼ï¿½Ï´ï¿½ ï¿½Ô¼ï¿½
+    /// </summary>
+    /// <param name="index"></param>
+    /// <param name="cardData"></param>
+    public CardData ReplaceCard(int index = 0, CardData cardData = null)
+    {
+        CardData newCard;
+        if(cardData == null) // Ä«ï¿½å¸¦ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ê¾ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ì±ï¿½
+        {
+            newCard = DeckManager.Instance.DrawExtrCard(1)[0];
+            hand[index] = newCard;
+        }
+        else
+        {
+            newCard = cardData;
+            hand[index] = newCard; // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ Ä«ï¿½ï¿½ï¿½?ï¿½ï¿½Ã¼
+        }
+        handManager.ReplaceHand(index, newCard); // ï¿½ï¿½ï¿½ï¿½ UI ï¿½ï¿½ï¿½ï¿½ 
+        //UIUpdator.Instance.SetText($"ï¿½Ã·ï¿½ï¿½Ì¾ï¿½ ï¿½ï¿½ï¿½ï¿½ {index + 1}ï¿½ï¿½Â° Ä«ï¿½å¸¦ {newCard.name}ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ß½ï¿½ï¿½Ï´ï¿½.", CasterType.Player);
+        Debug.Log($"ï¿½Ã·ï¿½ï¿½Ì¾ï¿½ ï¿½ï¿½ï¿½ï¿½ {index + 1}ï¿½ï¿½Â° Ä«ï¿½å¸¦ {newCard.name}ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ß½ï¿½ï¿½Ï´ï¿½.");
+        return newCard;
+    }
+
+    public void DiscardCard(CardData card)
+    {
+        hand.Remove(card);
+    }
+
     public override void EnergyIntialize()
     {
         SetEnergy(maxEnergy);
     }
+
+    // Ä«ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Æ® ï¿½ï¿½È¯ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ refactoring ï¿½Ê¿ï¿½
+    public override void SetHand(CardData card)
+    {
+        base.SetHand(card);
+        List<CardData> cardList = new List<CardData>();
+        cardList.Add(card);
+        OnPlayerDrawCard?.Invoke(cardList);
+    }
+
+    public override void SetHand(List<CardData> cards)
+    {
+        base.SetHand(cards);
+        OnPlayerDrawCard?.Invoke(cards);
+    }
+
+    /// <summary>
+    /// ï¿½ï¿½Å¸ï¿½ï¿½ ï¿½ï¿½ playerï¿½ï¿½ maxEnergy ï¿½Ê±ï¿½È­ ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½
+    /// UIï¿½ï¿½ Ç¥ï¿½ÃµÇ´ï¿½ maxEnergyï¿½ï¿½ update
+    /// </summary>
+    /// <param name="maxEnergy">ï¿½ï¿½È­ï¿½Ç´ï¿½ ï¿½ï¿½Ä¡</param>
+    public void SetMaxEnergy(int amount)
+    {
+        this.maxEnergy += amount;
+        profileUpdator.InitializeUpdator(maxHp, maxEnergy);
+    }
+}
+
+
+
+public enum Caster
+{
+    Player,
+    Opponent,
+    System
 }
