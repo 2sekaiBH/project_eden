@@ -3,6 +3,7 @@ using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.Rendering;
 using UnityEngine.UI;
 
 /// <summary>
@@ -129,6 +130,7 @@ public class CardDisplay : MonoBehaviour, IPointerClickHandler, IPointerEnterHan
         bool affordable = isSelected || currentEnergy >= card.energyCost;
         canvasGroup.alpha = affordable ? 1f : 0.5f;
     }
+  
 
     private void Hover()
     {

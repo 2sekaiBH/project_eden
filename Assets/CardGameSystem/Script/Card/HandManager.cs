@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using UnityEngine;
 
 /// <summary>
@@ -22,6 +23,11 @@ public class HandManager : MonoBehaviour
 
     private bool selectEndFlag = false; // 선택 종료 플래그  
 
+    //UI용 세팅
+    [SerializeField] private float cardSpacing = 120f; //카드 간경
+    [SerializeField] private float curveHeight = 15f; //카드 높이
+    [SerializeField] private float rotateAngle = 8f; //카드 각도
+
     public void HandleSelectEndFlag(bool value) // 제출 버튼에서 구독
     {
         selectEndFlag = value;
@@ -33,6 +39,7 @@ public class HandManager : MonoBehaviour
 
     public static Action<int> OnCardSelect;
     // CardDisplay에서 구독
+
 
 
     private void Awake()
@@ -59,6 +66,8 @@ public class HandManager : MonoBehaviour
     /// </summary>
     public void Initialize(List<CardData> cardDatas)
     {
+        Debug.Log($"Initialize 호출! {cardDatas.Count}장");
+
         for (int i = 0; i < cardDatas.Count; i++)
         {
             GameObject cardObject = Instantiate(cardPrefab, rectTransform, false);
@@ -69,6 +78,8 @@ public class HandManager : MonoBehaviour
 
             cardDisplay.SetCard(cardDatas[i]);
         }
+
+        UpdateHandUI();
     }
 
     public void ReplaceHand(int index = 0, CardData cardData = null)
@@ -118,7 +129,7 @@ public class HandManager : MonoBehaviour
         CardData card = display.CardData;
         if (card == null) return;
 
-        //미션 실패 시 아예 카드 선택이 안 됨
+        //조건부 카드 미션 실패 시 아예 카드 선택이 안 됨
         if (card.isMissionCard && !MissionManager.Instance.IsMissionComplete(player))
         {
             UIUpdator.Instance.SetText("미션을 완료해야 사용할 수 있습니다.");
@@ -177,4 +188,26 @@ public class HandManager : MonoBehaviour
         cards.Clear();
         cardDisplays.Clear();
     }
+
+    //손패 UI갱신
+    public void UpdateHandUI()
+    {
+        int count = cardDisplays.Count;
+
+        for (int i = 0; i < count; i++)
+        {
+            RectTransform rt = cardDisplays[i].GetComponent<RectTransform>();
+
+            float offset = i - (count - 1) / 2f;
+
+            float x = offset * cardSpacing;
+            float y = -offset * offset * curveHeight;
+            float angle = -offset * rotateAngle;
+
+            rt.anchoredPosition = new Vector2(x, y);
+            rt.localRotation = Quaternion.Euler(0, 0, angle);
+        }
+    }
+
+
 }

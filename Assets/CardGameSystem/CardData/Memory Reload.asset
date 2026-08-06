@@ -22,4 +22,5 @@ MonoBehaviour:
   description: "10\uC7A5\uC758 \uCE74\uB4DC \uC911 \uB79C\uB364 1\uC7A5\uC744 \uB4DC\uB85C\uC6B0
     \uD569\uB2C8\uB2E4.\n\uB4DC\uB85C\uC6B0 \uB41C \uCE74\uB4DC\uB294 \uC5D0\uB108\uC9C0
     \uC18C\uBE44 \uC5C6\uC774 \uC0AC\uC6A9 \uAC00\uB2A5\uD569\uB2C8\uB2E4."
-  effects: []
+  effects:
+  - {fileID: 11400000, guid: 9857c9e9cf916bd4ead1510080d48e1f, type: 2}

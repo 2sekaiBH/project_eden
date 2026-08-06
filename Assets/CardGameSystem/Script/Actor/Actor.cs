@@ -20,6 +20,7 @@ public abstract class Actor : MonoBehaviour
     protected int currentEnergy = 4;
 
     public List<CardData> hand = new List<CardData>();
+  
 
     public string Name => name;
     public int CurrentHp => currentHp;
@@ -152,6 +153,11 @@ public abstract class Actor : MonoBehaviour
     /// </summary>
     public virtual void RefundEnergy(int amount)
     {
+        if(reduceCost)
+        {
+            amount = Mathf.Max(0, amount - 1);
+        }
+
         SetEnergy(currentEnergy + amount);
     }
 

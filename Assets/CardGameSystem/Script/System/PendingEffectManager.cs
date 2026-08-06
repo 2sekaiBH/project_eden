@@ -53,7 +53,8 @@ public class PendingEffectManager : MonoBehaviour
     // 평타 공격 강화
     public void AddExtraAttack(int damage)
     {
-        turnPendingEffect.extraDefaultDamage = damage;
+         turnPendingEffect.extraDefaultDamage = damage;
+        
     }
 
     // 턴 끝마다 공격 설정
@@ -97,6 +98,26 @@ public class PendingEffectManager : MonoBehaviour
         turnPendingEffect.player.EnableReduceCost();
         turnPendingEffect.player = null;
     }
+
+    //어떤 카드를 추가로 받을지 가져옴 & 카드를 받는 대상 가져옴
+    public void AddExtraCard(Actor getCard, CardData card)
+    {
+        turnPendingEffect.getCard = getCard;
+        turnPendingEffect.card = card;
+    }
+
+    //카드 추가 지급 효과 적용
+    public void ConsumeExtraCard()
+    {
+        if (turnPendingEffect.card == null)
+            return;
+
+        turnPendingEffect.getCard.AddCard(turnPendingEffect.card);
+
+        //초기화
+        turnPendingEffect.getCard = null;
+        turnPendingEffect.card = null;
+    }
 }
 
 [System.Serializable]
@@ -111,6 +132,10 @@ public class TurnPendingEffect
 
     // 카드 코스트 -1 대상
     public Actor player;
+
+    //추가 카드를 받을 대상
+    public Actor getCard = null;
+    public CardData card = null; //추가로 받을 카드
 }
 
 [System.Serializable]

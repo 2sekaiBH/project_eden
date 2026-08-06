@@ -112,6 +112,8 @@ public class TurnFlowManager : MonoBehaviour
 
             UpdateUI(); // Turn 정보 UI 갱신
 
+            PendingEffectManager.Instance.ConsumeExtraCard(); //추가 카드 지급
+
             UIUpdator.Instance.SetText($"{currentTurn}턴 시작");
             Debug.Log($"{currentTurn}턴 시작");
             yield return new WaitForSeconds(1f);
@@ -121,7 +123,7 @@ public class TurnFlowManager : MonoBehaviour
             UIUpdator.Instance.SetText($"평타 발동: <sprite=1>-2, <sprite=2>+1", CasterType.Player);
             yield return new WaitForSeconds(1f);
 
-            PendingEffectManager.Instance.ConsumeReduceCost();
+            PendingEffectManager.Instance.ConsumeReduceCost(); //카드 코스트 -1
 
             // 4. 플레이어 카드 제출, Npc 효과 처리
             currentState = FlowState.PlayerSelect;
@@ -197,6 +199,11 @@ public class TurnFlowManager : MonoBehaviour
     private void HandleOpponentCardSubmit(List<CardData> pickedCard)
     {
         opponentSelectedCards.AddRange(pickedCard);
+        foreach (CardData card in pickedCard) //적이 사용한 카드 삭제
+        {
+            opponentActor.DiscardCard(card);
+        }
+
         isOpponentSubmitted = true;
     }
 

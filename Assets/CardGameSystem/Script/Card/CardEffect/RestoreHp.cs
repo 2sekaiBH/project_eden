@@ -14,6 +14,7 @@ public class SystemRestore: CardEffectData
     {
 
         context.caster.Heal(AddHp);
+        Debug.Log($"힐했음! {context.caster.CurrentHp}");
 
     }
 
