@@ -1,13 +1,13 @@
 using System;
-using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.InputSystem;
 
 public class PlayerDefaultMove : MonoBehaviour
 {
     [Header("Player Horizontal Movement Settings")]
     [SerializeField] private float baseMoveSpeed = 5f;
     [SerializeField] private float dashValue = 1.5f;
+    [SerializeField] private float acceleration = 40f;   // 목표 속도까지 가속하는 비율 (초당 속도 변화량)
+    [SerializeField] private float deceleration = 80f;   // 목표 속도(0 포함)까지 감속하는 비율
 
     private float _moveInput;
     public float moveInput => _moveInput;
@@ -35,6 +35,7 @@ public class PlayerDefaultMove : MonoBehaviour
 
     private KeyCode moveLeftKeyCode = KeyCode.A;
     private KeyCode moveRIghtKeyCode = KeyCode.D;
+
 
     void Awake()
     {
@@ -187,7 +188,16 @@ public class PlayerDefaultMove : MonoBehaviour
             OnWalk?.Invoke(isWalking);
         }
 
-        rb.linearVelocityX = _moveInput * CurrentMoveSpeed;
+        // rb.linearVelocityX = _moveInput * CurrentMoveSpeed;
+
+        // ---- 여기부터 보간 처리 ----
+        float targetVelocityX = _moveInput * CurrentMoveSpeed;
+        float currentVelocityX = rb.linearVelocityX;
+
+        // 입력이 있으면 가속, 입력이 없으면(0으로 향하면) 감속 - 서로 다른 비율 적용
+        float rate = (_moveInput != 0f) ? acceleration : deceleration;
+
+        rb.linearVelocityX = Mathf.MoveTowards(currentVelocityX, targetVelocityX, rate * Time.fixedDeltaTime);
     }
 
     private void Update()
