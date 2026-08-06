@@ -153,6 +153,11 @@ public abstract class Actor : MonoBehaviour
     /// </summary>
     public virtual void RefundEnergy(int amount)
     {
+        if(reduceCost)
+        {
+            amount = Mathf.Max(0, amount - 1);
+        }
+
         SetEnergy(currentEnergy + amount);
     }
 

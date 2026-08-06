@@ -17,7 +17,7 @@ public class CardDrawEffect : CardEffectData
         Debug.Log($"뽑은 카드 : {card}");
 
 
-        context.caster.AddCard(card); //손패에 카드 추가
+        PendingEffectManager.Instance.AddExtraCard(context.caster, card); //손패에 카드 추가
 
 
         Debug.Log($"{context.caster}: {count} get");

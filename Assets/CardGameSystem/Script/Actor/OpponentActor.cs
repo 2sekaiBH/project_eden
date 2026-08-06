@@ -39,8 +39,24 @@ public class OpponentActor : Actor
         if (this.isEnabledSelect)
         {
             int i = 0;
-            while (i < hand.Count && TrySpendEnergy(hand[i].energyCost))
+            while (i < hand.Count)
             {
+                CardData card = hand[i];
+                
+                //조건부카드 사용 가능 확인, 사용 불가 시 내지 못하고 건너뜀
+                if(card.isMissionCard && !MissionManager.Instance.IsMissionComplete(this))
+                {
+                    i++;
+                    continue;
+                }
+
+                //에너지 부족시 역시 건너뜀
+                if(!TrySpendEnergy(card.energyCost))
+                {
+                    i++;
+                    continue;
+                }
+
                 pickedCard.Add(hand[i]);
                 i++;
             }

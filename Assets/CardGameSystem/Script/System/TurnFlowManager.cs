@@ -112,6 +112,8 @@ public class TurnFlowManager : MonoBehaviour
 
             UpdateUI(); // Turn 정보 UI 갱신
 
+            PendingEffectManager.Instance.ConsumeExtraCard(); //추가 카드 지급
+
             UIUpdator.Instance.SetText($"{currentTurn}턴 시작");
             Debug.Log($"{currentTurn}턴 시작");
             yield return new WaitForSeconds(1f);

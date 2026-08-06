@@ -109,7 +109,7 @@ public class MissionManager : MonoBehaviour
         Debug.Log($"{actor}의 진행도");
         progress.usedCardCount++;
 
-        if (card.energyCost > 1) //사용한 카드가 1코스트인지 확인
+        if (card.energyCost != 1) //사용한 카드가 1코스트인지 확인
             progress.usedOnlyOneE = false; //1코스트가 아닐 경우 false로 값을 바꿔줌
     }
     
