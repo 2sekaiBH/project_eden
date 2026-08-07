@@ -1897,6 +1897,7 @@ MonoBehaviour:
   - {fileID: 7927287613662257465}
   choiceCursor: {fileID: 1157353282235801144}
   choiceCursorOffset: {x: -40, y: 0}
+  bgmOnStart: 0
   leftCharacterGroup: {fileID: 8211342624087394720}
   leftCharacterImage: {fileID: 1424733519077301565}
   rightCharacterGroup: {fileID: 8312911457101498651}
@@ -2046,8 +2047,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: "\uB2E4\uC74C "
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: b84e68a7ca2c3da42be7a6b708a217ae, type: 2}
+  m_sharedMaterial: {fileID: 507446322244123020, guid: b84e68a7ca2c3da42be7a6b708a217ae, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []

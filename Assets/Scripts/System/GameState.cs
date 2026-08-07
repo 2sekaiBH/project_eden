@@ -1,6 +1,14 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+public enum FactionType
+{
+    None,
+    Archi,
+    Eve,
+    Noa
+}
+
 public class GameState : MonoBehaviour
 {
     public static GameState Instance { get; private set; }
@@ -15,10 +23,16 @@ public class GameState : MonoBehaviour
 
     [Header("Hidden Ending Item IDs")]
     [Tooltip("Noa 히든 엔딩에 필요한 아이템 ID 5개를 입력하세요.")]
-    [SerializeField] private int[] hiddenEndingItemIds =
+    [SerializeField]
+    private int[] hiddenEndingItemIds =
     {
         5,6,7,8,9
     };
+
+    [Header("Final Choice")]
+    [SerializeField] private FactionType selectedFaction = FactionType.None;
+    public FactionType SelectedFaction => selectedFaction;
+
 
     // 실제로 획득한 히든 엔딩 아이템 ID.
     // HashSet을 사용하므로 같은 아이템을 중복 획득해도 한 번만 기록됨.
@@ -230,7 +244,17 @@ public class GameState : MonoBehaviour
         cainAffinity = 0;
         noahAffinity = 0;
 
+        selectedFaction = FactionType.None;
+
         // 새 게임 시작 시 히든 아이템 획득 기록도 초기화
         acquiredHiddenEndingItemIds.Clear();
     }
+
+    public void SetSelectedFaction(FactionType faction)
+    {
+        selectedFaction = faction;
+
+        Debug.Log($"[GameState] 선택된 진영: {selectedFaction}");
+    }
+
 }
