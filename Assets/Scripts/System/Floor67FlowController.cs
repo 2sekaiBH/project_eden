@@ -1,5 +1,5 @@
-using System.Collections;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.SceneManagement;
 
 public class Floor67FlowController : MonoBehaviour
@@ -7,103 +7,98 @@ public class Floor67FlowController : MonoBehaviour
     private enum FlowState
     {
         Exploring,
-        PostGameDialogue,
+        PreCardDialogue,
+        CardGame,
+        PostCardDialogue,
         ReadyToExit
     }
 
     [Header("Dialogue")]
     [SerializeField] private IntroDialogueController dialogueController;
 
+    [Header("Card Game")]
+    [SerializeField] private UnityEvent onCardGameStart;
+
     [Header("Exit")]
     [SerializeField] private GameObject endTrigger;
 
-    [Header("Loading")]
-    [SerializeField] private GameObject loadingCanvas;
-    [SerializeField] private Animator loadingAnimator;
-    [SerializeField] private float minimumLoadingTime = 1.2f;
-
     [Header("Next Floor")]
-    [SerializeField] private string nextSceneName = "floor_213";
+    [SerializeField] private string nextSceneName;
 
     private FlowState state = FlowState.Exploring;
-    private bool isLoading = false;
 
     private void Start()
     {
         if (endTrigger != null)
             endTrigger.SetActive(false);
-
-        if (loadingCanvas != null)
-            loadingCanvas.SetActive(false);
     }
 
-    // 게임 성공
-    public void OnGameCleared()
+    // 자물쇠 성공
+    public void OnLockCleared()
     {
-        state = FlowState.PostGameDialogue;
+        if (state != FlowState.Exploring)
+            return;
+
+        state = FlowState.PreCardDialogue;
+
+        dialogueController.StartDialogue("f67_device_001");
+    }
+
+    // 대사 종료
+    public void OnDialogueFinished()
+    {
+        // 카드게임 직전 대사가 끝남
+        if (state == FlowState.PreCardDialogue)
+        {
+            StartCardGame();
+            return;
+        }
+
+        // 카드게임 직후 대사가 끝남
+        if (state == FlowState.PostCardDialogue)
+        {
+            state = FlowState.ReadyToExit;
+
+            if (endTrigger != null)
+                endTrigger.SetActive(true);
+        }
+    }
+
+    private void StartCardGame()
+    {
+        state = FlowState.CardGame;
+
+        onCardGameStart?.Invoke();
+    }
+
+    // 카드게임 클리어
+    public void OnCardGameCleared()
+    {
+        if (state != FlowState.CardGame)
+            return;
+
+        state = FlowState.PostCardDialogue;
 
         dialogueController.StartDialogue("f67_post_001");
     }
 
-    // 후속 대사 종료
-    public void OnDialogueFinished()
+
+    public bool CanExit()
     {
-        if (state != FlowState.PostGameDialogue)
-            return;
-
-        state = FlowState.ReadyToExit;
-
-        if (endTrigger != null)
-            endTrigger.SetActive(true);
+        return state == FlowState.ReadyToExit;
     }
 
-    // 맵 끝에 도착
     public void GoToNextFloor()
     {
         if (state != FlowState.ReadyToExit)
             return;
 
-        if (isLoading)
+        if (string.IsNullOrWhiteSpace(nextSceneName))
+        {
+            Debug.LogError("다음 층 Scene Name이 설정되지 않았습니다.");
             return;
-
-        StartCoroutine(LoadNextFloorRoutine());
-    }
-
-    private IEnumerator LoadNextFloorRoutine()
-    {
-        isLoading = true;
-
-        // 로딩 화면 ON
-        if (loadingCanvas != null)
-            loadingCanvas.SetActive(true);
-
-        // 모래시계 애니메이션 처음부터 재생
-        if (loadingAnimator != null)
-            loadingAnimator.Play(0, 0, 0f);
-
-        float startTime = Time.unscaledTime;
-
-        AsyncOperation operation =
-            SceneManager.LoadSceneAsync(nextSceneName);
-
-        operation.allowSceneActivation = false;
-
-        // 실제 씬 로딩 완료까지 대기
-        while (operation.progress < 0.9f)
-        {
-            yield return null;
         }
 
-        // 로딩 화면이 너무 찰나에 지나가지 않도록
-        float elapsed = Time.unscaledTime - startTime;
-
-        if (elapsed < minimumLoadingTime)
-        {
-            yield return new WaitForSecondsRealtime(
-                minimumLoadingTime - elapsed
-            );
-        }
-
-        operation.allowSceneActivation = true;
+        SceneManager.LoadScene(nextSceneName);
     }
 }

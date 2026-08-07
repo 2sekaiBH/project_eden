@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.Events;
 
 public class ButtonSequenceManager : MonoBehaviour
 {
@@ -14,6 +15,10 @@ public class ButtonSequenceManager : MonoBehaviour
 
     [Header("이동할 다음 씬 이름")]
     [SerializeField] private string nextSceneName = "CardGameScene";
+
+    [Header("성공 후 처리")]
+    [SerializeField] private bool autoLoadNextScene = true;
+    [SerializeField] private UnityEvent onSequenceSuccess;
 
     // 플레이어가 지금까지 누른 버튼 ID들을 기록하는 리스트
     private List<int> playerSequence = new List<int>();
@@ -71,7 +76,15 @@ public class ButtonSequenceManager : MonoBehaviour
     // 성공했을 때 씬 전환 로직
     private void OnSequenceSuccess()
     {
-        if (!string.IsNullOrEmpty(nextSceneName))
+        Debug.Log("퍼즐 성공");
+
+        CloseSequenceUI();
+
+        // 퍼즐 성공 결과를 외부에 알림
+        onSequenceSuccess?.Invoke();
+
+        // 기존 방식이 필요한 경우에만 Scene 이동
+        if (autoLoadNextScene && !string.IsNullOrEmpty(nextSceneName))
         {
             SceneManager.LoadScene(nextSceneName);
         }
