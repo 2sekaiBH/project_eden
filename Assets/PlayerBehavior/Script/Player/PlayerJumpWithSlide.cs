@@ -72,9 +72,14 @@ public class PlayerJumpWithSlide : MonoBehaviour
 
     void FixedUpdate()
     {
-        isGrounded = Physics2D.OverlapCircle(groundCheck.position, 0.1f, groundLayer);
+        isGrounded = isGrounded = Physics2D.OverlapBox(
+    groundCheck.position,
+    new Vector2(0.3f, 0.05f),
+    0f,
+    groundLayer
+);
 
-        if(isGrounded && !wasGrounded) // 공중 -> 지상으로 바뀐 프레임
+        if (isGrounded && !wasGrounded) // 공중 -> 지상으로 바뀐 프레임
         {
             onLand?.Invoke();
             isSlideEnable = true;

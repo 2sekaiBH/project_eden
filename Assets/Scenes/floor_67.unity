@@ -3630,11 +3630,15 @@ PrefabInstance:
     - target: {fileID: 8646717526769346809, guid: beac60035099aa54aa12fdace8ee823b, type: 3}
       propertyPath: m_fontAsset
       value: 
-      objectReference: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+      objectReference: {fileID: 11400000, guid: b84e68a7ca2c3da42be7a6b708a217ae, type: 2}
     - target: {fileID: 8646717526769346809, guid: beac60035099aa54aa12fdace8ee823b, type: 3}
       propertyPath: m_sharedMaterial
       value: 
-      objectReference: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+      objectReference: {fileID: 507446322244123020, guid: b84e68a7ca2c3da42be7a6b708a217ae, type: 2}
+    - target: {fileID: 8646717526769346809, guid: beac60035099aa54aa12fdace8ee823b, type: 3}
+      propertyPath: m_hasFontAssetChanged
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 9162968649165322815, guid: beac60035099aa54aa12fdace8ee823b, type: 3}
       propertyPath: m_fontAsset
       value: 

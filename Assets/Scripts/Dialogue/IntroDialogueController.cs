@@ -1115,15 +1115,12 @@ public class IntroDialogueController : MonoBehaviour
         }
 
         bool moveUp =
-            Keyboard.current.upArrowKey.wasPressedThisFrame ||
-            Keyboard.current.wKey.wasPressedThisFrame;
+            Keyboard.current.upArrowKey.wasPressedThisFrame;
 
         bool moveDown =
-            Keyboard.current.downArrowKey.wasPressedThisFrame ||
-            Keyboard.current.sKey.wasPressedThisFrame;
+            Keyboard.current.downArrowKey.wasPressedThisFrame;
 
         bool confirm =
-            Keyboard.current.spaceKey.wasPressedThisFrame ||
             Keyboard.current.enterKey.wasPressedThisFrame ||
             Keyboard.current.numpadEnterKey.wasPressedThisFrame;
 
