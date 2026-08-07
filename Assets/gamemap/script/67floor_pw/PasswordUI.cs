@@ -2,7 +2,7 @@ using System.Collections;
 using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using UnityEngine.SceneManagement;
+using UnityEngine.Events;
 
 public class PasswordUI : MonoBehaviour
 {
@@ -20,7 +20,8 @@ public class PasswordUI : MonoBehaviour
 
     [Header("비밀번호 설정")]
     [SerializeField] private string correctPassword = "5321"; // 정답 비밀번호
-    [SerializeField] private string nextSceneName = "CardGameScene";
+    [Header("성공 이벤트")]
+    [SerializeField] private UnityEvent onPasswordSuccess;
 
     private int[] currentDigits;  // 각 자릿수의 현재 숫자
     private int currentFocusIndex = 0; // 현재 조종 중인 자릿수 인덱스
@@ -151,8 +152,10 @@ public class PasswordUI : MonoBehaviour
         if (inputResult == correctPassword)
         {
             Debug.Log("해제 성공");
-            Time.timeScale = 1f;
-            SceneManager.LoadScene(nextSceneName);
+
+            ClosePasswordUI();
+
+            onPasswordSuccess?.Invoke();
         }
         else
         {
