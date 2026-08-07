@@ -808,6 +808,10 @@ PrefabInstance:
       propertyPath: onDialogueFinished.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 572638950}
+    - target: {fileID: 7227288146101847214, guid: beac60035099aa54aa12fdace8ee823b, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7630818770442785394, guid: beac60035099aa54aa12fdace8ee823b, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
