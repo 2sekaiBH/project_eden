@@ -807,6 +807,10 @@ PrefabInstance:
       propertyPath: m_spriteAsset
       value: 
       objectReference: {fileID: 11400000, guid: f9ea1e27e0ef13b4caf1e24a9b80d237, type: 2}
+    - target: {fileID: 4422022198159521937, guid: 61ffc24d06a464341bde844296c15b78, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: -8488818210728474896, guid: bde05e093c9c04ad28fca4b06828333e, type: 3}
     - target: {fileID: 4464178640527546100, guid: 61ffc24d06a464341bde844296c15b78, type: 3}
       propertyPath: m_fontSize
       value: 36
