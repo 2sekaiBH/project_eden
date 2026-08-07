@@ -12,16 +12,18 @@ public class CardGameManager : MonoBehaviour
     [SerializeField] private List<NpcData> npcDataList; // database 참조 형식으로 개선 필요
 
     [Header("DataBase")]
-    [SerializeField] private OpponentData opponentData;
-    [SerializeField] private NpcDataBase npcDataBase; // 데이터 베이스 참조 후 전달 기능 추후 추가
+    // [SerializeField] private OpponentData opponentData;
+    // [SerializeField] private NpcDataBase npcDataBase; // 데이터 베이스 참조 후 전달 기능 추후 추가
+    [SerializeField] private List<StageData> stageDataList = new List<StageData>();
 
     [Header("Other Managers")]
     [SerializeField] private RoundFlowManager roundFlowManager;
     [SerializeField] private NpcSlotManager npcSlotManager;
+    [SerializeField] private PlayerActor playerActor;
+    [SerializeField] private OpponentActor opponentActor;
 
-    [SerializeField]
-    private List<StageData> stageDataList = new List<StageData>();
 
+    
     private bool isWIn = false;
 
     private void Awake()
@@ -45,9 +47,19 @@ public class CardGameManager : MonoBehaviour
             if(stageData.stageName.Equals(GameManager.Instance.LastStage))
             {
                 npcSlotManager.Initialize(stageData.joinNpc);
-                // OpponentActor에게 opponentData 전달
+                opponentActor.SetOpponent(stageData.opponent);
+                if(GameState.Instance == null)
+                {
+                    Debug.LogWarning("GameState 없음!, 기본 이름 player로 대체");
+                    playerActor.SetPlayer("Player", stageData.playerMaxHp);
+                }
+                else
+                {
+                    playerActor.SetPlayer(GameState.Instance.PlayerName, stageData.playerMaxHp);
+                }
             }
         }
+        Debug.LogWarning("초기화할 스테이지 정보가 없습니다.");
     }
 
     private void RunCardGame()
@@ -65,6 +77,7 @@ public class CardGameManager : MonoBehaviour
 public class StageData
 {
     public string stageName;
+    public int playerMaxHp;
     public List<NpcData> joinNpc;
-    public OpponentActor opponent;
+    public OpponentData opponent;
 }
