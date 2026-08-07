@@ -1083,6 +1083,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a496a61e4ed5a3940ae9ea7cac75aa5e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SettingsController
+  settingsWIndowCanvas: {fileID: 647667529}
   bgmSlider: {fileID: 1668481970}
   sfxSlider: {fileID: 1414667469}
 --- !u!4 &680538649
@@ -1851,8 +1852,8 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 680538648}
         m_TargetAssemblyTypeName: SettingsController, Assembly-CSharp
-        m_MethodName: CloseSettingsScene
-        m_Mode: 1
+        m_MethodName: OpenCloseSettingsWIndow
+        m_Mode: 6
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
