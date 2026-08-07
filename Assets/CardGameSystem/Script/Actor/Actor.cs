@@ -50,7 +50,7 @@ public abstract class Actor : MonoBehaviour
         RoundFlowManager.OnRoundStart += ResetHand;
     }
 
-    private void OnDisEnable()
+    private void OnDisable()
     {
         TurnFlowManager.OnTurnStart -= _handler;
         TurnFlowManager.OnTurnEnd -= ResetBlock;

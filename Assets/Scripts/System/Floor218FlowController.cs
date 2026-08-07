@@ -11,6 +11,7 @@ public class Floor218FlowController : MonoBehaviour
         PreCardDialogue,
         CardGame,
         PostCardDialogue,
+        ReadyToExit,
         Loading
     }
 
@@ -19,6 +20,9 @@ public class Floor218FlowController : MonoBehaviour
 
     [Header("Card Game")]
     [SerializeField] private UnityEvent onCardGameStart;
+
+    [Header("Exit")]
+    [SerializeField] private GameObject endTrigger;
 
     [Header("Loading")]
     [SerializeField] private GameObject loadingCanvas;
@@ -32,11 +36,15 @@ public class Floor218FlowController : MonoBehaviour
 
     private void Start()
     {
+        // 게임 시작할 때 출구는 막아둠
+        if (endTrigger != null)
+            endTrigger.SetActive(false);
+
         if (loadingCanvas != null)
             loadingCanvas.SetActive(false);
     }
 
-    // 맵 구조물 앞에 도착했을 때 호출
+    // 구조물 앞에 도착했을 때 호출
     public void StartPreCardDialogue()
     {
         if (state != FlowState.Exploring)
@@ -47,10 +55,10 @@ public class Floor218FlowController : MonoBehaviour
         dialogueController.StartDialogue("f218_prebattle_001");
     }
 
-    // DialogueSystem의 On Dialogue Finished에 연결
+    // DialogueSystem의 OnDialogueFinished에서 호출
     public void OnDialogueFinished()
     {
-        // 카드게임 직전 대사가 끝남
+        // 카드게임 직전 대사 종료
         if (state == FlowState.PreCardDialogue)
         {
             state = FlowState.CardGame;
@@ -59,14 +67,20 @@ public class Floor218FlowController : MonoBehaviour
             return;
         }
 
-        // 카드게임 직후 대사가 끝남
+        // 카드게임 직후 대사 종료
         if (state == FlowState.PostCardDialogue)
         {
-            StartCoroutine(LoadNextFloorRoutine());
+            state = FlowState.ReadyToExit;
+
+            // 이제 맵 끝 Trigger 활성화
+            if (endTrigger != null)
+                endTrigger.SetActive(true);
+
+            return;
         }
     }
 
-    // 카드게임 승리 시 호출
+    // 카드게임 승리 후 호출
     public void OnCardGameCleared()
     {
         if (state != FlowState.CardGame)
@@ -77,11 +91,25 @@ public class Floor218FlowController : MonoBehaviour
         dialogueController.StartDialogue("f218_post_001");
     }
 
+    public bool CanExit()
+    {
+        return state == FlowState.ReadyToExit;
+    }
+
+    // 맵 끝 Trigger에서 호출
+    public void GoToNextFloor()
+    {
+        if (!CanExit())
+            return;
+
+        if (isLoading)
+            return;
+
+        StartCoroutine(LoadNextFloorRoutine());
+    }
+
     private IEnumerator LoadNextFloorRoutine()
     {
-        if (isLoading)
-            yield break;
-
         isLoading = true;
         state = FlowState.Loading;
 

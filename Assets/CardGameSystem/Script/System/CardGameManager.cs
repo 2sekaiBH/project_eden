@@ -26,6 +26,9 @@ public class CardGameManager : MonoBehaviour
     [SerializeField] private UnityEvent onGameCleared;
     [SerializeField] private UnityEvent onGameFailed;
 
+    public UnityEvent OnGameCleared => onGameCleared;
+    public UnityEvent OnGameFailed => onGameFailed;
+
     // private bool isWIn = false;
 
     private StageType stage;
@@ -43,7 +46,7 @@ public class CardGameManager : MonoBehaviour
     private void Awake()
     {
         if (roundFlowManager == null)
-            GetComponentInChildren<RoundFlowManager>();
+            roundFlowManager = GetComponentInChildren<RoundFlowManager>();
     }
 
     public void StartCardGame()

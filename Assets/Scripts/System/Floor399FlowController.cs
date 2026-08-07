@@ -3,7 +3,7 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.SceneManagement;
 
-public class Floor67FlowController : MonoBehaviour
+public class Floor399FlowController : MonoBehaviour
 {
     private enum FlowState
     {
@@ -11,7 +11,7 @@ public class Floor67FlowController : MonoBehaviour
         PreCardDialogue,
         CardGame,
         PostCardDialogue,
-        ReadyToExit
+        Loading
     }
 
     [Header("Dialogue")]
@@ -20,65 +20,52 @@ public class Floor67FlowController : MonoBehaviour
     [Header("Card Game")]
     [SerializeField] private UnityEvent onCardGameStart;
 
-    [Header("Exit")]
-    [SerializeField] private GameObject endTrigger;
-
-    [Header("Next Floor")]
-    [SerializeField] private string nextSceneName;
-
     [Header("Loading")]
     [SerializeField] private GameObject loadingCanvas;
     [SerializeField] private float minimumLoadingTime = 1.2f;
 
+    [Header("Next Floor")]
+    [SerializeField] private string nextSceneName = "04_Floor404Scene";
+
     private FlowState state = FlowState.Exploring;
+    private bool isLoading = false;
 
     private void Start()
     {
-        if (endTrigger != null)
-            endTrigger.SetActive(false);
         if (loadingCanvas != null)
             loadingCanvas.SetActive(false);
     }
 
-    // 자물쇠 성공
-    public void OnLockCleared()
+    // 점프맵 맨 끝 Trigger에서 호출
+    public void StartPreCardDialogue()
     {
         if (state != FlowState.Exploring)
             return;
 
         state = FlowState.PreCardDialogue;
 
-        dialogueController.StartDialogue("f67_device_001");
+        dialogueController.StartDialogue("f399_prebattle_001");
     }
 
-    // 대사 종료
+    // DialogueSystem의 On Dialogue Finished에서 호출
     public void OnDialogueFinished()
     {
-        // 카드게임 직전 대사가 끝남
+        // 카드게임 직전 대사 끝
         if (state == FlowState.PreCardDialogue)
         {
-            StartCardGame();
+            state = FlowState.CardGame;
+            onCardGameStart?.Invoke();
             return;
         }
 
-        // 카드게임 직후 대사가 끝남
+        // 카드게임 직후의 모든 대사 끝
         if (state == FlowState.PostCardDialogue)
         {
-            state = FlowState.ReadyToExit;
-
-            if (endTrigger != null)
-                endTrigger.SetActive(true);
+            StartCoroutine(LoadNextFloorRoutine());
         }
     }
 
-    private void StartCardGame()
-    {
-        state = FlowState.CardGame;
-
-        onCardGameStart?.Invoke();
-    }
-
-    // 카드게임 클리어
+    // 카드게임 승리
     public void OnCardGameCleared()
     {
         if (state != FlowState.CardGame)
@@ -86,18 +73,17 @@ public class Floor67FlowController : MonoBehaviour
 
         state = FlowState.PostCardDialogue;
 
-        dialogueController.StartDialogue("f67_post_001");
+        dialogueController.StartDialogue("f399_post_001");
     }
-
-
-    public bool CanExit()
-    {
-        return state == FlowState.ReadyToExit;
-    }
-
 
     private IEnumerator LoadNextFloorRoutine()
     {
+        if (isLoading)
+            yield break;
+
+        isLoading = true;
+        state = FlowState.Loading;
+
         if (loadingCanvas != null)
             loadingCanvas.SetActive(true);
 
@@ -121,14 +107,5 @@ public class Floor67FlowController : MonoBehaviour
         }
 
         operation.allowSceneActivation = true;
-    }
-
-
-    public void GoToNextFloor()
-    {
-        if (state != FlowState.ReadyToExit)
-            return;
-
-        StartCoroutine(LoadNextFloorRoutine());
     }
 }
