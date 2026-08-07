@@ -67,15 +67,25 @@ public class PasswordUI : MonoBehaviour
         {
             ChangeDigitValue(-1);
         }
-        // 3. 엔터키 또는 Space (다음 자릿수로 이동 / 마지막 자릿수면 정답 검사)
-        else if (Keyboard.current.enterKey.wasPressedThisFrame || Keyboard.current.spaceKey.wasPressedThisFrame)
+        // 3. 오른쪽 방향키 (다음 자릿수로 이동)
+        else if (Keyboard.current.rightArrowKey.wasPressedThisFrame)
         {
             ConfirmCurrentDigit();
         }
-        // 4. Backspace (이전 자릿수로 되돌아가기 - 편의 기능)
-        else if (Keyboard.current.backspaceKey.wasPressedThisFrame)
+        // 4. 왼쪽 방향키 (이전 자릿수로 되돌아가기)
+        else if (Keyboard.current.leftArrowKey.wasPressedThisFrame)
         {
             MoveToPreviousDigit();
+        }
+        // 5. 엔터키 (즉시 정답 검증)
+        else if (Keyboard.current.enterKey.wasPressedThisFrame)
+        {
+            CheckPassword();
+        }
+        // 6. esc키 (UI 닫기)
+        else if (Keyboard.current.escapeKey.wasPressedThisFrame)
+        {
+            ClosePasswordUI();
         }
     }
 
@@ -116,7 +126,7 @@ public class PasswordUI : MonoBehaviour
         UpdateUI();
     }
 
-    // 엔터키를 눌렀을 때 실행 (다음 자릿수로)
+    // 다음 자릿수로
     private void ConfirmCurrentDigit()
     {
         // 아직 마지막 자릿수가 아니라면 -> 다음 자릿수로 이동
@@ -132,7 +142,7 @@ public class PasswordUI : MonoBehaviour
         }
     }
 
-    // 이전 자릿수로 돌아가기 (오타 수정용)
+    // 이전 자릿수로 돌아가기
     private void MoveToPreviousDigit()
     {
         if (currentFocusIndex > 0)

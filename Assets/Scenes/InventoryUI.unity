@@ -310,11 +310,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 789ea9712518553459755fe03404b4ca, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ItemAcquisitionUI
-  itemDatabase: []
   popupPanel: {fileID: 0}
-  iconImage: {fileID: 0}
+  ItemDetailIcon: {fileID: 0}
   itemInfoText: {fileID: 0}
-  itemDescText: {fileID: 0}
 --- !u!1 &519897095
 GameObject:
   m_ObjectHideFlags: 0
@@ -1326,6 +1324,30 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3723123644300053805, guid: 62bd5c7ac8f53074296ad1deb87b2c59, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5444399581628997751, guid: 62bd5c7ac8f53074296ad1deb87b2c59, type: 3}
+      propertyPath: m_fontAsset
+      value: 
+      objectReference: {fileID: 11400000, guid: e70787f574f10324fb96a39476260f60, type: 2}
+    - target: {fileID: 5444399581628997751, guid: 62bd5c7ac8f53074296ad1deb87b2c59, type: 3}
+      propertyPath: m_sharedMaterial
+      value: 
+      objectReference: {fileID: 1894726477922210681, guid: e70787f574f10324fb96a39476260f60, type: 2}
+    - target: {fileID: 5444399581628997751, guid: 62bd5c7ac8f53074296ad1deb87b2c59, type: 3}
+      propertyPath: m_hasFontAssetChanged
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7961769229689608412, guid: 62bd5c7ac8f53074296ad1deb87b2c59, type: 3}
+      propertyPath: m_fontAsset
+      value: 
+      objectReference: {fileID: 11400000, guid: e70787f574f10324fb96a39476260f60, type: 2}
+    - target: {fileID: 7961769229689608412, guid: 62bd5c7ac8f53074296ad1deb87b2c59, type: 3}
+      propertyPath: m_sharedMaterial
+      value: 
+      objectReference: {fileID: 1894726477922210681, guid: e70787f574f10324fb96a39476260f60, type: 2}
+    - target: {fileID: 7961769229689608412, guid: 62bd5c7ac8f53074296ad1deb87b2c59, type: 3}
+      propertyPath: m_hasFontAssetChanged
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []

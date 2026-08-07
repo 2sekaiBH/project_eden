@@ -29,9 +29,9 @@ public class InventoryUI : MonoBehaviour
     }
     private void Start()
     {
-        if (inventoryPanel != null) inventoryPanel.SetActive(false); //ÃÊ±â°ª, ÀÎº¥Åä¸® UI´Â ²¨Á® ÀÖÀ½
+        if (inventoryPanel != null) inventoryPanel.SetActive(false); //ï¿½Ê±â°ª, ï¿½Îºï¿½ï¿½ä¸® UIï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
 
-        //ÃÊ±â°ª, ¾ÆÀÌÅÛ ¼³¸íÃ¢ÀÇ ¸ğµç °ÍµéÀ» ²¨µÒ
+        //ï¿½Ê±â°ª, ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Ã¢ï¿½ï¿½ ï¿½ï¿½ï¿½ ï¿½Íµï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
         itemDetailIcon.enabled = false;
         itemName.text = "";
         itemDescription.text = "";
@@ -40,14 +40,23 @@ public class InventoryUI : MonoBehaviour
 
     // Update is called once per frame
     void Update()
-     {
+    {
+        // Ií‚¤: ì¸ë²¤í† ë¦¬ ì—´ê¸°/ë‹«ê¸°
         if (Keyboard.current != null && Keyboard.current.iKey.wasPressedThisFrame)
         {
             ToggleInventory();
         }
+        // ESCí‚¤: ì¸ë²¤í† ë¦¬ ë‹«ê¸°
+        else if (Keyboard.current.escapeKey.wasPressedThisFrame)
+        {
+            if (inventoryPanel != null && inventoryPanel.activeSelf)
+            {
+                inventoryPanel.SetActive(false);
+            }
+        }
     }
 
-    //ÀÎº¥Åä¸® UIÅ°°í ²ô´Â °Í °ü¸®
+    //ï¿½Îºï¿½ï¿½ä¸® UIÅ°ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
     public void ToggleInventory()
     {
         if (inventoryPanel == null) return;
@@ -55,17 +64,17 @@ public class InventoryUI : MonoBehaviour
         bool isActive = !inventoryPanel.activeSelf;
         inventoryPanel.SetActive(isActive);
 
-        // ÀÎº¥Åä¸®°¡ ÄÑÁú ¶§ ÃÖ½Å µ¥ÀÌÅÍ·Î ½½·ÔÀ» ½Ï °»½ÅÇØÁİ´Ï´Ù.
+        // ï¿½Îºï¿½ï¿½ä¸®ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½Ö½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Í·ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½İ´Ï´ï¿½.
         if (isActive)
         {
             Refresh();
         }
     }
 
-    // ÀÎº¥Åä¸® ³» ½½·Ô °»½Å
+    // ï¿½Îºï¿½ï¿½ä¸® ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
     public void Refresh()
     {
-        // ½Ì±ÛÅæÀ¸·Î Á¸ÀçÇÏ´Â Inventory.Instance¿¡¼­ µ¥ÀÌÅÍ¸¦ ¾ÈÀüÇÏ°Ô °¡Á®¿É´Ï´Ù.
+        // ï¿½Ì±ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ï´ï¿½ Inventory.Instanceï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Í¸ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ï°ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½É´Ï´ï¿½.
         if (Inventory.Instance == null || slotUI == null) return;
 
         for (int i = 0; i < Inventory.Instance.slots.Length; i++)
@@ -77,7 +86,7 @@ public class InventoryUI : MonoBehaviour
         }
     }
 
-    //¾ÆÀÌÅÛÀ» ¼³¸íÃ¢¿¡ º¸¿©ÁÖµµ·Ï ÇÏ´Â ÇÔ¼ö
+    //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Ã¢ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Öµï¿½ï¿½ï¿½ ï¿½Ï´ï¿½ ï¿½Ô¼ï¿½
     public void ShowItem(ItemData item)
     {
         itemDetailIcon.sprite = item.ItemDetailIcon;

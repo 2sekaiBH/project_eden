@@ -521,7 +521,7 @@ MonoBehaviour:
   slideColliderSize: {x: 4.3, y: 1.4}
   groundLayer:
     serializedVersion: 2
-    m_Bits: 64
+    m_Bits: 128
   groundCheck: {fileID: 7071389905878247540}
 --- !u!114 &2096106927436906070
 MonoBehaviour:
