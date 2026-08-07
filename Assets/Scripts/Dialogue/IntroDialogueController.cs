@@ -6,6 +6,7 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.Events;
 using UnityEngine.UI;
+using UnityEngine.EventSystems;
 
 public class IntroDialogueController : MonoBehaviour
 {
@@ -37,8 +38,12 @@ public class IntroDialogueController : MonoBehaviour
 
     [Header("Shared Background")]
     [SerializeField] private Image backgroundImage;
-    [SerializeField] private CanvasGroup prologueDim;
-    [SerializeField] private CanvasGroup talkDim;
+
+    [Header("Dim Overlay")]
+    [SerializeField] private CanvasGroup dimOverlay;
+
+    [SerializeField, Range(0f, 1f)]
+    private float defaultDimAlpha = 0.8f;
 
     [Header("Prologue UI")]
     [SerializeField] private TMP_Text prologueText;
@@ -59,15 +64,30 @@ public class IntroDialogueController : MonoBehaviour
     private float gameStartDuration = 1.5f;
 
     [Header("Dialogue UI")]
-    [SerializeField] private TMP_Text speakerNameText;
     [SerializeField] private TMP_Text dialogueText;
     [SerializeField] private GameObject dialogueNextHint;
     [SerializeField] private Button dialogueNextButton;
+
+    [Header("Speaker Name UI")]
+    [SerializeField] private GameObject leftNameGroup;
+    [SerializeField] private TMP_Text leftNameText;
+
+    [SerializeField] private GameObject rightNameGroup;
+    [SerializeField] private TMP_Text rightNameText;
 
     [Header("Choice UI")]
     [SerializeField] private GameObject choicePanel;
     [SerializeField] private Button[] choiceButtons;
     [SerializeField] private TMP_Text[] choiceTexts;
+
+    [Header("Choice Cursor")]
+    [SerializeField] private RectTransform choiceCursor;
+
+    [SerializeField]
+    private Vector2 choiceCursorOffset =
+        new Vector2(-40f, 0f);
+
+    private int currentChoiceIndex;
 
 
     [Header("Character UI")]
@@ -131,10 +151,14 @@ public class IntroDialogueController : MonoBehaviour
             return;
         }
 
-        // 이름 입력 중에는 좌클릭이나 Space로 넘어가지 않음
-        if (currentNode.type == "nameInput" ||
-            currentNode.type == "choice")
+        if (currentNode.type == "nameInput")
         {
+            return;
+        }
+
+        if (currentNode.type == "choice")
+        {
+            HandleChoiceInput();
             return;
         }
 
@@ -176,15 +200,17 @@ public class IntroDialogueController : MonoBehaviour
             gameStartText != null &&
             characterDialogueScreen != null &&
             backgroundImage != null &&
-            prologueDim != null &&
-            talkDim != null &&
+            dimOverlay != null &&
             prologueText != null &&
             prologueNextIndicator != null &&
             prologueNextButton != null &&
             namePromptText != null &&
             nameInputField != null &&
             nameConfirmButton != null &&
-            speakerNameText != null &&
+            leftNameGroup != null &&
+            leftNameText != null &&
+            rightNameGroup != null &&
+            rightNameText != null &&
             dialogueText != null &&
             dialogueNextHint != null &&
             dialogueNextButton != null &&
@@ -293,6 +319,11 @@ public class IntroDialogueController : MonoBehaviour
         return loadedStartId;
     }
 
+    public void StartDialogueFromBeginning()
+    {
+        StartDialogue(GetStartId());
+    }
+
     public void StartDialogue(string nodeId)
     {
         if (string.IsNullOrWhiteSpace(nodeId))
@@ -371,14 +402,25 @@ public class IntroDialogueController : MonoBehaviour
     private IEnumerator ShowPrologueNode(DialogueNode node)
     {
         HideChoices();
+
+        // 이름 입력·게임 시작 등 다른 화면에서
+        // PrologueScreen으로 돌아오는 경우 이전 문장 제거
+        bool wasPrologueScreenInactive =
+            !prologueScreen.activeSelf;
+
+        if (wasPrologueScreenInactive)
+        {
+            prologueText.text = string.Empty;
+            SetTextAlpha(prologueText, 0f);
+        }
+
         SetOnlyScreen(prologueScreen);
-        SetDimVisibility(usePrologueDim: true);
 
         prologueNextIndicator.SetActive(false);
         prologueNextButton.interactable = false;
 
         yield return SetDimAlpha(
-            prologueDim,
+            dimOverlay,
             node.dimAlpha,
             node.fadeDim,
             node.fadeDuration
@@ -397,7 +439,9 @@ public class IntroDialogueController : MonoBehaviour
     {
         HideChoices();
         SetOnlyScreen(nameInputScreen);
-        SetDimVisibility(usePrologueDim: false, hideBoth: true);
+        HideDim();
+        prologueText.text = "";
+        SetTextAlpha(prologueText, 0f);
 
         namePromptText.text = ReplacePlayerName(node.text);
         nameInputField.SetTextWithoutNotify("");
@@ -418,12 +462,8 @@ public class IntroDialogueController : MonoBehaviour
     {
         HideChoices();
         SetOnlyScreen(characterDialogueScreen);
-        SetDimVisibility(usePrologueDim: false);
 
-        speakerNameText.text = ReplacePlayerName(node.speaker);
-        speakerNameText.gameObject.SetActive(
-            !string.IsNullOrWhiteSpace(speakerNameText.text)
-        );
+        ApplySpeakerUI(node);
 
         dialogueNextHint.SetActive(false);
         dialogueNextButton.interactable = false;
@@ -441,8 +481,8 @@ public class IntroDialogueController : MonoBehaviour
         );
 
         yield return SetDimAlpha(
-            talkDim,
-            node.dimAlpha,
+            dimOverlay,
+            ResolveDimAlpha(node),
             node.fadeDim,
             node.fadeDuration
         );
@@ -514,10 +554,7 @@ public class IntroDialogueController : MonoBehaviour
     {
         SetOnlyScreen(gameStartScreen);
 
-        SetDimVisibility(
-            usePrologueDim: false,
-            hideBoth: true
-        );
+        HideDim();
 
         gameStartText.text =
             ReplacePlayerName(
@@ -704,19 +741,27 @@ public class IntroDialogueController : MonoBehaviour
         );
     }
 
-    private void SetDimVisibility(
-        bool usePrologueDim,
-        bool hideBoth = false)
+    private float ResolveDimAlpha(DialogueNode node)
     {
-        if (hideBoth)
+        if (node == null || node.dimAlpha <= 0f)
         {
-            prologueDim.gameObject.SetActive(false);
-            talkDim.gameObject.SetActive(false);
+            return defaultDimAlpha;
+        }
+
+        return Mathf.Clamp01(node.dimAlpha);
+    }
+
+    private void HideDim()
+    {
+        if (dimOverlay == null)
+        {
             return;
         }
 
-        prologueDim.gameObject.SetActive(usePrologueDim);
-        talkDim.gameObject.SetActive(!usePrologueDim);
+        dimOverlay.alpha = 0f;
+        dimOverlay.interactable = false;
+        dimOverlay.blocksRaycasts = false;
+        dimOverlay.gameObject.SetActive(false);
     }
 
     private void HideDialogueUIForGameplay()
@@ -731,10 +776,7 @@ public class IntroDialogueController : MonoBehaviour
         HideChoices();
 
         // 딤 화면 모두 숨김
-        SetDimVisibility(
-            usePrologueDim: false,
-            hideBoth: true
-        );
+        HideDim();
 
         // 대화용 전체 배경 숨김
         if (backgroundImage != null)
@@ -875,6 +917,23 @@ public class IntroDialogueController : MonoBehaviour
     }
     private void HideChoices()
     {
+        if (choiceCursor != null)
+        {
+            choiceCursor.gameObject.SetActive(false);
+
+            if (choicePanel != null)
+            {
+                choiceCursor.SetParent(
+                    choicePanel.transform,
+                    false
+                );
+            }
+        }
+
+        if (choicePanel != null)
+        {
+            choicePanel.SetActive(false);
+        }
         if (choicePanel != null)
         {
             choicePanel.SetActive(false);
@@ -899,7 +958,6 @@ public class IntroDialogueController : MonoBehaviour
     private IEnumerator ShowChoiceNode(DialogueNode node)
     {
         SetOnlyScreen(characterDialogueScreen);
-        SetDimVisibility(usePrologueDim: false);
 
         dialogueNextHint.SetActive(false);
         dialogueNextButton.interactable = false;
@@ -917,20 +975,13 @@ public class IntroDialogueController : MonoBehaviour
         );
 
         yield return SetDimAlpha(
-            talkDim,
-            node.dimAlpha,
+            dimOverlay,
+            ResolveDimAlpha(node),
             node.fadeDim,
             node.fadeDuration
         );
 
-        string speaker =
-            ReplacePlayerName(node.speaker);
-
-        speakerNameText.text = speaker;
-
-        speakerNameText.gameObject.SetActive(
-            !string.IsNullOrWhiteSpace(speaker)
-        );
+        ApplySpeakerUI(node);
 
         yield return ReplaceTextWithFade(
             dialogueText,
@@ -977,10 +1028,30 @@ public class IntroDialogueController : MonoBehaviour
 
             int capturedIndex = i;
 
+            // 버튼 클릭 시 해당 선택지 실행
             button.onClick.AddListener(
                 () => SelectChoice(capturedIndex)
             );
+
+            // 마우스를 버튼 위에 올렸을 때
+            // 현재 선택 인덱스와 화살표 위치 변경
+            ChoiceHoverRelay hoverRelay =
+                button.GetComponent<ChoiceHoverRelay>();
+
+            if (hoverRelay == null)
+            {
+                hoverRelay =
+                    button.gameObject.AddComponent<ChoiceHoverRelay>();
+            }
+
+            hoverRelay.Initialize(
+                this,
+                capturedIndex
+            );
         }
+
+        currentChoiceIndex = 0;
+        SetChoiceIndex(0);
     }
 
     private void SelectChoice(int choiceIndex)
@@ -1025,5 +1096,171 @@ public class IntroDialogueController : MonoBehaviour
     public int GetAffinity(string target)
     {
         return GameState.Instance.GetAffinity(target);
+    }
+
+    private void HandleChoiceInput()
+    {
+        if (Keyboard.current == null ||
+            currentNode == null ||
+            currentNode.choices == null ||
+            currentNode.choices.Length == 0)
+        {
+            return;
+        }
+
+        bool moveUp =
+            Keyboard.current.upArrowKey.wasPressedThisFrame ||
+            Keyboard.current.wKey.wasPressedThisFrame;
+
+        bool moveDown =
+            Keyboard.current.downArrowKey.wasPressedThisFrame ||
+            Keyboard.current.sKey.wasPressedThisFrame;
+
+        bool confirm =
+            Keyboard.current.spaceKey.wasPressedThisFrame ||
+            Keyboard.current.enterKey.wasPressedThisFrame ||
+            Keyboard.current.numpadEnterKey.wasPressedThisFrame;
+
+        if (moveUp)
+        {
+            MoveChoiceSelection(-1);
+            return;
+        }
+
+        if (moveDown)
+        {
+            MoveChoiceSelection(1);
+            return;
+        }
+
+        if (confirm)
+        {
+            SelectChoice(currentChoiceIndex);
+        }
+    }
+
+    private void MoveChoiceSelection(int direction)
+    {
+        int choiceCount = Mathf.Min(
+            currentNode.choices.Length,
+            choiceButtons.Length
+        );
+
+        if (choiceCount <= 0)
+        {
+            return;
+        }
+
+        currentChoiceIndex =
+            (currentChoiceIndex + direction + choiceCount)
+            % choiceCount;
+
+        SetChoiceIndex(currentChoiceIndex);
+    }
+
+    public void SetChoiceIndex(int index)
+    {
+        if (currentNode == null ||
+            currentNode.choices == null)
+        {
+            return;
+        }
+
+        int choiceCount = Mathf.Min(
+            currentNode.choices.Length,
+            choiceButtons.Length
+        );
+
+        if (choiceCount <= 0)
+        {
+            return;
+        }
+
+        currentChoiceIndex =
+            Mathf.Clamp(index, 0, choiceCount - 1);
+
+        Button selectedButton =
+            choiceButtons[currentChoiceIndex];
+
+        if (selectedButton == null ||
+            !selectedButton.gameObject.activeInHierarchy)
+        {
+            return;
+        }
+
+        if (EventSystem.current != null)
+        {
+            EventSystem.current.SetSelectedGameObject(
+                selectedButton.gameObject
+            );
+        }
+
+        MoveChoiceCursor(selectedButton);
+    }
+
+    private void MoveChoiceCursor(Button targetButton)
+    {
+        if (choiceCursor == null ||
+            targetButton == null)
+        {
+            return;
+        }
+
+        RectTransform targetRect =
+            targetButton.GetComponent<RectTransform>();
+
+        // 선택된 버튼의 자식으로 이동
+        choiceCursor.SetParent(targetRect, false);
+
+        choiceCursor.anchorMin =
+            new Vector2(0f, 0.5f);
+
+        choiceCursor.anchorMax =
+            new Vector2(0f, 0.5f);
+
+        choiceCursor.pivot =
+            new Vector2(0.5f, 0.5f);
+
+        choiceCursor.anchoredPosition =
+            choiceCursorOffset;
+
+        choiceCursor.gameObject.SetActive(true);
+        choiceCursor.SetAsLastSibling();
+    }
+
+    private void ApplySpeakerUI(DialogueNode node)
+    {
+        if (node == null)
+            return;
+
+        string speaker =
+            ReplacePlayerName(node.speaker);
+
+        // 화자 이름이 아예 없는 내레이션
+        if (string.IsNullOrWhiteSpace(node.speaker))
+        {
+            leftNameGroup.SetActive(false);
+            rightNameGroup.SetActive(false);
+            return;
+        }
+
+        // %% = 주인공
+        bool isPlayerSpeaking =
+            node.speaker == "%%";
+
+        if (isPlayerSpeaking)
+        {
+            leftNameGroup.SetActive(true);
+            rightNameGroup.SetActive(false);
+
+            leftNameText.text = speaker;
+        }
+        else
+        {
+            leftNameGroup.SetActive(false);
+            rightNameGroup.SetActive(true);
+
+            rightNameText.text = speaker;
+        }
     }
 }

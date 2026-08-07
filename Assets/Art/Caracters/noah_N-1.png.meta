@@ -1,0 +1,429 @@
+fileFormatVersion: 2
+guid: 46935f57b7b1f0c4a9ce4570ee2b411d
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: 2489399524580179679
+    second: noah_N-1_0
+  - first:
+      213: 6593683479407574034
+    second: noah_N-1_1
+  - first:
+      213: -437164970173520761
+    second: noah_N-1_2
+  - first:
+      213: -6582906747410925785
+    second: noah_N-1_3
+  - first:
+      213: 8407958506084882689
+    second: noah_N-1_4
+  - first:
+      213: -2908322256667730481
+    second: noah_N-1_5
+  - first:
+      213: -2893151372064291837
+    second: noah_N-1_6
+  - first:
+      213: 6377488385339862110
+    second: noah_N-1_7
+  - first:
+      213: 8926147225128190114
+    second: noah_N-1_8
+  - first:
+      213: 7735451006638723047
+    second: noah_N-1_9
+  - first:
+      213: -9008695518903300682
+    second: noah_N-1_10
+  - first:
+      213: -1849607132224309224
+    second: noah_N-1_11
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 1
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 1
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: noah_N-1_0
+      rect:
+        serializedVersion: 2
+        x: 1623
+        y: 2356
+        width: 45
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: fdeb0ae9daf1c8220800000000000000
+      internalID: 2489399524580179679
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: noah_N-1_1
+      rect:
+        serializedVersion: 2
+        x: 82
+        y: 509
+        width: 1343
+        height: 1723
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 21c337f8038718b50800000000000000
+      internalID: 6593683479407574034
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: noah_N-1_2
+      rect:
+        serializedVersion: 2
+        x: 1645
+        y: 1849
+        width: 20
+        height: 14
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 784209c96c0eee9f0800000000000000
+      internalID: -437164970173520761
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: noah_N-1_3
+      rect:
+        serializedVersion: 2
+        x: 1405
+        y: 1398
+        width: 22
+        height: 138
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 727bc03e031d4a4a0800000000000000
+      internalID: -6582906747410925785
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: noah_N-1_4
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 579
+        width: 47
+        height: 117
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 109d969c6b11fa470800000000000000
+      internalID: 8407958506084882689
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: noah_N-1_5
+      rect:
+        serializedVersion: 2
+        x: 511
+        y: 481
+        width: 50
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: fcd15f6015093a7d0800000000000000
+      internalID: -2908322256667730481
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: noah_N-1_6
+      rect:
+        serializedVersion: 2
+        x: 688
+        y: 478
+        width: 9
+        height: 11
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3048caad72679d7d0800000000000000
+      internalID: -2893151372064291837
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: noah_N-1_7
+      rect:
+        serializedVersion: 2
+        x: 684
+        y: 458
+        width: 38
+        height: 22
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e5cac57a5e3618850800000000000000
+      internalID: 6377488385339862110
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: noah_N-1_8
+      rect:
+        serializedVersion: 2
+        x: 175
+        y: 358
+        width: 39
+        height: 36
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2a0ca96cb9b00eb70800000000000000
+      internalID: 8926147225128190114
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: noah_N-1_9
+      rect:
+        serializedVersion: 2
+        x: 906
+        y: 253
+        width: 15
+        height: 6
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7ef8324d4b7d95b60800000000000000
+      internalID: 7735451006638723047
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: noah_N-1_10
+      rect:
+        serializedVersion: 2
+        x: 1009
+        y: 258
+        width: 9
+        height: 9
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6bd8d1ad72faaf280800000000000000
+      internalID: -9008695518903300682
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: noah_N-1_11
+      rect:
+        serializedVersion: 2
+        x: 1125
+        y: 257
+        width: 110
+        height: 54
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 818bdb5ec10e456e0800000000000000
+      internalID: -1849607132224309224
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: 5e97eb03825dee720800000000000000
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      noah_N-1_0: 2489399524580179679
+      noah_N-1_1: 6593683479407574034
+      noah_N-1_10: -9008695518903300682
+      noah_N-1_11: -1849607132224309224
+      noah_N-1_2: -437164970173520761
+      noah_N-1_3: -6582906747410925785
+      noah_N-1_4: 8407958506084882689
+      noah_N-1_5: -2908322256667730481
+      noah_N-1_6: -2893151372064291837
+      noah_N-1_7: 6377488385339862110
+      noah_N-1_8: 8926147225128190114
+      noah_N-1_9: 7735451006638723047
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
