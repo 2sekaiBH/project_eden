@@ -5,6 +5,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.Rendering;
 using UnityEngine.UI;
+using System.Collections;
 
 /// <summary>
 /// 카드의 UI를 관리하는 스크립트
@@ -38,9 +39,20 @@ public class CardDisplay : MonoBehaviour, IPointerClickHandler, IPointerEnterHan
     private Vector2 originalPos;
     private int originalSiblingIndex;
 
-    private RectTransform rt;
+    private RectTransform rt; //카드의 rectTransform을 들고옴
+
+    //카드 뒤집기 효과를 위한 변수
+    [SerializeField] private Sprite back;
+
+    private bool isFront = false;
+    private Vector3 baseScale;
 
 
+    private void Start()
+    {
+        baseScale = transform.localScale;
+        ShowBack();
+    }
 
 
     private void Awake()
@@ -174,4 +186,59 @@ public class CardDisplay : MonoBehaviour, IPointerClickHandler, IPointerEnterHan
         // 호버 구현
         transform.SetSiblingIndex(originalSiblingIndex);
     }
+
+    //카드 뒷면 및 상태 저장
+    public void ShowBack()
+    {
+        image.sprite = back;
+        isFront = false;
+    }
+
+    //카드 앞면 및 상태 저장
+    public void ShowFront()
+    {
+        image.sprite = card.cardImage;
+        isFront = true;
+    }
+
+    //실제 앞,뒷면 뒤집기 모션 구현
+    public IEnumerator Flip()
+    {
+        float duration = 0.15f;
+        float time = 0;
+
+        // 1. 접기 (1 → 0)
+        while (time < duration)
+        {
+            float t = time / duration;
+            float scaleX = Mathf.Lerp(1, 0, t);
+            transform.localScale = new Vector3(baseScale.x * scaleX, baseScale.y, baseScale.z);
+
+            time += Time.deltaTime;
+            yield return null;
+        }
+
+        // 2. 이미지 교체
+        if (isFront)
+            image.sprite = back;
+        else
+            image.sprite = card.cardImage;
+
+        isFront = !isFront;
+
+        // 3. 펼치기 (0 → 1)
+        time = 0;
+        while (time < duration)
+        {
+            float t = time / duration;
+            float scaleX = Mathf.Lerp(0, 1, t);
+            transform.localScale = new Vector3(baseScale.x * scaleX, baseScale.y, baseScale.z);
+
+            transform.localScale = baseScale;
+
+            time += Time.deltaTime;
+            yield return null;
+        }
+    }
+
 }
