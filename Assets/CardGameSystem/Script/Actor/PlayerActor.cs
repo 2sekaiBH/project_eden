@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System;
 using UnityEngine;
 using UnityEngine.PlayerLoop;
+using static UnityEngine.Rendering.GPUSort;
 
 /// <summary>
 /// �÷��̾� �ൿ ���� ��ũ��Ʈ
