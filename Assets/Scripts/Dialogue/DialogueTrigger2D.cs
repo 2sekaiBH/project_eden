@@ -7,6 +7,10 @@ public class DialogueTrigger2D : MonoBehaviour
     [SerializeField] private string startNodeId;
     [SerializeField] private bool triggerOnlyOnce = true;
 
+    [Header("Sound")]
+    [SerializeField] private bool playBgmOnTrigger = true;
+    [SerializeField] private EBgm bgmToPlay;
+
     [Header("Optional Event")]
     [SerializeField] private UnityEvent onTriggered;
 
@@ -23,6 +27,11 @@ public class DialogueTrigger2D : MonoBehaviour
             return;
 
         hasTriggered = true;
+
+        if (playBgmOnTrigger && SoundManager.Instance != null)
+        {
+            SoundManager.Instance.PlayBGM(bgmToPlay);
+        }
 
         onTriggered?.Invoke();
 
