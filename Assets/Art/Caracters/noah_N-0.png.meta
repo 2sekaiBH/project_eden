@@ -1,43 +1,43 @@
 fileFormatVersion: 2
-guid: 6d5fc73e50265cf40835c51da1887b7a
+guid: 6bb9747a9698e3648ad7355d66f735f2
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -8223391633238776142
-    second: noah_N-0_0
+      213: 3612780069312183649
+    second: noah_N-0 1_0
   - first:
-      213: -2334067751353741605
-    second: noah_N-0_1
+      213: -7884927910697191126
+    second: noah_N-0 1_1
   - first:
-      213: 8616734641635626150
-    second: noah_N-0_2
+      213: -3450222189756436189
+    second: noah_N-0 1_2
   - first:
-      213: 3177507776938026559
-    second: noah_N-0_3
+      213: -5440455722529098802
+    second: noah_N-0 1_3
   - first:
-      213: 1641907213283272851
-    second: noah_N-0_4
+      213: 7951112145919393287
+    second: noah_N-0 1_4
   - first:
-      213: -907675435299439814
-    second: noah_N-0_5
+      213: -7711791901959979913
+    second: noah_N-0 1_5
   - first:
-      213: -1376091018471279797
-    second: noah_N-0_6
+      213: -6470555457116385269
+    second: noah_N-0 1_6
   - first:
-      213: -7332402333764915132
-    second: noah_N-0_7
+      213: 6485946809858409218
+    second: noah_N-0 1_7
   - first:
-      213: 4321800489439236077
-    second: noah_N-0_8
+      213: 5288882065119822952
+    second: noah_N-0 1_8
   - first:
-      213: 1618827832898952251
-    second: noah_N-0_9
+      213: 8150069868597693123
+    second: noah_N-0 1_9
   - first:
-      213: 2119669193548169067
-    second: noah_N-0_10
+      213: -5865172756799488208
+    second: noah_N-0 1_10
   - first:
-      213: 5377820640562268316
-    second: noah_N-0_11
+      213: -984698489802815886
+    second: noah_N-0 1_11
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -79,7 +79,7 @@ TextureImporter:
   nPOTScale: 0
   lightmap: 0
   compressionQuality: 50
-  spriteMode: 1
+  spriteMode: 2
   spriteExtrude: 1
   spriteMeshType: 1
   alignment: 0
@@ -133,10 +133,10 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: noah_N-0_0
+      name: noah_N-0 1_0
       rect:
         serializedVersion: 2
-        x: 1623
+        x: 0
         y: 2356
         width: 45
         height: 32
@@ -148,39 +148,17 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 2b622e301e4a0ed80800000000000000
-      internalID: -8223391633238776142
+      spriteID: 16db6fae45c232230800000000000000
+      internalID: 3612780069312183649
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: noah_N-0_1
+      name: noah_N-0 1_1
       rect:
         serializedVersion: 2
-        x: 82
-        y: 509
-        width: 1343
-        height: 1723
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: bde8dde1fb9bb9fd0800000000000000
-      internalID: -2334067751353741605
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: noah_N-0_2
-      rect:
-        serializedVersion: 2
-        x: 1645
+        x: 3
         y: 1849
         width: 20
         height: 14
@@ -192,17 +170,39 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 6ac8e7ec08ac49770800000000000000
-      internalID: 8616734641635626150
+      spriteID: a29b45367db139290800000000000000
+      internalID: -7884927910697191126
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: noah_N-0_3
+      name: noah_N-0 1_2
       rect:
         serializedVersion: 2
-        x: 1405
+        x: 243
+        y: 509
+        width: 1343
+        height: 1723
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 321b56fc2395e10d0800000000000000
+      internalID: -3450222189756436189
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: noah_N-0 1_3
+      rect:
+        serializedVersion: 2
+        x: 241
         y: 1398
         width: 22
         height: 138
@@ -214,17 +214,17 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: f36ae6bec76c81c20800000000000000
-      internalID: 3177507776938026559
+      spriteID: ec3796a585e9f74b0800000000000000
+      internalID: -5440455722529098802
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: noah_N-0_4
+      name: noah_N-0 1_4
       rect:
         serializedVersion: 2
-        x: 0
+        x: 1621
         y: 579
         width: 47
         height: 117
@@ -236,39 +236,17 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 398a6e949e939c610800000000000000
-      internalID: 1641907213283272851
+      spriteID: 70eb1d2be56085e60800000000000000
+      internalID: 7951112145919393287
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: noah_N-0_5
+      name: noah_N-0 1_5
       rect:
         serializedVersion: 2
-        x: 511
-        y: 481
-        width: 50
-        height: 64
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: a3bf0ab200a4763f0800000000000000
-      internalID: -907675435299439814
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: noah_N-0_6
-      rect:
-        serializedVersion: 2
-        x: 688
+        x: 971
         y: 478
         width: 9
         height: 11
@@ -280,17 +258,39 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: b43f961728427ece0800000000000000
-      internalID: -1376091018471279797
+      spriteID: 77cf0fdbf163af490800000000000000
+      internalID: -7711791901959979913
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: noah_N-0_7
+      name: noah_N-0 1_6
       rect:
         serializedVersion: 2
-        x: 684
+        x: 1107
+        y: 481
+        width: 50
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b00dc1f1818f336a0800000000000000
+      internalID: -6470555457116385269
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: noah_N-0 1_7
+      rect:
+        serializedVersion: 2
+        x: 946
         y: 458
         width: 38
         height: 22
@@ -302,17 +302,17 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 44072b91de21e3a90800000000000000
-      internalID: -7332402333764915132
+      spriteID: 20340b17246b20a50800000000000000
+      internalID: 6485946809858409218
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: noah_N-0_8
+      name: noah_N-0 1_8
       rect:
         serializedVersion: 2
-        x: 175
+        x: 1454
         y: 358
         width: 39
         height: 36
@@ -324,61 +324,17 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: def8223b5ae1afb30800000000000000
-      internalID: 4321800489439236077
+      spriteID: 864c66e6732e56940800000000000000
+      internalID: 5288882065119822952
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: noah_N-0_9
+      name: noah_N-0 1_9
       rect:
         serializedVersion: 2
-        x: 906
-        y: 253
-        width: 15
-        height: 6
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: b3c157c465b377610800000000000000
-      internalID: 1618827832898952251
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: noah_N-0_10
-      rect:
-        serializedVersion: 2
-        x: 1009
-        y: 258
-        width: 9
-        height: 9
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: b6ff6caa6e39a6d10800000000000000
-      internalID: 2119669193548169067
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: noah_N-0_11
-      rect:
-        serializedVersion: 2
-        x: 1125
+        x: 433
         y: 257
         width: 110
         height: 54
@@ -390,8 +346,52 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: c984a72316bd1aa40800000000000000
-      internalID: 5377820640562268316
+      spriteID: 3ca41645d5dda1170800000000000000
+      internalID: 8150069868597693123
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: noah_N-0 1_10
+      rect:
+        serializedVersion: 2
+        x: 650
+        y: 258
+        width: 9
+        height: 9
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 03ffaa4e378ba9ea0800000000000000
+      internalID: -5865172756799488208
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: noah_N-0 1_11
+      rect:
+        serializedVersion: 2
+        x: 747
+        y: 253
+        width: 15
+        height: 6
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2768070d0f5a552f0800000000000000
+      internalID: -984698489802815886
       vertices: []
       indices: 
       edges: []
@@ -400,7 +400,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 5e97eb03825dee720800000000000000
+    spriteID: 
     internalID: 0
     vertices: []
     indices: 
@@ -410,18 +410,18 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      noah_N-0_0: -8223391633238776142
-      noah_N-0_1: -2334067751353741605
-      noah_N-0_10: 2119669193548169067
-      noah_N-0_11: 5377820640562268316
-      noah_N-0_2: 8616734641635626150
-      noah_N-0_3: 3177507776938026559
-      noah_N-0_4: 1641907213283272851
-      noah_N-0_5: -907675435299439814
-      noah_N-0_6: -1376091018471279797
-      noah_N-0_7: -7332402333764915132
-      noah_N-0_8: 4321800489439236077
-      noah_N-0_9: 1618827832898952251
+      noah_N-0 1_0: 3612780069312183649
+      noah_N-0 1_1: -7884927910697191126
+      noah_N-0 1_10: -5865172756799488208
+      noah_N-0 1_11: -984698489802815886
+      noah_N-0 1_2: -3450222189756436189
+      noah_N-0 1_3: -5440455722529098802
+      noah_N-0 1_4: 7951112145919393287
+      noah_N-0 1_5: -7711791901959979913
+      noah_N-0 1_6: -6470555457116385269
+      noah_N-0 1_7: 6485946809858409218
+      noah_N-0 1_8: 5288882065119822952
+      noah_N-0 1_9: 8150069868597693123
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

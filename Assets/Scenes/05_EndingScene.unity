@@ -461,7 +461,7 @@ PrefabInstance:
       objectReference: {fileID: 4900000, guid: 437cade0d5e73e443bdbafe558572006, type: 3}
     - target: {fileID: 6047414836398750601, guid: beac60035099aa54aa12fdace8ee823b, type: 3}
       propertyPath: autoStartOnStart
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6047414836398750601, guid: beac60035099aa54aa12fdace8ee823b, type: 3}
       propertyPath: backgrounds.Array.size
