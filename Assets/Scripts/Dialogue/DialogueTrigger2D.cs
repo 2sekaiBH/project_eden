@@ -14,7 +14,7 @@ public class DialogueTrigger2D : MonoBehaviour
     [Header("Optional Event")]
     [SerializeField] private UnityEvent onTriggered;
 
-    private bool hasTriggered;
+    public bool hasTriggered;
 
     private void OnTriggerEnter2D(Collider2D other)
     {
