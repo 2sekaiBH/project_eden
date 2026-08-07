@@ -1,3 +1,4 @@
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
@@ -7,10 +8,23 @@ using UnityEngine.UI;
 public class SettingsController : MonoBehaviour
 {
     [Header("Reference")]
+    [SerializeField] private GameObject settingsWIndowCanvas;
     [SerializeField] private Slider bgmSlider;
     [SerializeField] private Slider sfxSlider;
 
     private void OnEnable()
+    {
+        OpenCloseSettingsWindow.OnOpenCloseSettings += OpenCloseSettingsWIndow;
+    }
+
+    private void OnDisable()
+    {
+        OpenCloseSettingsWindow.OnOpenCloseSettings -= OpenCloseSettingsWIndow;
+    }
+
+
+
+    private void Awake()
     {
         if(SoundManager.Instance == null)
         {
@@ -27,17 +41,10 @@ public class SettingsController : MonoBehaviour
         sfxSlider.value = SoundManager.Instance.GetSfxVolume();
     }
 
-    private void OnDisable()
+    public void OpenCloseSettingsWIndow(bool isOpen)
     {
         Time.timeScale = 1f; // 일시 정지 해제
+        settingsWIndowCanvas.SetActive(isOpen);
     }
 
-    public void CloseSettingsScene()
-    {
-        Scene targetScene = SceneManager.GetSceneByName("SettingsScene");
-        if (targetScene.IsValid() && targetScene.isLoaded)
-        {
-            SceneManager.UnloadSceneAsync(targetScene);
-        }
-    }
 }
