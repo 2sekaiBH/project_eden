@@ -664,6 +664,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 819702602038504040, guid: beac60035099aa54aa12fdace8ee823b, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 1.2375
+      objectReference: {fileID: 0}
+    - target: {fileID: 819702602038504040, guid: beac60035099aa54aa12fdace8ee823b, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 1260358921405001155, guid: beac60035099aa54aa12fdace8ee823b, type: 3}
       propertyPath: m_Name
       value: DialogueRoot
