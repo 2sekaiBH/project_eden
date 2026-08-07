@@ -758,7 +758,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1520303822129780790, guid: 5fb038aa98850d046a7cc4a4f5259d1d, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3552298114639347072, guid: 5fb038aa98850d046a7cc4a4f5259d1d, type: 3}
+      propertyPath: deceleration
+      value: 80
       objectReference: {fileID: 0}
     - target: {fileID: 6281156978751323357, guid: 5fb038aa98850d046a7cc4a4f5259d1d, type: 3}
       propertyPath: m_LocalPosition.x
@@ -922,6 +926,14 @@ PrefabInstance:
       propertyPath: slideCoolTime
       value: 0.6
       objectReference: {fileID: 0}
+    - target: {fileID: 4452035225639953552, guid: 6badac72fe9bcad48baa2884a87e86d7, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4452035225639953552, guid: 6badac72fe9bcad48baa2884a87e86d7, type: 3}
+      propertyPath: deceleration
+      value: 80
+      objectReference: {fileID: 0}
     - target: {fileID: 4727367076381957428, guid: 6badac72fe9bcad48baa2884a87e86d7, type: 3}
       propertyPath: m_LocalScale.x
       value: 1
@@ -964,6 +976,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4727367076381957428, guid: 6badac72fe9bcad48baa2884a87e86d7, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5507581996065000993, guid: 6badac72fe9bcad48baa2884a87e86d7, type: 3}
+      propertyPath: m_Enabled
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7578062741841355443, guid: 6badac72fe9bcad48baa2884a87e86d7, type: 3}

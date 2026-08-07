@@ -1,13 +1,13 @@
 using System;
-using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.InputSystem;
 
 public class PlayerDefaultMove : MonoBehaviour
 {
     [Header("Player Horizontal Movement Settings")]
     [SerializeField] private float baseMoveSpeed = 5f;
     [SerializeField] private float dashValue = 1.5f;
+    [SerializeField] private float acceleration = 40f;   // 목표 속도까지 가속하는 비율 (초당 속도 변화량)
+    [SerializeField] private float deceleration = 80f;   // 목표 속도(0 포함)까지 감속하는 비율
 
     private float _moveInput;
     public float moveInput => _moveInput;
@@ -33,6 +33,10 @@ public class PlayerDefaultMove : MonoBehaviour
     // 실제 이동에 사용할 속도는 항상 이 프로퍼티로 계산
     private float CurrentMoveSpeed => (isDashHeld && !blockDash) ? baseMoveSpeed * dashValue : baseMoveSpeed; // 실시간으로 달리기 상태 감지
 
+    private KeyCode moveLeftKeyCode = KeyCode.A;
+    private KeyCode moveRIghtKeyCode = KeyCode.D;
+
+
     void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
@@ -54,6 +58,18 @@ public class PlayerDefaultMove : MonoBehaviour
         PlayerJumpWithSlide.onLand -= AllowDash;
         PlayerJumpWithSlide.onSlide -= BlockMove;
         PlayerJumpWithSlide.onSlideEnd -= AllowMove;
+        if (KeyManager.Instance != null)
+            KeyManager.Instance.OnKeyChanged -= UpdateKeyCode;
+    }
+
+    private void Start()
+    {
+        if (KeyManager.Instance == null)
+        {
+            Debug.LogWarning("KeyManager가 없습니다. - 기본 키로 설정: LeftMove: A, RightMove: D");
+            return;
+        }
+        KeyManager.Instance.OnKeyChanged += UpdateKeyCode;
     }
 
     public void BlockDash()
@@ -82,44 +98,42 @@ public class PlayerDefaultMove : MonoBehaviour
 
 
     // ------ 플레이어 좌측 이동  ------ //
-    public void OnMoveLeft(InputAction.CallbackContext context)
+    private void OnMoveLeft()
     {
-        if (context.performed)
-        {
-            lastInputDir = -1f;
-            leftHeld = true;
-        }
-        else if (context.canceled)
-        {
-            leftHeld = false;
-        }
+        lastInputDir = -1f;
+        leftHeld = true;
+    }
+
+    private void OnMoveLeftEnd()
+    {
+        leftHeld = false;
     }
 
     // ------ 플레이어 우측 이동  ------ //
-    public void OnMoveRight(InputAction.CallbackContext context)
+    private void OnMoveRight()
     {
-        if (context.performed)
-        {
-            lastInputDir = 1f;
-            rightHeld = true;
-        }
-        else if (context.canceled)
-        {
-            rightHeld = false;
-        }
+
+        lastInputDir = 1f;
+        rightHeld = true;
+
+    }
+
+    private void OnMoveRightEnd()
+    {
+        rightHeld = false;
     }
 
     // ------ 플레이어 달리기  ------ //
-    public void OnDash(InputAction.CallbackContext context)
+    private void OnDash()
     {
-        if (context.performed)
-        {
-            isDashHeld = true;
-        }
-        else if (context.canceled)
-        {
-            isDashHeld = false;
-        }
+        isDashHeld = true;
+
+        UpdateDashState();
+    }
+
+    private void OnDashEnd()
+    {
+        isDashHeld = false;
         UpdateDashState();
     }
 
@@ -174,6 +188,37 @@ public class PlayerDefaultMove : MonoBehaviour
             OnWalk?.Invoke(isWalking);
         }
 
-        rb.linearVelocityX = _moveInput * CurrentMoveSpeed;
+        // rb.linearVelocityX = _moveInput * CurrentMoveSpeed;
+
+        // ---- 여기부터 보간 처리 ----
+        float targetVelocityX = _moveInput * CurrentMoveSpeed;
+        float currentVelocityX = rb.linearVelocityX;
+
+        // 입력이 있으면 가속, 입력이 없으면(0으로 향하면) 감속 - 서로 다른 비율 적용
+        float rate = (_moveInput != 0f) ? acceleration : deceleration;
+
+        rb.linearVelocityX = Mathf.MoveTowards(currentVelocityX, targetVelocityX, rate * Time.fixedDeltaTime);
+    }
+
+    private void Update()
+    {
+        if (Input.GetKeyDown(moveLeftKeyCode))
+            OnMoveLeft();
+        if (Input.GetKeyUp(moveLeftKeyCode))
+            OnMoveLeftEnd();
+        if (Input.GetKeyDown(moveRIghtKeyCode))
+            OnMoveRight();
+        if(Input.GetKeyUp(moveRIghtKeyCode))
+            OnMoveRightEnd();
+        if (Input.GetKeyDown(KeyCode.LeftShift) || Input.GetKeyDown(KeyCode.RightShift))
+            OnDash();
+        if(Input.GetKeyUp(KeyCode.LeftShift) || Input.GetKeyUp(KeyCode.RightShift))
+            OnDashEnd();
+    }
+
+    private void UpdateKeyCode()
+    {
+        moveLeftKeyCode = KeyManager.Instance.GetKeyCode(KeyBindingName.PlayerLeft);
+        moveRIghtKeyCode = KeyManager.Instance.GetKeyCode(KeyBindingName.PlayerRight);
     }
 }
