@@ -47,10 +47,11 @@ public class CardDisplay : MonoBehaviour, IPointerClickHandler, IPointerEnterHan
     private bool isFront = false;
     private Vector3 baseScale;
 
+    private bool isFlipping = false;
+
 
     private void Start()
     {
-        baseScale = transform.localScale;
         ShowBack();
 
     }
@@ -81,7 +82,10 @@ public class CardDisplay : MonoBehaviour, IPointerClickHandler, IPointerEnterHan
     public void SetCard(CardData newCard)
     {
         card = newCard;
+        ShowBack();
         UpdateCardDisplay();
+
+        baseScale = transform.localScale;
     }
     
     /// <summary>
@@ -156,16 +160,19 @@ public class CardDisplay : MonoBehaviour, IPointerClickHandler, IPointerEnterHan
         bool affordable = isSelected || currentEnergy >= card.energyCost;
         canvasGroup.alpha = affordable ? 1f : 0.5f;
     }
-  
 
-    private void Hover()
+
+    //기준 크기 설정
+    public void SetBaseScale()
     {
-
+        baseScale = transform.localScale;
     }
 
+    //호버 구현
     public void OnPointerEnter(PointerEventData eventData)
     {
-        // 호버 구현
+        if (isFlipping) return; 
+
         rt = GetComponent<RectTransform>();
 
         originalScale = rt.localScale;
@@ -176,15 +183,16 @@ public class CardDisplay : MonoBehaviour, IPointerClickHandler, IPointerEnterHan
 
         rt.localScale = originalScale * hoverScale;
         rt.anchoredPosition = originalPos + new Vector2(0, hoverHeight);
-
     }
 
+    //마우스 포인터 뗌
     public void OnPointerExit(PointerEventData eventData)
     {
+        if (isFlipping) return; 
+
         rt.localScale = originalScale;
         rt.anchoredPosition = originalPos;
 
-        // 호버 구현
         transform.SetSiblingIndex(originalSiblingIndex);
     }
 
@@ -202,15 +210,17 @@ public class CardDisplay : MonoBehaviour, IPointerClickHandler, IPointerEnterHan
         isFront = true;
     }
 
-    //실제 앞,뒷면 뒤집기 모션 구현
-    public IEnumerator Flip()
+    //앞면으로 뒤집기
+    public IEnumerator FlipToFront()
     {
+        if (card == null || isFront) yield break;
+
+        isFlipping = true;
+
         float duration = 0.15f;
         float time = 0;
 
-        if (card == null) yield break;
-
-        // 1. 접기 (1 → 0)
+        // 접기
         while (time < duration)
         {
             float t = time / duration;
@@ -221,16 +231,12 @@ public class CardDisplay : MonoBehaviour, IPointerClickHandler, IPointerEnterHan
             yield return null;
         }
 
-        // 2. 이미지 교체
-        if (isFront)
-            image.sprite = back;
-        else
-            image.sprite = card.cardImage;
+        // 무조건 앞면
+        ShowFront();
 
-        isFront = !isFront;
-
-        // 3. 펼치기 (0 → 1)
         time = 0;
+
+        // 펼치기
         while (time < duration)
         {
             float t = time / duration;
@@ -242,6 +248,7 @@ public class CardDisplay : MonoBehaviour, IPointerClickHandler, IPointerEnterHan
         }
 
         transform.localScale = baseScale;
+        isFlipping = false;
     }
 
 }

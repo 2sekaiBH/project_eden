@@ -16,8 +16,7 @@ public class MissionProgress
 
 // 미션 종류
 public enum MissionType
-{
-    NoDamage,  //이번 턴 피해X
+{ 
     Use3Cards, //이번 턴 카드 3개 이상 사용
     OnlyOneCard //이번 턴 오직 1코스트 카드만 사용
 }
@@ -55,7 +54,7 @@ public class MissionManager : MonoBehaviour
         playerProgress = new MissionProgress();
         opponentProgress = new MissionProgress();
 
-        mission = (MissionType)Random.Range(0, 3); //미션을 랜덤으로 뽑는 함수
+        mission = (MissionType)Random.Range(0, 2); //미션을 랜덤으로 뽑는 함수
         Debug.Log($"미션 이거 뽑혔음 {mission}");
         missionText.text = GetMissionText();
     }
@@ -65,8 +64,6 @@ public class MissionManager : MonoBehaviour
     {
         switch (mission)
         {
-            case MissionType.NoDamage:
-                return "  └  이번 턴에 피해 받지 않기";
 
             case MissionType.Use3Cards:
                 return "  └  이번 턴에 카드 3장 이상 사용";
@@ -121,10 +118,7 @@ public class MissionManager : MonoBehaviour
 public bool Check(MissionProgress progress)
     {
         switch(mission)
-        {
-            case MissionType.NoDamage:
-                return !progress.tookDamage;
-                
+        {       
            case MissionType.Use3Cards:
                 return progress.usedCardCount >= 3;
                 

@@ -80,7 +80,6 @@ public abstract class Actor : MonoBehaviour
 
         int remaining = amount - absorbed;
         currentHp = Mathf.Max(0, currentHp - remaining);
-        MissionManager.Instance.TakeDamage(this); //데미지를 입었는지 확인
 
         // 반사 구현
         if (reflect && absorbed > 0 && attacker != null)
