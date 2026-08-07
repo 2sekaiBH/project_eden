@@ -19,7 +19,27 @@ public enum EBgm
 
 public enum ESfx
 {
-
+    archi_ending_crowd,
+    attack,
+    button,
+    card_select,
+    communication_of_aliens,
+    door_open,
+    electrical_noise1,
+    emergency_signal,
+    item_acquired,
+    jump,
+    metal_friction,
+    phone_interruption,
+    phone_vibration,
+    regular_mechanical,
+    shield,
+    slide,
+    stage,
+    sticky_liquid,
+    tallcase_C,
+    tallcase_O,
+    walking,
 }
 
 public class SoundManager : MonoBehaviour

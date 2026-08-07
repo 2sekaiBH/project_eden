@@ -13,7 +13,7 @@ public class PlayerSFXController : MonoBehaviour
     /// </summary>
     public void PlayFootStep()
     {
-        
+        SoundManager.Instance.PlaySFX(ESfx.walking);
     }
 
     /// <summary>
@@ -21,7 +21,7 @@ public class PlayerSFXController : MonoBehaviour
     /// </summary>
     public void PlayJump()
     {
-        
+        SoundManager.Instance.PlaySFX(ESfx.jump);
     }
 
     /// <summary>
@@ -29,7 +29,7 @@ public class PlayerSFXController : MonoBehaviour
     /// </summary>
     public void PlaySlide()
     {
-        
+        SoundManager.Instance.PlaySFX(ESfx.slide);
     }
 
     // Update is called once per frame
