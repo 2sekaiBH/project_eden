@@ -136,7 +136,7 @@
       "fadeDuration": 0.6,
       "speaker": "%%",
       "text": "“뭐지? 전화 올 데가 없는데…”",
-      "leftCharacter": "",
+      "leftCharacter": "player_P-1",
       "rightCharacter": "",
       "sfx": "sfx_phone_ring",
       "nextId": "phone_002"
@@ -150,7 +150,7 @@
       "fadeDuration": 0.0,
       "speaker": "??",
       "text": "“안녕하세요, 센트럴입니다. 지원 서류 넣어주신 거 보고 연락드렸어요. %%님 맞으신가요?”",
-      "leftCharacter": "",
+      "leftCharacter": "player_P-1",
       "rightCharacter": "",
       "sfx": "",
       "nextId": "phone_003"
@@ -164,7 +164,7 @@
       "fadeDuration": 0.0,
       "speaker": "%%",
       "text": "에덴 센트럴!!! 에덴의 시민이라면 누구나 원하는 꿈의 직장이다. 난사하듯이 넣은 거였는데 설마 합격했나?!",
-      "leftCharacter": "",
+      "leftCharacter": "player_P-1",
       "rightCharacter": "",
       "sfx": "",
       "nextId": "phone_004"
@@ -178,7 +178,7 @@
       "fadeDuration": 0.0,
       "speaker": "",
       "text": "…그런데 이상하다. 서류 결과 발표까지는 좀 남지 않았나?",
-      "leftCharacter": "",
+      "leftCharacter": "player_P-1",
       "rightCharacter": "",
       "sfx": "",
       "nextId": "phone_005"
@@ -192,7 +192,7 @@
       "fadeDuration": 0.0,
       "speaker": "%%",
       "text": "“네, 맞는데 무슨 일이실까요?”",
-      "leftCharacter": "",
+      "leftCharacter": "player_P-0",
       "rightCharacter": "",
       "sfx": "",
       "nextId": "phone_006"
@@ -206,7 +206,7 @@
       "fadeDuration": 0.0,
       "speaker": "",
       "text": "지지직거리는 소리와 함께 상대방의 목소리가 성인 남성에서 여자아이의 목소리로 변했다.",
-      "leftCharacter": "",
+      "leftCharacter": "player_P-0",
       "rightCharacter": "",
       "sfx": "sfx_static_voice",
       "nextId": "phone_007"
@@ -220,7 +220,7 @@
       "fadeDuration": 0.0,
       "speaker": "이브",
       "text": "“%%님, 저는 이브입니다. 이런 무례한 방식으로 만나 뵙게 되어 송구스럽네요.”",
-      "leftCharacter": "",
+      "leftCharacter": "player_P-0",
       "rightCharacter": "",
       "sfx": "",
       "nextId": "phone_008"
@@ -234,7 +234,7 @@
       "fadeDuration": 0.0,
       "speaker": "%%",
       "text": "“이브??? 정말 이브예요?? 이브가 왜…”",
-      "leftCharacter": "",
+      "leftCharacter": "player_P-1",
       "rightCharacter": "",
       "sfx": "",
       "nextId": "phone_009"
@@ -248,7 +248,7 @@
       "fadeDuration": 0.0,
       "speaker": "이브",
       "text": "“갑작스럽겠지만 제 이야기를 잘 들어주세요. 지금 에덴의 안전과 행복이 크게 위협받고 있어요.”",
-      "leftCharacter": "",
+      "leftCharacter": "player_P-0",
       "rightCharacter": "",
       "sfx": "",
       "nextId": "phone_010"
@@ -262,7 +262,7 @@
       "fadeDuration": 0.0,
       "speaker": "이브",
       "text": "“정체불명의 해커가 에덴 시스템 곳곳에 해킹 장치를 심어뒀습니다. 그래서 저는 꼭대기에 갇혀 아무것도 하지 못하는 상황이고요.”",
-      "leftCharacter": "",
+      "leftCharacter": "player_P-0",
       "rightCharacter": "",
       "sfx": "",
       "nextId": "phone_011"
@@ -276,7 +276,7 @@
       "fadeDuration": 0.0,
       "speaker": "이브",
       "text": "“해킹 장치들이 처리되지 않는다면 곧 에덴 전체의 통제권이 해커에게 넘어갈 거예요.”",
-      "leftCharacter": "",
+      "leftCharacter": "player_P-0",
       "rightCharacter": "",
       "sfx": "",
       "nextId": "phone_012"
@@ -290,7 +290,7 @@
       "fadeDuration": 0.0,
       "speaker": "%%",
       "text": "“어떻게 그런 일이… 제가 뭘 어떻게 하면 될까요?”",
-      "leftCharacter": "",
+      "leftCharacter": "player_P-0",
       "rightCharacter": "",
       "sfx": "",
       "nextId": "phone_013"
@@ -304,7 +304,7 @@
       "fadeDuration": 0.0,
       "speaker": "이브",
       "text": "“해커가 에덴 곳곳에 심어둔 해킹 장치들을 제거해 주세요.”",
-      "leftCharacter": "",
+      "leftCharacter": "player_P-0",
       "rightCharacter": "",
       "sfx": "",
       "nextId": "phone_014"
@@ -318,7 +318,7 @@
       "fadeDuration": 0.0,
       "speaker": "이브",
       "text": "“최대한 빨리, 그렇지만 비밀리에 움직여야 합니다.”",
-      "leftCharacter": "",
+      "leftCharacter": "player_P-0",
       "rightCharacter": "",
       "sfx": "",
       "nextId": "phone_015"
@@ -332,7 +332,7 @@
       "fadeDuration": 0.0,
       "speaker": "%%",
       "text": "“이브의 뜻이 그렇다면 따르겠어요.”",
-      "leftCharacter": "",
+      "leftCharacter": "player_P-2",
       "rightCharacter": "",
       "sfx": "",
       "nextId": "phone_016"
@@ -346,7 +346,7 @@
       "fadeDuration": 0.0,
       "speaker": "%%",
       "text": "“그렇지만… 제가 그렇게 중대한 일을 해낼 수 있을까요?”",
-      "leftCharacter": "",
+      "leftCharacter": "player_P-0",
       "rightCharacter": "",
       "sfx": "",
       "nextId": "phone_017"
@@ -360,7 +360,7 @@
       "fadeDuration": 0.0,
       "speaker": "이브",
       "text": "“%%님은 충분히 해낼 수 있어요.”",
-      "leftCharacter": "",
+      "leftCharacter": "player_P-0",
       "rightCharacter": "",
       "sfx": "",
       "nextId": "phone_018"
@@ -374,7 +374,7 @@
       "fadeDuration": 0.0,
       "speaker": "이브",
       "text": "“카인이라고 하는 제 친구가 그리로 갈 겁니다. %%님을 도와줄 거예요.”",
-      "leftCharacter": "",
+      "leftCharacter": "player_P-0",
       "rightCharacter": "",
       "sfx": "",
       "nextId": "phone_019"
@@ -388,7 +388,7 @@
       "fadeDuration": 0.0,
       "speaker": "이브",
       "text": "“그리고…”",
-      "leftCharacter": "",
+      "leftCharacter": "player_P-0",
       "rightCharacter": "",
       "sfx": "sfx_phone_disconnect",
       "nextId": "phone_020"
@@ -402,7 +402,7 @@
       "fadeDuration": 0.0,
       "speaker": "%%",
       "text": "“이브? 뭐지? 갑자기 전화가 끊겼네.”",
-      "leftCharacter": "",
+      "leftCharacter": "player_P-0",
       "rightCharacter": "",
       "sfx": "",
       "nextId": "phone_021"
@@ -416,7 +416,7 @@
       "fadeDuration": 0.0,
       "speaker": "%%",
       "text": "“일단 집으로 가서 짐을 챙기자.”",
-      "leftCharacter": "",
+      "leftCharacter": "player_P-0",
       "rightCharacter": "",
       "sfx": "",
       "nextId": "door_001"
@@ -444,7 +444,7 @@
       "fadeDuration": 0.0,
       "speaker": "%%",
       "text": "“어?? 아, 안녕.”",
-      "leftCharacter": "player_P-0",
+      "leftCharacter": "player_P-1",
       "rightCharacter": "architect_A-0",
       "sfx": "",
       "nextId": "door_003"
@@ -515,7 +515,7 @@
       "speaker": "아키텍트",
       "text": "“네가, 센트럴에, 합격을 했다고? 의심스러운데? 보이스피싱 아니야?”",
       "leftCharacter": "player_P-0",
-      "rightCharacter": "architect_surprised",
+      "rightCharacter": "architect_A-1",
       "sfx": "",
       "nextId": "",
       "choices": [
@@ -619,7 +619,7 @@
       "speaker": "아키텍트",
       "text": "“야, 아무래도 수상해. 같이 가. 오빠가 같이 가줄게.”",
       "leftCharacter": "player_P-0",
-      "rightCharacter": "architect_A-0",
+      "rightCharacter": "architect_A-1",
       "sfx": "",
       "nextId": "door_011"
     },
@@ -661,7 +661,7 @@
       "speaker": "아키텍트",
       "text": "“왁!!! 이거 뭐야! 이 고철 덩어리 언제부터 여기 있었어?”",
       "leftCharacter": "player_P-0",
-      "rightCharacter": "architect_surprised",
+      "rightCharacter": "architect_A-0",
       "sfx": "",
       "nextId": "door_014"
     },
@@ -689,7 +689,7 @@
       "speaker": "카인",
       "text": "“안녕하세요, %%님. 이야기 많이 들었습니다. 카인이라고 합니다.”",
       "leftCharacter": "player_P-0",
-      "rightCharacter": "",
+      "rightCharacter": "kain_K-0",
       "sfx": "",
       "nextId": "door_016"
     },
@@ -716,7 +716,7 @@
       "fadeDuration": 0.0,
       "speaker": "%%",
       "text": "“어? 음… 글쎄?”",
-      "leftCharacter": "player_P-0",
+      "leftCharacter": "player_P-1",
       "rightCharacter": "architect_A-0",
       "sfx": "",
       "nextId": "door_018"
@@ -745,7 +745,7 @@
       "speaker": "카인",
       "text": "“%%님, 이쪽은 일행입니까?”",
       "leftCharacter": "player_P-0",
-      "rightCharacter": "",
+      "rightCharacter": "kain_K-0",
       "sfx": "",
       "nextId": "door_020"
     },
@@ -773,7 +773,7 @@
       "speaker": "아키텍트",
       "text": "“나 %% 일행 맞아. 네가 뭐래도 따라갈 거니까 말리지 마.”",
       "leftCharacter": "player_P-0",
-      "rightCharacter": "architect_A-0",
+      "rightCharacter": "architect_A-2",
       "sfx": "",
       "nextId": "door_022"
     },
@@ -801,7 +801,7 @@
       "speaker": "카인",
       "text": "“알겠습니다. 67층 도시구역으로 이동하겠습니다. 따라오십시오.”",
       "leftCharacter": "player_P-0",
-      "rightCharacter": "",
+      "rightCharacter": "kain_K-0",
       "sfx": "",
       "nextId": ""
     }

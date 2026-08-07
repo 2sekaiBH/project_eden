@@ -68,6 +68,10 @@ public class IntroDialogueController : MonoBehaviour
     [SerializeField] private GameObject dialogueNextHint;
     [SerializeField] private Button dialogueNextButton;
 
+    [Header("Dialogue Bar UI")]
+    [SerializeField] private GameObject leftDialogueBar;
+    [SerializeField] private GameObject rightDialogueBar;
+
     [Header("Speaker Name UI")]
     [SerializeField] private GameObject leftNameGroup;
     [SerializeField] private TMP_Text leftNameText;
@@ -211,6 +215,8 @@ public class IntroDialogueController : MonoBehaviour
             leftNameText != null &&
             rightNameGroup != null &&
             rightNameText != null &&
+            leftDialogueBar != null &&
+            rightDialogueBar != null &&
             dialogueText != null &&
             dialogueNextHint != null &&
             dialogueNextButton != null &&
@@ -1236,11 +1242,15 @@ public class IntroDialogueController : MonoBehaviour
         string speaker =
             ReplacePlayerName(node.speaker);
 
-        // 화자 이름이 아예 없는 내레이션
+        // 화자 없는 내레이션
         if (string.IsNullOrWhiteSpace(node.speaker))
         {
             leftNameGroup.SetActive(false);
             rightNameGroup.SetActive(false);
+
+            leftDialogueBar.SetActive(false);
+            rightDialogueBar.SetActive(false);
+
             return;
         }
 
@@ -1250,6 +1260,10 @@ public class IntroDialogueController : MonoBehaviour
 
         if (isPlayerSpeaking)
         {
+            // 왼쪽 UI
+            leftDialogueBar.SetActive(true);
+            rightDialogueBar.SetActive(false);
+
             leftNameGroup.SetActive(true);
             rightNameGroup.SetActive(false);
 
@@ -1257,6 +1271,10 @@ public class IntroDialogueController : MonoBehaviour
         }
         else
         {
+            // 오른쪽 UI
+            leftDialogueBar.SetActive(false);
+            rightDialogueBar.SetActive(true);
+
             leftNameGroup.SetActive(false);
             rightNameGroup.SetActive(true);
 
