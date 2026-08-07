@@ -99,7 +99,6 @@ public class TurnFlowManager : MonoBehaviour
 
         PendingEffectManager.Instance.ApplyRoundPendingState(playerActor, opponentActor); // 이전 턴에서 반영해야할 정보들 반영
 
-        PendingEffectManager.Instance.ConsumeExtraCard(); //추가 카드 지급
 
         UIUpdator.Instance.SetText($"랜덤 카드 드로우 완료");
         Debug.Log("랜덤 카드 드로우 완료");
@@ -110,6 +109,7 @@ public class TurnFlowManager : MonoBehaviour
             // 2. 턴 시작
             currentTurn++;
             currentState = FlowState.TurnStart;
+            PendingEffectManager.Instance.ConsumeExtraCard(); //추가 카드 지급
             playerActor.EnergyIntialize(); // 플레이어 에너지 초기화
             opponentActor.EnergyIntialize(); // 적 에너지 초기화
 

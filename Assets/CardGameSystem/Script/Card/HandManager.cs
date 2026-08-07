@@ -169,6 +169,7 @@ public class HandManager : MonoBehaviour
             player.RefundEnergy(card.energyCost);
             selectedCards.Remove(card);
             display.SetSelectedVisual(false);
+            SoundManager.Instance.PlaySFX(ESfx.card_select); //카드 선택 사운드 재생
         }
         OnCardSelect?.Invoke(player.CurrentEnergy);
     }
