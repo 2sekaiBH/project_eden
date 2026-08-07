@@ -77,6 +77,7 @@ public class ItemAcquisitionUI : MonoBehaviour
         if (Inventory.Instance != null)
         {
             Inventory.Instance.AddItemByID(currentAcquiredItemId);
+            GameState.Instance.RegisterHiddenEndingItem(currentAcquiredItemId);
             Debug.Log("아이템이 인벤토리에 추가되었습니다.");
         }
         else
@@ -84,7 +85,11 @@ public class ItemAcquisitionUI : MonoBehaviour
             Debug.LogError("아이템을 찾을 수 없습니다");
         }
 
-        if (popupPanel != null) popupPanel.SetActive(false);
+        if (popupPanel != null)
+        {
+            popupPanel.SetActive(false);
+        }
+
         Time.timeScale = 1f;
     }
 
