@@ -9,5 +9,4 @@ public class OpponentData : ScriptableObject
     public new string name;
     public int totalHp;
     public int maxEnergy = 4;
-    public Sprite profileImg;
 }
