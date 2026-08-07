@@ -1,5 +1,8 @@
+using NUnit.Framework.Interfaces;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
@@ -9,11 +12,19 @@ public class GameManager : MonoBehaviour
     public GameData gameData;
     public GameData GameData => gameData;
 
+    public string lastStage;
+    public string LastStage => lastStage;
+
+    [Header("Settings")]
+    [SerializeField] private List<string> stageList = new List<string>() { "floor_67", "floor_213", "floor_399" };
+
+
 
     private void Awake()
     {
         if(instance == null)
         {
+            DontDestroyOnLoad(gameObject);
             instance = this;
         }
         else
@@ -33,11 +44,21 @@ public class GameManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
+        if (Input.GetKeyDown(KeyCode.N))
+        {
+            SceneManager.LoadScene("Lahee_CardGame");
+        }
     }
 
     public void SetCurrentScene(string newScene)
     {
+
+        foreach(var stage in stageList)
+        {
+            if(stage.Equals(newScene))
+                lastStage = newScene;
+        }
+ 
         gameData.SetCurrentScene(newScene);
     }
 
