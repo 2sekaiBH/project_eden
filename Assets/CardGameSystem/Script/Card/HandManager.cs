@@ -276,12 +276,12 @@ public class HandManager : MonoBehaviour
     //촤라라락
     private IEnumerator FlipAllCards()
     {
-        for (int i = 0; i < 5; i++)
-        {
-            Debug.Log($"FlipAllCards 호출! {i}번째 카드 뒤집기");
-            StartCoroutine(cardDisplays[i].Flip());
+        yield return null;
 
-            yield return new WaitForSeconds(0.05f); // 촤라라락 핵심
+        foreach (var display in cardDisplays)
+        {
+            StartCoroutine(display.Flip());
+            yield return new WaitForSeconds(0.05f);
         }
     }
 }
