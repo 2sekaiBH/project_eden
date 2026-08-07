@@ -53,7 +53,7 @@ public class DisplayOpponentSubmit : MonoBehaviour
         for (int i = 0; i < cards.Count; i++)
         {
             CardDisplay display = cards[i].GetComponent<CardDisplay>();
-            StartCoroutine(display.Flip());
+            StartCoroutine(display.FlipToFront());
 
             yield return new WaitForSeconds(0.1f); //¿¬Ãâ¿ë
         }

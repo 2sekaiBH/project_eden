@@ -250,6 +250,7 @@ public class HandManager : MonoBehaviour
         rectTransform.anchoredPosition = end;
     }
 
+    //손패를 부드럽게 다시 올림
     private IEnumerator MoveUp()
     {
         Vector2 start = rectTransform.anchoredPosition;
@@ -276,11 +277,23 @@ public class HandManager : MonoBehaviour
     //촤라라락
     private IEnumerator FlipAllCards()
     {
-        yield return null;
+        //  UI 배치 끝날 때까지 기다림
+        yield return new WaitForEndOfFrame();
+        yield return new WaitForEndOfFrame();
 
+        // 먼저 전부 스케일 통일
         foreach (var display in cardDisplays)
         {
-            StartCoroutine(display.Flip());
+                display.SetBaseScale();
+            
+        }
+
+        yield return new WaitForEndOfFrame();
+
+        // 순차적으로 뒤집기
+        foreach (var display in cardDisplays)
+        {
+            StartCoroutine(display.FlipToFront());
             yield return new WaitForSeconds(0.05f);
         }
     }

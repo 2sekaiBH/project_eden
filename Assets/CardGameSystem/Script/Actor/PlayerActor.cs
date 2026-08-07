@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System;
 using UnityEngine;
 using UnityEngine.PlayerLoop;
+using static UnityEngine.Rendering.GPUSort;
 
 /// <summary>
 /// �÷��̾� �ൿ ���� ��ũ��Ʈ
@@ -19,15 +20,22 @@ public class PlayerActor : Actor
     public event Action<List<CardData>> OnPlayerDrawCard;
     public static event Action OnPlayerStartSelect; // �÷��̾� ī�� ���� ���� �̺�Ʈ - npc slot btn, submit btn���� ����
 
+    public void SetPlayer(string name, int maxHp)
+    {
+        this.name = name;
+        this.maxHp = maxHp;
+        Initialize();
+    }
+
     public override void Initialize()
     {
-        name = "Player"; // ������ - Ŀ���� name���� ����
-        maxHp = maxHpAmount;
         currentHp = maxHp;
         currentBlock = 0;
         currentEnergy = maxEnergy;
         
         profileUpdator.InitializeUpdator(maxHp, maxEnergy); // profileUpdator �ʱ�ȭ
+
+        UpdateProfileUI();
     }
 
     // ī�� ���� ����
@@ -37,11 +45,6 @@ public class PlayerActor : Actor
         handManager.StartSelect(hand);
     }
 
-    void Awake()
-    {
-        Initialize();
-        UpdateProfileUI();
-    }
 
     public override void UpdateProfileUI()
     {
