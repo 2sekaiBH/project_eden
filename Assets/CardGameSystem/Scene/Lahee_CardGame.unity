@@ -915,6 +915,14 @@ PrefabInstance:
       propertyPath: m_fontSizeBase
       value: 18
       objectReference: {fileID: 0}
+    - target: {fileID: 2541040523859769453, guid: 61ffc24d06a464341bde844296c15b78, type: 3}
+      propertyPath: m_ChildControlWidth
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2541040523859769453, guid: 61ffc24d06a464341bde844296c15b78, type: 3}
+      propertyPath: m_ChildControlHeight
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 2716436651650314253, guid: 61ffc24d06a464341bde844296c15b78, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
@@ -1025,7 +1033,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3305541637972459312, guid: 61ffc24d06a464341bde844296c15b78, type: 3}
       propertyPath: rotateAngle
-      value: 5
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 3381194673064858769, guid: 61ffc24d06a464341bde844296c15b78, type: 3}
       propertyPath: m_AnchorMax.y
@@ -2083,8 +2091,7 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0.000022888184
       objectReference: {fileID: 0}
-    m_RemovedComponents:
-    - {fileID: 372625941471628971, guid: 61ffc24d06a464341bde844296c15b78, type: 3}
+    m_RemovedComponents: []
     m_RemovedGameObjects:
     - {fileID: 2385326795603131620, guid: 61ffc24d06a464341bde844296c15b78, type: 3}
     m_AddedGameObjects:

@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -34,12 +35,28 @@ public class DisplayOpponentSubmit : MonoBehaviour
             cards.Add(newCard);
             newCard.GetComponent<CardDisplay>().SetCard(cardData);
         }
+
+        StartCoroutine(FlipAllOpponentCards());
     }
 
     private void DestroyAllCard(int _)
     {
         cards.ForEach((card) => Destroy(card));
         cards.Clear();
+    }
+
+    //카드 촤라락
+    private IEnumerator FlipAllOpponentCards()
+    {
+        yield return null; // 안정화 (이거 중요)
+
+        for (int i = 0; i < cards.Count; i++)
+        {
+            CardDisplay display = cards[i].GetComponent<CardDisplay>();
+            StartCoroutine(display.Flip());
+
+            yield return new WaitForSeconds(0.1f); //연출용
+        }
     }
 
 

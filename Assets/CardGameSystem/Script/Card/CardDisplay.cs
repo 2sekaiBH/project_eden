@@ -52,6 +52,7 @@ public class CardDisplay : MonoBehaviour, IPointerClickHandler, IPointerEnterHan
     {
         baseScale = transform.localScale;
         ShowBack();
+
     }
 
 
@@ -207,6 +208,8 @@ public class CardDisplay : MonoBehaviour, IPointerClickHandler, IPointerEnterHan
         float duration = 0.15f;
         float time = 0;
 
+        if (card == null) yield break;
+
         // 1. 접기 (1 → 0)
         while (time < duration)
         {
@@ -234,11 +237,11 @@ public class CardDisplay : MonoBehaviour, IPointerClickHandler, IPointerEnterHan
             float scaleX = Mathf.Lerp(0, 1, t);
             transform.localScale = new Vector3(baseScale.x * scaleX, baseScale.y, baseScale.z);
 
-            transform.localScale = baseScale;
-
             time += Time.deltaTime;
             yield return null;
         }
+
+        transform.localScale = baseScale;
     }
 
 }
