@@ -1,9 +1,11 @@
+using System;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
 public class OpenCloseSettingsWindow : MonoBehaviour
 {
     private KeyCode SettingsKeyCode = KeyCode.Escape;
+    public static event Action<bool> OnOpenCloseSettings;
 
     private void OnDisable()
     {
@@ -37,6 +39,7 @@ public class OpenCloseSettingsWindow : MonoBehaviour
             {
                 SceneManager.LoadScene("SettingsScene", LoadSceneMode.Additive);
             }
+            OnOpenCloseSettings?.Invoke(true);
         }
     }
 }
