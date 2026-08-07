@@ -14,3 +14,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::OpponentData
   name: "\uD589\uBCF5 \uC880\uBE44"
   totalHp: 30
+  maxEnergy: 4
+  opponentImage: {fileID: 7162017571483918076, guid: e741be48b0803b244bc95d13d567dd1c, type: 3}

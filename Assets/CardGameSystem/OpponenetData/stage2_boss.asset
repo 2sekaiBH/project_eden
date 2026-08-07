@@ -15,3 +15,4 @@ MonoBehaviour:
   name: "\uC0DD\uCCB4 \uC2E4\uD5D8 \uD3D0\uAE30\uBB3C"
   totalHp: 38
   maxEnergy: 4
+  opponentImage: {fileID: -3247142460167308418, guid: d3c119ff92bccae42be9c8dd4989e7bd, type: 3}
