@@ -75,7 +75,7 @@ public class PlayerJumpWithSlide : MonoBehaviour
 
     void FixedUpdate()
     {
-        isGrounded = isGrounded = Physics2D.OverlapBox(
+        isGrounded = Physics2D.OverlapBox(
     groundCheck.position,
     new Vector2(0.3f, 0.3f),
     0f,
@@ -130,8 +130,12 @@ public class PlayerJumpWithSlide : MonoBehaviour
 
         if (isGrounded || isOnPlatform)
         {
+            transform.SetParent(null); //점프 중 부모 해제
             isSlideEnable = false; // 점프 중 슬라이드 막기
+
+            rb.linearVelocity = new Vector2(rb.linearVelocity.x, 0f); //속도 초기화
             rb.AddForceY(jumpForce, ForceMode2D.Impulse);
+
             onJump?.Invoke();
         }
     }
@@ -159,16 +163,12 @@ public class PlayerJumpWithSlide : MonoBehaviour
         if (col.gameObject.CompareTag("Platform"))
         {
             isOnPlatform = false; //발판에서 내려갔으니 다시 꺼줌
-            StartCoroutine(DetachNextFrame());
 
         }
     }
 
-    IEnumerator DetachNextFrame()
-    {
-        yield return null; // 다음 프레임
-        transform.SetParent(null);
-    }
+
+
 
     // ------ 플레이어 슬라이드  ------ //
     private void OnSlide()
