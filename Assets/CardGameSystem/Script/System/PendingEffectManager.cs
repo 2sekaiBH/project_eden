@@ -81,6 +81,7 @@ public class PendingEffectManager : MonoBehaviour
 
         turnPendingEffect.target.TakeDamage(turnPendingEffect.endTurnDamage, null);
         turnPendingEffect.endTurnDamageRemain--;
+        Debug.Log($"턴 종료 공격 {turnPendingEffect.endTurnDamageRemain}만큼 남음");
     }
 
     // 에너지 코스트 -1 설정할 Actor를 들고 옴
