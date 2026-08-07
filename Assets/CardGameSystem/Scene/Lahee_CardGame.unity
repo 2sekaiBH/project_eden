@@ -351,6 +351,10 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 919405669802620363, guid: 61ffc24d06a464341bde844296c15b78, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0.000030517578
+      objectReference: {fileID: 0}
     - target: {fileID: 1049021428778275373, guid: 61ffc24d06a464341bde844296c15b78, type: 3}
       propertyPath: m_AnchorMax.x
       value: 0
@@ -757,7 +761,7 @@ PrefabInstance:
       objectReference: {fileID: 2127880076}
     - target: {fileID: 4279031616399215264, guid: 61ffc24d06a464341bde844296c15b78, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 61.078125
+      value: 91
       objectReference: {fileID: 0}
     - target: {fileID: 4335067437758049356, guid: 61ffc24d06a464341bde844296c15b78, type: 3}
       propertyPath: m_Spacing.y
@@ -2606,11 +2610,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ab2e093214c41c94987b6a7b42bf576a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CardGameManager
-  npcDataList:
-  - {fileID: 11400000, guid: 91f6f852c6ab53a47934e45e0ece21c4, type: 2}
-  - {fileID: 11400000, guid: d78643529dda1cf4187c75baffc61c65, type: 2}
-  - {fileID: 11400000, guid: 4e93de86cbf624d49b79d44abc022fea, type: 2}
-  - {fileID: 11400000, guid: 60b4e01f95246454e9ede198b07919b9, type: 2}
   stageDataList:
   - stageName: floor_67
     playerMaxHp: 25
@@ -2631,6 +2630,12 @@ MonoBehaviour:
   npcSlotManager: {fileID: 297109228}
   playerActor: {fileID: 2127880076}
   opponentActor: {fileID: 416606490}
+  onGameCleared:
+    m_PersistentCalls:
+      m_Calls: []
+  onGameFailed:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!4 &1913113750
 Transform:
   m_ObjectHideFlags: 0
