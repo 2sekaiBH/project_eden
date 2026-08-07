@@ -3638,7 +3638,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CardGameSceneBridge
   cardGameSceneName: Lahee_CardGame
-  floorPlayer: {fileID: 0}
+  floorPlayer: {fileID: 1728523556}
   floorEventSystem: {fileID: 1862115642}
   floorCamera: {fileID: 579839918}
   onGameCleared:
@@ -4323,6 +4323,11 @@ PrefabInstance:
 --- !u!4 &1728523555 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 6281156978751323357, guid: 5fb038aa98850d046a7cc4a4f5259d1d, type: 3}
+  m_PrefabInstance: {fileID: 1728523554}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &1728523556 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1520303822129780790, guid: 5fb038aa98850d046a7cc4a4f5259d1d, type: 3}
   m_PrefabInstance: {fileID: 1728523554}
   m_PrefabAsset: {fileID: 0}
 --- !u!1 &1817387763
