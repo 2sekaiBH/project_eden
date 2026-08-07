@@ -16,6 +16,7 @@ GameObject:
   - component: {fileID: 4256740315653153972}
   - component: {fileID: 559347385340990031}
   - component: {fileID: 7864178059310995411}
+  - component: {fileID: 7537122240639376933}
   - component: {fileID: 5035498512836531374}
   - component: {fileID: 2924061468509788455}
   - component: {fileID: 233711617549680599}
@@ -306,6 +307,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::PlayerController
   baseMoveSpeed: 5
   dashValue: 2
+  acceleration: 40
+  deceleration: 80
 --- !u!114 &2975183765098594557
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -373,6 +376,18 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 4
+--- !u!114 &7537122240639376933
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1520303822129780790}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2794e1870a6be4e4a93c693eb600fbf2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerSFXController
 --- !u!114 &5035498512836531374
 MonoBehaviour:
   m_ObjectHideFlags: 0
