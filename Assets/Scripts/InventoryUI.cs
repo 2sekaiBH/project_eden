@@ -30,9 +30,8 @@ public class InventoryUI : MonoBehaviour
     }
     private void Start()
     {
-        if (inventoryPanel != null) inventoryPanel.SetActive(false); //�ʱⰪ, �κ��丮 UI�� ���� ����
+        if (inventoryPanel != null) inventoryPanel.SetActive(false);
 
-        //�ʱⰪ, ������ ����â�� ��� �͵��� ����
         itemDetailIcon.enabled = false;
         itemName.text = "";
         itemDescription.text = "";
@@ -57,7 +56,6 @@ public class InventoryUI : MonoBehaviour
         }
     }
 
-    //�κ��丮 UIŰ�� ���� �� ����
     public void ToggleInventory()
     {
         if (inventoryPanel == null) return;
@@ -65,17 +63,14 @@ public class InventoryUI : MonoBehaviour
         bool isActive = !inventoryPanel.activeSelf;
         inventoryPanel.SetActive(isActive);
 
-        // �κ��丮�� ���� �� �ֽ� �����ͷ� ������ �� �������ݴϴ�.
         if (isActive)
         {
             Refresh();
         }
     }
 
-    // �κ��丮 �� ���� ����
     public void Refresh()
     {
-        // �̱������� �����ϴ� Inventory.Instance���� �����͸� �����ϰ� �����ɴϴ�.
         if (Inventory.Instance == null || slotUI == null) return;
 
         for (int i = 0; i < Inventory.Instance.slots.Length; i++)
@@ -87,14 +82,31 @@ public class InventoryUI : MonoBehaviour
         }
     }
 
-    //�������� ����â�� �����ֵ��� �ϴ� �Լ�
     public void ShowItem(ItemData item)
     {
         itemDetailIcon.sprite = item.ItemDetailIcon;
         itemDetailIcon.SetNativeSize();
-        itemName.text = item.itemName;
-        itemDescription.text = item.itemDescription;
+        string nameToDisplay = item.itemName;
+        string descriptionToDisplay = item.itemDescription;
 
+        // 5번 아이템이고, 9번 아이템을 가지고 있다면 바뀐 설명 출력
+        if (item.id == 5)
+        {
+            ItemData item9 = ItemDatabase.Instance != null ? ItemDatabase.Instance.GetItemByID(9) : null;
+
+            bool hasItem9 = item9 != null && Inventory.Instance != null && Inventory.Instance.HasItem(item9);
+            if (!string.IsNullOrWhiteSpace(item.changedName))
+            {
+                nameToDisplay = item.changedName;
+            }
+
+            if (hasItem9 && !string.IsNullOrWhiteSpace(item.changedDescription))
+            {
+                descriptionToDisplay = item.changedDescription;
+            }
+        }
+
+        itemDescription.text = descriptionToDisplay;
         itemDetailIcon.enabled = true;
     }
 

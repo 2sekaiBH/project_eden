@@ -45,11 +45,6 @@ public class GameManager : MonoBehaviour
     void Update()
     {
         
-        if (Input.GetKeyDown(KeyCode.N))
-        {
-            SceneManager.LoadScene("Lahee_CardGame");
-        }
-        
     }
 
     public void SetCurrentScene(string newScene)

@@ -44,6 +44,9 @@ public class PlayerJumpWithSlide : MonoBehaviour
     private KeyCode jumpKeyCode = KeyCode.W;
     private KeyCode slideKeyCode = KeyCode.S;
 
+    //움직이는 발판인지 체크
+    private bool isOnPlatform = false;
+
     void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
@@ -72,9 +75,9 @@ public class PlayerJumpWithSlide : MonoBehaviour
 
     void FixedUpdate()
     {
-        isGrounded = isGrounded = Physics2D.OverlapBox(
+        isGrounded = Physics2D.OverlapBox(
     groundCheck.position,
-    new Vector2(0.3f, 0.05f),
+    new Vector2(0.3f, 0.3f),
     0f,
     groundLayer
 );
@@ -125,13 +128,47 @@ public class PlayerJumpWithSlide : MonoBehaviour
     {
         if (!isJumpEnable) return;
 
-        if (isGrounded)
+        if (isGrounded || isOnPlatform)
         {
+            transform.SetParent(null); //점프 중 부모 해제
             isSlideEnable = false; // 점프 중 슬라이드 막기
+
+            rb.linearVelocity = new Vector2(rb.linearVelocity.x, 0f); //속도 초기화
             rb.AddForceY(jumpForce, ForceMode2D.Impulse);
+
             onJump?.Invoke();
         }
     }
+
+    //발판 내려가는 도중 점프뛰기
+    private void OnCollisionEnter2D(Collision2D col)
+    {
+        if (col.gameObject.CompareTag("Platform"))
+        {
+            foreach (ContactPoint2D contact in col.contacts)
+            {
+                if (contact.normal.y > 0.5f)
+                {
+                    transform.SetParent(col.transform);
+                    isOnPlatform = true; //바꿔줌
+                    break;
+                }
+            }
+        }
+    }
+
+    //움직이는 발판 위에서 내려갔을 때
+    private void OnCollisionExit2D(Collision2D col)
+    {
+        if (col.gameObject.CompareTag("Platform"))
+        {
+            isOnPlatform = false; //발판에서 내려갔으니 다시 꺼줌
+
+        }
+    }
+
+
+
 
     // ------ 플레이어 슬라이드  ------ //
     private void OnSlide()

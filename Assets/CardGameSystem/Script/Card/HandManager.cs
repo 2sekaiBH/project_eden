@@ -162,6 +162,7 @@ public class HandManager : MonoBehaviour
             // 선택된 카드 리스트에 추가
             selectedCards.Add(card);
             display.SetSelectedVisual(true);
+            SoundManager.Instance.PlaySFX(ESfx.card_select); //카드 선택 사운드 재생
         }
         else // 이미 클릭된 카드 선택 - 선택 카드 해제
         {

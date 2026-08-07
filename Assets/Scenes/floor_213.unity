@@ -3576,7 +3576,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 17b66a633427de04ea07a002b1ebf302, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CameraController
-  player: {fileID: 2029652657}
+  player: {fileID: 1521584799}
   smoothing: 0.2
   minCameraBoundary: {fileID: 1932151509}
   maxCameraBoundary: {fileID: 245992455}
@@ -4333,7 +4333,6 @@ SceneRoots:
   - {fileID: 502375532}
   - {fileID: 1932151509}
   - {fileID: 245992455}
-  - {fileID: 2029652656}
   - {fileID: 50176944}
   - {fileID: 1582792592}
   - {fileID: 1459770876}

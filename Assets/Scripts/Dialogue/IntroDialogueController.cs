@@ -93,6 +93,8 @@ public class IntroDialogueController : MonoBehaviour
 
     private int currentChoiceIndex;
 
+    [Header("Sound")]
+    [SerializeField] private EBgm bgmOnStart;
 
     [Header("Character UI")]
     [SerializeField] private GameObject leftCharacterGroup;
@@ -140,6 +142,7 @@ public class IntroDialogueController : MonoBehaviour
     {
         if (autoStartOnStart)
         {
+            SoundManager.Instance.PlayBGM(bgmOnStart);
             StartDialogue(GetStartId());
         }
         else
@@ -327,6 +330,7 @@ public class IntroDialogueController : MonoBehaviour
 
     public void StartDialogueFromBeginning()
     {
+        SoundManager.Instance.PlayBGM(bgmOnStart);
         StartDialogue(GetStartId());
     }
 
