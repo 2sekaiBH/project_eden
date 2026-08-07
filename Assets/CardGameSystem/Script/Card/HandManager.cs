@@ -28,6 +28,14 @@ public class HandManager : MonoBehaviour
     [SerializeField] private float curveHeight = 15f; //카드 높이
     [SerializeField] private float rotateAngle = 8f; //카드 각도
 
+    //카드 제출 시 손패를 살짝 아래로 내림 관련 변수
+    [SerializeField] private float moveDistance = 80f; // 얼마나 내려갈지
+    [SerializeField] private float moveDuration = 0.25f; // 속도
+
+    private Vector2 originalPos; // 원래 위치 저장
+
+
+
     public void HandleSelectEndFlag(bool value) // 제출 버튼에서 구독
     {
         selectEndFlag = value;
@@ -44,7 +52,9 @@ public class HandManager : MonoBehaviour
 
     private void Awake()
     {
-        if(rectTransform == null) rectTransform = GetComponent<RectTransform>();
+        if (rectTransform == null) rectTransform = GetComponent<RectTransform>();
+
+        originalPos = rectTransform.anchoredPosition; // 원래 위치 저장
     }
 
     // 이벤트 구독
@@ -52,6 +62,7 @@ public class HandManager : MonoBehaviour
     {
         RoundFlowManager.OnRoundEnd += DiscardAllCard;
         player.OnPlayerDrawCard += Initialize;
+        TurnFlowManager.OnTurnStart += HandleTurnStart; //손패가 올라오도록 하기 위해 턴이 시작했다는 이벤트를 구독
     }
     // 이벤트 해제
     private void OnDisable()
@@ -59,6 +70,7 @@ public class HandManager : MonoBehaviour
         cardDisplays.ForEach((display) => display.OnCardSelected -= HandleSelectCard);
         RoundFlowManager.OnRoundEnd -= DiscardAllCard;
         player.OnPlayerDrawCard -= Initialize;
+        TurnFlowManager.OnTurnStart -= HandleTurnStart;
     }
 
     /// <summary>
@@ -116,6 +128,9 @@ public class HandManager : MonoBehaviour
         OnSelectEnd?.Invoke(selectedCards);
         selectedCards.ForEach((selectedCard) => DiscardCard(selectedCard)); // 카드 버리기
 
+        yield return StartCoroutine(MoveDown()); //제출 시 손패를 아래로 내려가게끔
+
+
         cardDisplays.ForEach((display) => display.StateReset()); // 카드 UI 상태 초기화
         ResetState(); // 상태 변수 초기화
     }
@@ -132,7 +147,7 @@ public class HandManager : MonoBehaviour
         //조건부 카드 미션 실패 시 아예 카드 선택이 안 됨
         if (card.isMissionCard && !MissionManager.Instance.IsMissionComplete(player))
         {
-            UIUpdator.Instance.SetText("미션을 완료해야 사용할 수 있습니다.");
+            UIUpdator.Instance.SetText("미션을 성공해야 사용할 수 있습니다.");
             return;
         }
 
@@ -168,6 +183,8 @@ public class HandManager : MonoBehaviour
         cardDisplays.Remove(discardedCard.GetComponent<CardDisplay>());
         cards.Remove(discardedCard);
         Destroy(discardedCard);
+
+        UpdateHandUI();
     }
 
     /// <summary>
@@ -198,6 +215,7 @@ public class HandManager : MonoBehaviour
         {
             RectTransform rt = cardDisplays[i].GetComponent<RectTransform>();
 
+
             float offset = i - (count - 1) / 2f;
 
             float x = offset * cardSpacing;
@@ -206,8 +224,52 @@ public class HandManager : MonoBehaviour
 
             rt.anchoredPosition = new Vector2(x, y);
             rt.localRotation = Quaternion.Euler(0, 0, angle);
+
+            //카드 크기 설정
+            rt.localScale = Vector3.one * 0.6f;
         }
     }
 
+    //손패 UIf를 부드럽게 밑으로 내림
+    private IEnumerator MoveDown()
+    {
+        Vector2 start = rectTransform.anchoredPosition;
+        Vector2 end = originalPos - new Vector2(0, moveDistance);
+
+        float time = 0f;
+
+        while (time < moveDuration)
+        {
+            time += Time.deltaTime;
+            float t = Mathf.Clamp01(time / moveDuration);
+            rectTransform.anchoredPosition = Vector2.Lerp(start, end, t);
+            yield return null;
+        }
+
+        rectTransform.anchoredPosition = end;
+    }
+
+    private IEnumerator MoveUp()
+    {
+        Vector2 start = rectTransform.anchoredPosition;
+        Vector2 end = originalPos;
+
+        float time = 0f;
+
+        while (time < moveDuration)
+        {
+            time += Time.deltaTime;
+            float t = Mathf.Clamp01(time / moveDuration);
+            rectTransform.anchoredPosition = Vector2.Lerp(start, end, t);
+            yield return null;
+        }
+
+        rectTransform.anchoredPosition = end;
+    }
+
+    private void HandleTurnStart(int turn)
+    {
+        StartCoroutine(MoveUp()); //손패 올라오도록!
+    }
 
 }

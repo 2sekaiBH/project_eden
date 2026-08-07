@@ -30,6 +30,18 @@ public class CardDisplay : MonoBehaviour, IPointerClickHandler, IPointerEnterHan
 
     private bool isSelected = false;
 
+    //카드 호버 시 크기 커지고 살짝 올라오게 구현 관려 변수
+    [SerializeField] private float hoverScale = 0.7f; //호버 시 크기
+    [SerializeField] private float hoverHeight = 10f; //호버 시 높이
+
+    private Vector3 originalScale;
+    private Vector2 originalPos;
+    private int originalSiblingIndex;
+
+    private RectTransform rt;
+
+
+
 
     private void Awake()
     {
@@ -37,6 +49,7 @@ public class CardDisplay : MonoBehaviour, IPointerClickHandler, IPointerEnterHan
             image = GetComponent<Image>();
         if(canvasGroup == null)
             canvasGroup = GetComponent<CanvasGroup>();
+
     }
 
     private void OnEnable()
@@ -140,10 +153,25 @@ public class CardDisplay : MonoBehaviour, IPointerClickHandler, IPointerEnterHan
     public void OnPointerEnter(PointerEventData eventData)
     {
         // 호버 구현
+        rt = GetComponent<RectTransform>();
+
+        originalScale = rt.localScale;
+        originalPos = rt.anchoredPosition;
+        originalSiblingIndex = transform.GetSiblingIndex();
+
+        transform.SetAsLastSibling();
+
+        rt.localScale = originalScale * hoverScale;
+        rt.anchoredPosition = originalPos + new Vector2(0, hoverHeight);
+
     }
 
     public void OnPointerExit(PointerEventData eventData)
     {
+        rt.localScale = originalScale;
+        rt.anchoredPosition = originalPos;
+
         // 호버 구현
+        transform.SetSiblingIndex(originalSiblingIndex);
     }
 }

@@ -30,7 +30,7 @@ RectTransform:
   m_GameObject: {fileID: 1619126981389201015}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.6, y: 0.6, z: 0.6}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -101,6 +101,8 @@ MonoBehaviour:
   - {fileID: 2887157185773614050, guid: 7aec92aaa9a1c6d4385e005ea529cc4f, type: 3}
   - {fileID: -3850161368994453836, guid: 7aec92aaa9a1c6d4385e005ea529cc4f, type: 3}
   - {fileID: -656642670871498679, guid: 7aec92aaa9a1c6d4385e005ea529cc4f, type: 3}
+  hoverScale: 1.2
+  hoverHeight: 10
 --- !u!225 &8710934786050455164
 CanvasGroup:
   m_ObjectHideFlags: 0
