@@ -4,7 +4,7 @@ using UnityEngine.UI;
 public class FC_Popup_Controller : MonoBehaviour
 {
     [Header("Choice Cards")]
-    [SerializeField] private FinalChoice arichChoice;
+    [SerializeField] private FinalChoice archiChoice;
     [SerializeField] private FinalChoice eveChoice;
     [SerializeField] private FinalChoice noaChoice;
 
@@ -30,7 +30,7 @@ public class FC_Popup_Controller : MonoBehaviour
         // 히든엔딩 조건 확인
         bool noaHiddenEndingUnlocked = CheckNoaAffinityCondition() && CheckHiddenEndingItemCondition();
 
-        arichChoice.Initialize(this, true);
+        archiChoice.Initialize(this, true);
         eveChoice.Initialize(this, true);
         noaChoice.Initialize(this, noaHiddenEndingUnlocked);
 
@@ -60,27 +60,48 @@ public class FC_Popup_Controller : MonoBehaviour
 
     public void OnClickSelectButton()
     {
-        // 선택된 카드가 없으면 어떤 경우에도 진행하지 않음
         if (selectedCard == null)
+        {
             return;
+        }
+
+        if (GameState.Instance == null)
+        {
+            Debug.LogError(
+                "[FC Popup] GameState가 없어 선택한 진영을 저장할 수 없습니다."
+            );
+            return;
+        }
 
         switch (selectedCard.CharacterId)
         {
-            case "Arich":
-                Debug.Log("Arich 엔딩 선택");
-                // StartArichEnding();
+            case "Archi":
+                GameState.Instance.SetSelectedFaction(FactionType.Archi);
+                Debug.Log("Archi 진영 선택");
                 break;
 
             case "Eve":
-                Debug.Log("Eve 엔딩 선택");
-                // StartEveEnding();
+                GameState.Instance.SetSelectedFaction(FactionType.Eve);
+                Debug.Log("Eve 진영 선택");
                 break;
 
             case "Noa":
-                Debug.Log("Noa 히든 엔딩 선택");
-                // StartNoaHiddenEnding();
+                GameState.Instance.SetSelectedFaction(FactionType.Noa);
+                Debug.Log("Noa 히든 진영 선택");
                 break;
+
+            default:
+                Debug.LogError(
+                    $"[FC Popup] 알 수 없는 캐릭터 ID: " +
+                    $"{selectedCard.CharacterId}"
+                );
+                return;
         }
+
+        // 여기서 카드게임 씬을 로드하거나,
+        // 이후 진행 로직을 호출하면 됨.
+        //
+        // SceneManager.LoadScene("CardGameScene");
     }
 
     private bool CheckNoaAffinityCondition()
