@@ -19,6 +19,9 @@ public class CardGameManager : MonoBehaviour
     [SerializeField] private RoundFlowManager roundFlowManager;
     [SerializeField] private NpcSlotManager npcSlotManager;
 
+    [SerializeField]
+    private List<StageData> stageDataList = new List<StageData>();
+
     private bool isWIn = false;
 
     private void Awake()
@@ -37,8 +40,14 @@ public class CardGameManager : MonoBehaviour
 
     void InitializeGameData()
     {
-        npcSlotManager.Initialize(npcDataList);
-        // OpponentActor에게 opponentData 전달
+        foreach(var stageData in stageDataList)
+        {
+            if(stageData.stageName.Equals(GameManager.Instance.LastStage))
+            {
+                npcSlotManager.Initialize(stageData.joinNpc);
+                // OpponentActor에게 opponentData 전달
+            }
+        }
     }
 
     private void RunCardGame()
@@ -47,4 +56,15 @@ public class CardGameManager : MonoBehaviour
     }
 
     // 최종 승패 판정에 따른 처리
+}
+
+/// <summary>
+/// 1,2,3 스테이지별 중간보스, npcSlot 데이터
+/// </summary>
+[System.Serializable]
+public class StageData
+{
+    public string stageName;
+    public List<NpcData> joinNpc;
+    public OpponentActor opponent;
 }
