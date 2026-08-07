@@ -28,6 +28,14 @@ public class ItemAcquisitionUI : MonoBehaviour
         if (popupPanel != null) popupPanel.SetActive(false);
     }
 
+    private void Update()
+    {
+        if (popupPanel != null && popupPanel.activeSelf && Input.GetKeyDown(KeyCode.Return))
+        {
+            OnClickConfirmButton();
+        }
+    }
+
     public void ShowAcquisitionPopup(int id)
     {
         if (ItemDatabase.Instance == null)
