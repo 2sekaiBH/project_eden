@@ -30,7 +30,7 @@ public class RoundFlowManager : MonoBehaviour
     // ----------------------------------------
     public static event Action<int> OnRoundStart; // 라운드 수
     public static event Action<int> OnRoundEnd;
-    public static event Action <bool>OnResultDetermined; // 게임의 승패 판정을 알리는 이벤트 true - win, flase - lose  
+    public event Action <bool>OnResultDetermined; // 게임의 승패 판정을 알리는 이벤트 true - win, flase - lose  
 
 
     private void OnDisable()
@@ -79,7 +79,8 @@ public class RoundFlowManager : MonoBehaviour
             // 3. 턴 종료
             if (turnResult == true)
             {
-                OnResultDetermined?.Invoke(false); // 게임 매니저에서 처리
+                yield return new WaitForSeconds(3f);
+                OnResultDetermined?.Invoke(true); // 게임 매니저에서 처리 - 승리
                 yield break;
             }
 
@@ -90,12 +91,12 @@ public class RoundFlowManager : MonoBehaviour
             yield return new WaitForSeconds(1f);
         }
 
-        // 5라운드 초과 시 패배
-        OnResultDetermined?.Invoke(false);
-
         UIUpdator.Instance.SetText($"패배");
         Debug.Log($"패배");
-        yield return new WaitForSeconds(1f);
+        yield return new WaitForSeconds(3f);
+
+        // 5라운드 초과 시 패배
+        OnResultDetermined?.Invoke(false);
 
         yield return null;
     }

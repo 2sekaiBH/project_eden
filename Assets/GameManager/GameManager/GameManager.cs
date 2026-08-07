@@ -12,13 +12,13 @@ public class GameManager : MonoBehaviour
     public GameData gameData;
     public GameData GameData => gameData;
 
-    public string lastStage;
-    public string LastStage => lastStage;
-
+    public StageType lastStage;
+    public StageType LastStage => lastStage;
+    /*
     [Header("Settings")]
     [SerializeField] private List<string> stageList = new List<string>() { "floor_67", "floor_213", "floor_399" };
-
-
+    public List<string> StageList => stageList;
+    */
 
     private void Awake()
     {
@@ -44,19 +44,23 @@ public class GameManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        
         if (Input.GetKeyDown(KeyCode.N))
         {
             SceneManager.LoadScene("Lahee_CardGame");
         }
+        
     }
 
     public void SetCurrentScene(string newScene)
     {
-
-        foreach(var stage in stageList)
+        foreach(StageType stage in System.Enum.GetValues(typeof(StageType)))
         {
-            if(stage.Equals(newScene))
-                lastStage = newScene;
+            if(stage.ToString().Equals(newScene))
+            {
+                lastStage = stage;
+                break;
+            }
         }
  
         gameData.SetCurrentScene(newScene);
@@ -85,4 +89,11 @@ public struct GameData
     {
         this.keyMappingDataList = keyMappingDataList;
     }
+}
+
+public enum StageType
+{
+    floor_67,
+    floor_213,
+    floor_399
 }
