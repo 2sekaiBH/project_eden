@@ -116,6 +116,7 @@ Transform:
   - {fileID: 4535790345723070884}
   - {fileID: 9065728724491833595}
   - {fileID: 7557103405273996827}
+  - {fileID: 3157915215063086966}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &2624000087134952360
@@ -133,6 +134,7 @@ MonoBehaviour:
   gameData:
     currentScene: 
     keyMappingDataList: []
+  lastStage: 0
 --- !u!1 &4018913870710507971
 GameObject:
   m_ObjectHideFlags: 0
@@ -479,3 +481,47 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 94d22c38bf3be94418a34fb34a792499, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::KeyManager
+--- !u!1 &8524767399575987503
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3157915215063086966}
+  - component: {fileID: 7700770715965322896}
+  m_Layer: 0
+  m_Name: SettingsWindowController
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &3157915215063086966
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8524767399575987503}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 5190970645439023916}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &7700770715965322896
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8524767399575987503}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 52bb2ff57ec0c944e8a72a6231c5933d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::OpenCloseSettingsWindow
