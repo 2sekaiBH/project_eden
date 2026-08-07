@@ -1,6 +1,7 @@
 using NUnit.Framework;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.SceneManagement;
 
 /// <summary>
@@ -23,7 +24,12 @@ public class CardGameManager : MonoBehaviour
     [SerializeField] private PlayerActor playerActor;
     [SerializeField] private OpponentActor opponentActor;
 
-    private bool isWIn = false;
+    [Header("Result Events")]
+    [SerializeField] private UnityEvent onGameCleared;
+    [SerializeField] private UnityEvent onGameFailed;
+
+    // private bool isWIn = false;
+
     private StageType stage;
 
     private void OnEnable()
@@ -43,11 +49,23 @@ public class CardGameManager : MonoBehaviour
     }
     void Start()
     {
+        /*
         // 게임 전역 데이터 초기화
         InitializeGameData();
 
         // 게임 실행
         RunCardGame();
+        */
+
+    }
+
+    /// <summary>
+    /// 외부에서 호출하는 카드 게임 시작 함수
+    /// </summary>
+    public void StartCardGame()
+    {
+        InitializeGameData();
+        roundFlowManager.StartRound();
     }
 
     void InitializeGameData()
@@ -56,11 +74,11 @@ public class CardGameManager : MonoBehaviour
 
         foreach (var stageData in stageDataList)
         {
-            if(stageData.stageName.Equals(stage.ToString()))
+            if (stageData.stageName.Equals(stage.ToString()))
             {
                 npcSlotManager.Initialize(stageData.joinNpc);
                 opponentActor.SetOpponent(stageData.opponent);
-                if(GameState.Instance == null)
+                if (GameState.Instance == null)
                 {
                     Debug.LogWarning("GameState 없음!, 기본 이름 player로 대체");
                     playerActor.SetPlayer("Player", stageData.playerMaxHp);
@@ -74,11 +92,28 @@ public class CardGameManager : MonoBehaviour
         // Debug.LogWarning("초기화할 스테이지 정보가 없습니다.");
     }
 
+    /*
     private void RunCardGame()
     {
         roundFlowManager.StartRound();
     }
+    */
 
+    private void HandleCardGameResult(bool result)
+    {
+        if (result)
+        {
+            Debug.Log("카드 게임 승리");
+            onGameCleared?.Invoke();
+        }
+        else
+        {
+            Debug.Log("카드 게임 패배");
+            onGameFailed?.Invoke();
+        }
+    }
+
+    /*
     // 최종 승패 판정에 따른 처리
     private void HandleCardGameResult(bool result)
     {
@@ -126,6 +161,7 @@ public class CardGameManager : MonoBehaviour
 
         return allStages[nextIndex];
     }
+    */
 }
 
 

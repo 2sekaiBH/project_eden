@@ -35,6 +35,7 @@ public class OpponentActor : Actor
         currentEnergy = opponentData.maxEnergy;
 
         profileUpdator.InitializeUpdator(opponentData.totalHp, opponentData.maxEnergy); // profileUpdator 초기화
+        profileUpdator.UpdateProfileImg(opponentData.profileImg); // 초기화 할때 -> sprite도 업데이트
     }
 
     /// <summary>

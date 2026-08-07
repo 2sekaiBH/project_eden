@@ -17,8 +17,8 @@ public class ProfileUpdator : MonoBehaviour
     [Header("UI Updator Reference")]
     [SerializeField] private HpBlockUIUpdator hpBlockUIUpdator;
 
-    [Header("Data")]
-    [SerializeField] private Sprite[] profileImgDatas;
+    // [Header("Data")]
+    // [SerializeField] private Sprite[] profileImgDatas;
 
     private int maxHp;
     private int maxEnergy;
@@ -31,9 +31,14 @@ public class ProfileUpdator : MonoBehaviour
             energyUI.text = $"{energy}";
 
         hpBlockUIUpdator.RefreshAnimated(hp, block);
-
-        //profileImg.sprite = profileImgDatas[CardGameManager.Instance.stage + 1]
     }
+
+    public void UpdateProfileImg(Sprite opponenetSprite)
+    {
+        profileImg.sprite = opponenetSprite;
+    }
+
+    
 
     public void InitializeUpdator(int maxHp = -1, int maxEnergy = -1)
     {
