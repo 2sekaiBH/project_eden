@@ -347,6 +347,19 @@ public class IntroDialogueController : MonoBehaviour
         isTransitioning = false;
         HideChoices();
 
+        // 새 대화 묶음을 시작할 때 이전 문장 제거
+        if (dialogueText != null)
+        {
+            dialogueText.text = string.Empty;
+            SetTextAlpha(dialogueText, 0f);
+        }
+
+        if (prologueText != null)
+        {
+            prologueText.text = string.Empty;
+            SetTextAlpha(prologueText, 0f);
+        }
+
         if (backgroundImage != null)
         {
             backgroundImage.gameObject.SetActive(true);
@@ -815,6 +828,19 @@ public class IntroDialogueController : MonoBehaviour
         if (rightCharacterGroup != null)
         {
             rightCharacterGroup.SetActive(false);
+        }
+
+        // 이전 대사 내용 완전히 제거
+        if (dialogueText != null)
+        {
+            dialogueText.text = string.Empty;
+            SetTextAlpha(dialogueText, 0f);
+        }
+
+        if (prologueText != null)
+        {
+            prologueText.text = string.Empty;
+            SetTextAlpha(prologueText, 0f);
         }
     }
 
