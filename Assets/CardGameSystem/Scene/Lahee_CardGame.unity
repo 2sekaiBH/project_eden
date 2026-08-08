@@ -1071,6 +1071,30 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5649889183142514394, guid: 61ffc24d06a464341bde844296c15b78, type: 3}
+      propertyPath: profileImgDatas.Array.size
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 5649889183142514394, guid: 61ffc24d06a464341bde844296c15b78, type: 3}
+      propertyPath: 'profileImgDatas.Array.data[0]'
+      value: 
+      objectReference: {fileID: 7162017571483918076, guid: 69b6ebe8a0aecb2469da05bd6ec50bd5, type: 3}
+    - target: {fileID: 5649889183142514394, guid: 61ffc24d06a464341bde844296c15b78, type: 3}
+      propertyPath: 'profileImgDatas.Array.data[1]'
+      value: 
+      objectReference: {fileID: -3247142460167308418, guid: 1c82cdc196a708642bf0de306c653a1f, type: 3}
+    - target: {fileID: 5649889183142514394, guid: 61ffc24d06a464341bde844296c15b78, type: 3}
+      propertyPath: 'profileImgDatas.Array.data[2]'
+      value: 
+      objectReference: {fileID: 2463007304039773152, guid: 6b726d6d3e61ec84bbfc038661e7a0e7, type: 3}
+    - target: {fileID: 5649889183142514394, guid: 61ffc24d06a464341bde844296c15b78, type: 3}
+      propertyPath: 'profileImgDatas.Array.data[3]'
+      value: 
+      objectReference: {fileID: -5990128629324314386, guid: 4ce4683d7c86f134c882819394957b43, type: 3}
+    - target: {fileID: 5649889183142514394, guid: 61ffc24d06a464341bde844296c15b78, type: 3}
+      propertyPath: 'profileImgDatas.Array.data[4]'
+      value: 
+      objectReference: {fileID: 3046738643878637564, guid: a4ef2264ab02117448ef14be8a35224e, type: 3}
     - target: {fileID: 5756116178131448428, guid: 61ffc24d06a464341bde844296c15b78, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
@@ -2626,6 +2650,7 @@ MonoBehaviour:
     joinNpc:
     - {fileID: 11400000, guid: 91f6f852c6ab53a47934e45e0ece21c4, type: 2}
     opponent: {fileID: 11400000, guid: bdff0ac466ac70c4b81651f1523b1062, type: 2}
+  finalPlayerHp: 40
   roundFlowManager: {fileID: 1973957524}
   npcSlotManager: {fileID: 297109228}
   playerActor: {fileID: 2127880076}
@@ -2636,6 +2661,17 @@ MonoBehaviour:
   onGameFailed:
     m_PersistentCalls:
       m_Calls: []
+  eveNpcList:
+  - {fileID: 11400000, guid: d78643529dda1cf4187c75baffc61c65, type: 2}
+  - {fileID: 11400000, guid: 60b4e01f95246454e9ede198b07919b9, type: 2}
+  - {fileID: 11400000, guid: 4e93de86cbf624d49b79d44abc022fea, type: 2}
+  archiNpcList:
+  - {fileID: 11400000, guid: 91f6f852c6ab53a47934e45e0ece21c4, type: 2}
+  - {fileID: 11400000, guid: 60b4e01f95246454e9ede198b07919b9, type: 2}
+  - {fileID: 11400000, guid: 4e93de86cbf624d49b79d44abc022fea, type: 2}
+  eveOpponentData: {fileID: 11400000, guid: 05d88a6095ccc9a45a39f182661617e4, type: 2}
+  archiOpponentData: {fileID: 11400000, guid: 5be32ca3d2f2aae4d83274cb0785dc93, type: 2}
+  isFinal: 0
 --- !u!4 &1913113750
 Transform:
   m_ObjectHideFlags: 0

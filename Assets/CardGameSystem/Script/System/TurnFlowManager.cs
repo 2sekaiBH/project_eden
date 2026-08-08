@@ -61,7 +61,7 @@ public class TurnFlowManager : MonoBehaviour
     // ----------------------------------------
     public static event Action<int> OnTurnStart; // 턴수
     public static event Action<int> OnTurnEnd;
-    public event Action OnPlayerWin; // 플레이어 승리 이벤트 - RounFlowManager에서 구독
+    public event Action<bool> OnTurnResultDetermined; // 승패 판정이 됐음을 알리는 이벤트 - RounFlowManager에서 구독
 
     // 이벤트 구독 및 상태 변수 초기화
     void Start()
@@ -163,10 +163,20 @@ public class TurnFlowManager : MonoBehaviour
             // 7. 승리 판정
             if (opponentActor.CurrentHp <= 0)
             {
-                OnPlayerWin?.Invoke();
+                OnTurnResultDetermined?.Invoke(true);
                 InitializeState();
                 UIUpdator.Instance.SetText($"승리");
                 Debug.Log("승리");
+                yield break; // turn 코루틴 종료
+            }
+
+            // 7. 패배 판정
+            if(playerActor.CurrentHp <= 0) 
+            {
+                OnTurnResultDetermined?.Invoke(false);
+                InitializeState();
+                UIUpdator.Instance.SetText($"패배");
+                Debug.Log("패배");
                 yield break; // turn 코루틴 종료
             }
 

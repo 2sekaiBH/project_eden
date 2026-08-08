@@ -14,5 +14,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::NpcData
   name: "\uC544\uD0A4\uD14D\uD2B8"
   effectDescription: "\uC774\uBC88\uD134\uC5D0 \uC801 \uD589\uB3D9\uC744 \uC2A4\uD0B5\uD55C\uB2E4"
-  npcProfileImage: {fileID: 5032603420405158361, guid: 9a5656496e3c604429be13b40e18c81c, type: 3}
+  npcProfileImage: {fileID: 3046738643878637564, guid: a4ef2264ab02117448ef14be8a35224e, type: 3}
   effect: {fileID: 11400000, guid: 7fc8780b8dca5c04eb51b08f42dad65d, type: 2}

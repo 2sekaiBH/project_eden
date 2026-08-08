@@ -57,4 +57,34 @@ public class ProfileUpdator : MonoBehaviour
     {
         profileImg.color = active ? new Color(1, 1, 1, 1f) :new Color(1, 1, 1, 0.5f);
     }
+
+    public void UpdateProfileImg(string name)
+    {
+        switch(name)
+        {
+            case ("행복 좀비"):
+                Debug.Log("행복 좀비 프로필 갱신");
+                profileImg.sprite = profileImgDatas[0];
+                break;
+            case ("생체 실험 폐기물"):
+                Debug.Log("생체 실험 폐기물 프로필 갱신");
+                profileImg.sprite = profileImgDatas[1];
+                break;
+            case ("데이터 포식자"):
+                Debug.Log("데이터 포식자 프로필 갱신");
+                profileImg.sprite = profileImgDatas[2];
+                break;
+            case ("이브"):
+                Debug.Log("이브 프로필 갱신");
+                profileImg.sprite = profileImgDatas[3];
+                break;
+            case ("아키텍트"):
+                Debug.Log("아키텍트 프로필 갱신");
+                profileImg.sprite = profileImgDatas[4];
+                break;
+            default:
+                Debug.LogWarning("맞는 프로필 스프라이트가 없습니다.");
+                break;
+        }
+    }
 }

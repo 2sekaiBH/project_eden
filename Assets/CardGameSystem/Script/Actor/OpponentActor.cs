@@ -35,6 +35,7 @@ public class OpponentActor : Actor
         currentEnergy = opponentData.maxEnergy;
 
         profileUpdator.InitializeUpdator(opponentData.totalHp, opponentData.maxEnergy); // profileUpdator √ ±‚»≠
+        profileUpdator.UpdateProfileImg(opponentData.name);
     }
 
     /// <summary>

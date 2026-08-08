@@ -105,7 +105,7 @@ public class FC_Popup_Controller : MonoBehaviour
         // 여기서 카드게임 씬을 로드하거나,
         // 이후 진행 로직을 호출하면 됨.
         //
-        // SceneManager.LoadScene("Lahee_CardGame");
+        SceneManager.LoadScene("Lahee_CardGame");
     }
 
     private bool CheckNoaAffinityCondition()

@@ -142,7 +142,8 @@ public class IntroDialogueController : MonoBehaviour
     {
         if (autoStartOnStart)
         {
-            SoundManager.Instance.PlayBGM(bgmOnStart);
+            if(SoundManager.Instance != null)
+                SoundManager.Instance.PlayBGM(bgmOnStart);
             StartDialogue(GetStartId());
         }
         else

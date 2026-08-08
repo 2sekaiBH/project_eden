@@ -15,6 +15,7 @@ public class CardGameManager : MonoBehaviour
 
     [Header("DataBase")]
     [SerializeField] private List<StageData> stageDataList = new List<StageData>();
+    [SerializeField] private int finalPlayerHp = 40;
 
     [Header("Other Managers")]
     [SerializeField] private RoundFlowManager roundFlowManager;
@@ -26,12 +27,29 @@ public class CardGameManager : MonoBehaviour
     [SerializeField] private UnityEvent onGameCleared;
     [SerializeField] private UnityEvent onGameFailed;
 
+
+    [Header("최종전 카드 게임")]
+    [SerializeField] private List<NpcData> eveNpcList;
+    [SerializeField] private List<NpcData> archiNpcList;
+    [SerializeField] private OpponentData eveOpponentData;
+    [SerializeField] private OpponentData archiOpponentData;
+
     public UnityEvent OnGameCleared => onGameCleared;
     public UnityEvent OnGameFailed => onGameFailed;
 
-    // private bool isWIn = false;
+    public bool isFinal = false; // 최종전인지
 
     private StageType stage;
+
+    FactionType faction;
+    private PlayerSelectedSideInCardGame side = PlayerSelectedSideInCardGame.None;
+
+    public enum PlayerSelectedSideInCardGame
+    {
+        None,
+        Architect,
+        Eve,
+    }
 
     private void OnEnable()
     {
@@ -49,8 +67,55 @@ public class CardGameManager : MonoBehaviour
             roundFlowManager = GetComponentInChildren<RoundFlowManager>();
     }
 
+    private void Start()
+    {
+        if(GameState.Instance == null)
+        {
+            Debug.LogWarning("GameState가 없습니다.");
+            return;
+        }
+
+        faction = GameState.Instance.SelectedFaction;
+
+        switch (faction)
+        {
+            case FactionType.Archi:
+                Debug.Log("아키텍처 덱 설정");
+                side = PlayerSelectedSideInCardGame.Architect;
+                if (GameState.Instance.GetAffinity("cain") < 5) // 호감도 5 이하면 npc에서 제외
+                    archiNpcList.RemoveAll(npc => npc != null && npc.name.Equals("카인"));
+                npcSlotManager.Initialize(archiNpcList);
+                opponentActor.SetOpponent(eveOpponentData);
+                playerActor.SetPlayer(GameState.Instance.PlayerName, finalPlayerHp);
+                isFinal = true;
+                SoundManager.Instance.PlayBGM(EBgm.CardGame_404); // 404 bgm 재생
+                roundFlowManager.StartRound();
+                break;
+            case FactionType.Eve:
+                side = PlayerSelectedSideInCardGame.Eve;
+                Debug.Log("이브 덱 설정");
+                npcSlotManager.Initialize(eveNpcList);
+                opponentActor.SetOpponent(archiOpponentData);
+                playerActor.SetPlayer(GameState.Instance.PlayerName, finalPlayerHp);
+                isFinal = true;
+                SoundManager.Instance.PlayBGM(EBgm.CardGame_404); // 404 bgm 재생
+                roundFlowManager.StartRound();
+                break;
+            default:
+                Debug.Log("맞는 fraction type이 없습니다. - 기본 덱 설정");
+                break;
+        }
+    }
     public void StartCardGame()
     {
+        if (isFinal)
+        {
+            Debug.LogWarning("최종전입니다. GameState에서 초기화");
+            isFinal = false;
+            return;
+        }
+
+        SoundManager.Instance.PlayBGM(EBgm.CardGame); // 일반 bgm 재생
         InitializeGameData();
         roundFlowManager.StartRound();
     }
@@ -82,22 +147,39 @@ public class CardGameManager : MonoBehaviour
     // 최종 승패 판정에 따른 처리
     private void HandleCardGameResult(bool result)
     {
+        if (GameState.Instance == null) 
+        {
+            Debug.LogError(
+                "[CardGame] GameState가 없어엔딩을 설정할 수 없습니다."
+            );
+            return;
+        }
+
         if (result)
         {
             Debug.Log("[CardGame] 카드게임 승리");
             onGameCleared?.Invoke();
+
+            // ======= 최종전 승리 시 ========
+            if (!isFinal) return;
+
+            if(side == PlayerSelectedSideInCardGame.Architect) // 아키텍트 선택 엔딩
+            {
+                GameState.Instance.SetSelectedEnding(EndingType.Offline);
+            }
+
+            else if(side == PlayerSelectedSideInCardGame.Eve) // 이브 선택 엔딩
+            {
+                GameState.Instance.SetSelectedEnding(EndingType.Reconnect);
+            }
+            SceneManager.LoadScene("05_EndingScene");
+
             return;
         }
+
+        // ======= 패배 시 ========
 
         Debug.Log("[CardGame] 카드게임 패배 → GameOver 엔딩으로 이동");
-
-        if (GameState.Instance == null)
-        {
-            Debug.LogError(
-                "[CardGame] GameState가 없어 GameOver 엔딩을 설정할 수 없습니다."
-            );
-            return;
-        }
 
         // EndingDialogueStarter가 이 값을 읽고
         // ending_gameover_001부터 재생하게 됨

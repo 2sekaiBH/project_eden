@@ -23,7 +23,8 @@ public class RoundFlowManager : MonoBehaviour
     // ----------------------------------------
     private int currentRound = 0;
     public int CurrentRound => currentRound;
-    private bool turnResult = false; // 턴의 결과를 반영하는 플래그
+    private bool isTurnResultDetermined = false; // 턴의 결과를 반영하는 플래그
+    private bool turnResult = false; // 턴의 승패 결과를 저장하는 플래그
 
     // ----------------------------------------
     // 이벤트
@@ -35,13 +36,13 @@ public class RoundFlowManager : MonoBehaviour
 
     private void OnDisable()
     {
-        turnFlowManager.OnPlayerWin -= HandlePlayerWin;
+        turnFlowManager.OnTurnResultDetermined -= HandleTurnResult;
     }
 
     private void Awake()
     {
         turnFlowManager = GetComponent<TurnFlowManager>();
-        turnFlowManager.OnPlayerWin += HandlePlayerWin;
+        turnFlowManager.OnTurnResultDetermined += HandleTurnResult;
 
     }
 
@@ -77,10 +78,10 @@ public class RoundFlowManager : MonoBehaviour
             yield return StartCoroutine(turnFlowManager.RunTurn());
 
             // 3. 턴 종료
-            if (turnResult == true)
+            if (isTurnResultDetermined == true)
             {
                 yield return new WaitForSeconds(3f);
-                OnResultDetermined?.Invoke(true); // 게임 매니저에서 처리 - 승리
+                OnResultDetermined?.Invoke(turnResult); // 게임 매니저에서 처리 - 승리
                 yield break;
             }
 
@@ -104,9 +105,10 @@ public class RoundFlowManager : MonoBehaviour
    /// <summary>
    /// 플레이어 승리 이벤트 핸들러
    /// </summary>
-    private void HandlePlayerWin()
+    private void HandleTurnResult(bool result)
     {
-        turnResult = true;
+        isTurnResultDetermined = true;
+        turnResult = result;
     }
 
     /// <summary>
@@ -115,7 +117,7 @@ public class RoundFlowManager : MonoBehaviour
     private void Initialize()
     {
         currentRound = 0;
-        turnResult = false;
+        isTurnResultDetermined = false;
     }
 
     /// <summary>
