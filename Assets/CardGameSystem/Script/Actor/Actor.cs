@@ -81,11 +81,10 @@ public abstract class Actor : MonoBehaviour
         int remaining = amount - absorbed;
         currentHp = Mathf.Max(0, currentHp - remaining);
 
-        if (attacker is PlayerActor)
-            SoundManager.Instance.PlaySFX(ESfx.attack); //플레이어가 공격자일 경우 공격 소리 재생
-
-        else
+        if (this is PlayerActor)
             SoundManager.Instance.PlaySFX(ESfx.shield); //플레이어가 맞을 경우 방어 소리 재생
+        else
+            SoundManager.Instance.PlaySFX(ESfx.attack); //이외에 다 공격 소리 재생
 
         // 반사 구현
         if (reflect && absorbed > 0 && attacker != null)
