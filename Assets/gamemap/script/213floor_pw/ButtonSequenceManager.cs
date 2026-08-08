@@ -85,43 +85,52 @@ public class ButtonSequenceManager : MonoBehaviour
         switch (pressedButtonId)
         {
             case 1:
+                ResetAllButtonImages();
                 ChangeButtonImage(2, true);
                 ChangeButtonImage(4, true);
                 ChangeButtonImage(7, true);
                 break;
 
             case 2:
+                ResetAllButtonImages();
                 ChangeButtonImage(3, true);
                 ChangeButtonImage(5, true);
                 ChangeButtonImage(8, true);
                 break;
 
             case 3:
+                ResetAllButtonImages();
                 ChangeButtonImage(4, false);
                 break;
 
             case 4:
+                ResetAllButtonImages();
                 ChangeButtonImage(5, true);
                 ChangeButtonImage(8, true);
                 break;
 
             case 5:
+                ResetAllButtonImages();
                 ChangeButtonImage(6, true);
                 ChangeButtonImage(7, true);
                 break;
                 
             case 6:
+                ResetAllButtonImages();
                 ChangeButtonImage(7, true);
                 ChangeButtonImage(10, true);
                 break;
 
             case 7:
+                ResetAllButtonImages();
                 ChangeButtonImage(8, true);
                 break;
             case 8:
+                ResetAllButtonImages();
                 ChangeButtonImage(9, true);
                 break;
             case 9:
+                ResetAllButtonImages();
                 ChangeButtonImage(10, true);
                 break;
         }
