@@ -18,7 +18,7 @@ public class KainEffect : NpcEffect
         // 코루틴 사용이므로 비워두기
     }
 
-    List<CardData> newCards;
+    List<CardData> newCards = new List<CardData>();
     public override IEnumerator ApplyRoutine(NpcContext context)
     {
         Debug.Log("카인 효과 적용");

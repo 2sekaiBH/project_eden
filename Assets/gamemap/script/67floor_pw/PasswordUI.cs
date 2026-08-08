@@ -103,6 +103,10 @@ public class PasswordUI : MonoBehaviour
         }
 
         if (passwordPanel != null) passwordPanel.SetActive(true);
+        if (SoundManager.Instance != null)
+        {
+            SoundManager.Instance.PlaySFX(ESfx.tallcase_O); ;
+        }
         Time.timeScale = 0f; // 게임 일시정지
 
         UpdateUI();
@@ -113,6 +117,10 @@ public class PasswordUI : MonoBehaviour
     {
         isOpen = false;
         if (passwordPanel != null) passwordPanel.SetActive(false);
+        if (SoundManager.Instance != null)
+        {
+            SoundManager.Instance.PlaySFX(ESfx.tallcase_C);
+        }
         Time.timeScale = 1f;
     }
 
@@ -171,6 +179,10 @@ public class PasswordUI : MonoBehaviour
         {
             Debug.Log("비밀번호가 틀렸습니다. 다시 시도하세요.");
             // 틀렸을 경우 첫 번째 자릿수로 돌려보내고 초기화
+            if (SoundManager.Instance != null)
+            {
+                SoundManager.Instance.PlaySFX(ESfx.error_glitch);
+            }
             currentFocusIndex = 0;
             for (int i = 0; i < currentDigits.Length; i++) currentDigits[i] = 0;
             UpdateUI();

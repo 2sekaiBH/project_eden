@@ -46,11 +46,19 @@ public class ButtonSequenceManager : MonoBehaviour
         playerSequence.Clear(); // 입력 기록 리셋
         ResetAllButtonImages();
         if (sequencePanel != null) sequencePanel.SetActive(true);
+        if (SoundManager.Instance != null)
+        {
+            SoundManager.Instance.PlaySFX(ESfx.tallcase_O);
+        }
         Time.timeScale = 0f;
     }
     public void CloseSequenceUI()
     {
         if (sequencePanel != null) sequencePanel.SetActive(false);
+        if (SoundManager.Instance != null)
+        {
+            SoundManager.Instance.PlaySFX(ESfx.tallcase_C);
+        }
         Time.timeScale = 1f;
     }
 
@@ -59,6 +67,10 @@ public class ButtonSequenceManager : MonoBehaviour
     {
         playerSequence.Add(buttonId);
         int currentIndex = playerSequence.Count - 1; // 방금 누른 버튼의 순서(인덱스)
+        if (SoundManager.Instance != null)
+        {
+            SoundManager.Instance.PlaySFX(ESfx.button);
+        }
 
         Debug.Log($"버튼 {buttonId}번 클릭됨! (현재 입력 단계: {playerSequence.Count}/{correctSequence.Count})");
 
@@ -100,7 +112,7 @@ public class ButtonSequenceManager : MonoBehaviour
 
             case 3:
                 ResetAllButtonImages();
-                ChangeButtonImage(4, false);
+                ChangeButtonImage(4, true);
                 break;
 
             case 4:

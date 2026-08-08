@@ -68,6 +68,10 @@ public class ItemAcquisitionUI : MonoBehaviour
         }
 
         if (popupPanel != null) popupPanel.SetActive(true);
+        if (SoundManager.Instance != null)
+        {
+            SoundManager.Instance.PlaySFX(ESfx.item_acquired);
+        }
         Time.timeScale = 0f;
     }
 
@@ -87,6 +91,11 @@ public class ItemAcquisitionUI : MonoBehaviour
         if (popupPanel != null)
         {
             popupPanel.SetActive(false);
+        }
+
+        if (SoundManager.Instance != null)
+        {
+            SoundManager.Instance.PlaySFX(ESfx.button);
         }
 
         Time.timeScale = 1f;

@@ -1,4 +1,3 @@
-using NUnit.Framework;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
@@ -34,15 +33,24 @@ public class CardGameManager : MonoBehaviour
     [SerializeField] private OpponentData eveOpponentData;
     [SerializeField] private OpponentData archiOpponentData;
 
+    [Header("테스트용 - 테스트 후 isTesting 반드시 해제")]
+    [SerializeField] private List<NpcData> testingNpcDataList;
+    [SerializeField] private OpponentData testingOpponentData;
+    [SerializeField] private bool isTesting; // 테스팅 중인지
+
+
     public UnityEvent OnGameCleared => onGameCleared;
     public UnityEvent OnGameFailed => onGameFailed;
 
-    public bool isFinal = false; // 최종전인지
+
+    private bool isFinal = false; // 최종전인지 알리는 플래그
 
     private StageType stage;
 
     FactionType faction;
     private PlayerSelectedSideInCardGame side = PlayerSelectedSideInCardGame.None;
+
+
 
     public enum PlayerSelectedSideInCardGame
     {
@@ -69,6 +77,18 @@ public class CardGameManager : MonoBehaviour
 
     private void Start()
     {
+        // 테스트용 run
+        if (isTesting)
+        {
+            npcSlotManager.Initialize(testingNpcDataList);
+            opponentActor.SetOpponent(testingOpponentData);
+            playerActor.SetPlayer(GameState.Instance.PlayerName, finalPlayerHp);
+            SoundManager.Instance.PlayBGM(EBgm.CardGame); // 404 bgm 재생
+            roundFlowManager.StartRound();
+            return;
+        }
+
+
         if(GameState.Instance == null)
         {
             Debug.LogWarning("GameState가 없습니다.");
