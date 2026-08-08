@@ -95,7 +95,7 @@ public abstract class Actor : MonoBehaviour
             if (attacker is PlayerActor)
                 SoundManager.Instance.PlaySFX(ESfx.attack);
 
-            else
+            else if (attacker is OpponentActor)
                 SoundManager.Instance.PlaySFX(ESfx.shield);
         }
 
