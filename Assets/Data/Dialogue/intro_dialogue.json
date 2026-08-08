@@ -138,7 +138,7 @@
       "text": "“뭐지? 전화 올 데가 없는데…”",
       "leftCharacter": "player_P-1",
       "rightCharacter": "",
-      "sfx": "sfx_phone_ring",
+      "sfx": "phone_vibration",
       "nextId": "phone_002"
     },
     {
@@ -208,7 +208,7 @@
       "text": "지지직거리는 소리와 함께 상대방의 목소리가 성인 남성에서 여자아이의 목소리로 변했다.",
       "leftCharacter": "player_P-0",
       "rightCharacter": "",
-      "sfx": "sfx_static_voice",
+      "sfx": "electrical_noise",
       "nextId": "phone_007"
     },
     {
@@ -390,7 +390,7 @@
       "text": "“그리고…”",
       "leftCharacter": "player_P-0",
       "rightCharacter": "",
-      "sfx": "sfx_phone_disconnect",
+      "sfx": "phone_interruption",
       "nextId": "phone_020"
     },
     {
@@ -676,7 +676,7 @@
       "text": "삐비빅거리는 기계음이 들렸다.",
       "leftCharacter": "player_P-0",
       "rightCharacter": "",
-      "sfx": "sfx_cain_beep",
+      "sfx": "communication_of_aliens",
       "nextId": "door_015"
     },
     {

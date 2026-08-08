@@ -412,7 +412,8 @@ public class IntroDialogueController : MonoBehaviour
         currentNode = node;
 
         ApplyBackground(node.background);
-        PlaySoundEffect(node.sfx);
+        // PlaySoundEffect(node.sfx);
+        PlayNodeSfxCues(node);
 
         switch (node.type)
         {
@@ -696,6 +697,23 @@ public class IntroDialogueController : MonoBehaviour
             return;
         }
 
+        if(SoundManager.Instance == null)
+        {
+            Debug.LogWarning(
+           $"SoundManager 인스턴스가 없어 효과음을 재생하지 못했습니다: {key}"
+       );
+            return;
+        }
+
+        if (Enum.TryParse(key, out ESfx sfxType))
+        {
+            SoundManager.Instance.PlaySFX(sfxType);
+            return;
+        }
+
+        Debug.LogWarning($"ESfx에 해당하는 키가 없습니다: {key}");
+
+        /*
         if (soundEffectSource == null)
         {
             Debug.LogWarning(
@@ -710,7 +728,7 @@ public class IntroDialogueController : MonoBehaviour
             return;
         }
 
-        Debug.LogWarning($"효과음 키가 Inspector에 등록되지 않았습니다: {key}");
+        Debug.LogWarning($"효과음 키가 Inspector에 등록되지 않았습니다: {key}");*/
     }
 
     private IEnumerator SetDimAlpha(
@@ -888,6 +906,7 @@ public class IntroDialogueController : MonoBehaviour
 
         onDialogueFinished?.Invoke();
     }
+
 
 
     private IEnumerator FadeTextAlpha(
@@ -1111,7 +1130,11 @@ public class IntroDialogueController : MonoBehaviour
 
             // 버튼 클릭 시 해당 선택지 실행
             button.onClick.AddListener(
-                () => SelectChoicedMapped(capturedIndex)
+                () =>
+                {
+                    SoundManager.Instance.PlaySFX(ESfx.button);
+                    SelectChoicedMapped(capturedIndex);
+                }
             );
 
             // 마우스를 버튼 위에 올렸을 때
@@ -1371,5 +1394,36 @@ public class IntroDialogueController : MonoBehaviour
 
             rightNameText.text = speaker;
         }
+    }
+
+    private void PlayNodeSfxCues(DialogueNode node)
+    {
+        // 기존 방식(노드 시작과 동시에 재생)도 그대로 유지
+        PlaySoundEffect(node.sfx);
+
+        if (node.sfxCues == null)
+        {
+            return;
+        }
+
+        foreach (SfxCue cue in node.sfxCues)
+        {
+            if (cue == null || string.IsNullOrWhiteSpace(cue.key))
+            {
+                continue;
+            }
+
+            StartCoroutine(PlayDelayedSfx(cue.key, cue.delay));
+        }
+    }
+
+    private IEnumerator PlayDelayedSfx(string key, float delay)
+    {
+        if (delay > 0f)
+        {
+            yield return new WaitForSecondsRealtime(delay);
+        }
+
+        PlaySoundEffect(key);
     }
 }

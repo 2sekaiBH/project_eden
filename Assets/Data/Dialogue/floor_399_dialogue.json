@@ -236,7 +236,7 @@
       "text": "숨겨진 기록 보관 구역이 개방되었다.",
       "leftCharacter": "",
       "rightCharacter": "",
-      "sfx": "sfx_archive_door_open",
+      "sfx": "door_open",
       "nextId": "f399_post_004"
     },
     {
@@ -592,7 +592,7 @@
       "text": "경보음이 울렸다.",
       "leftCharacter": "",
       "rightCharacter": "",
-      "sfx": "sfx_alarm",
+      "sfx": "emergency_signal",
       "nextId": "f399_system_002"
     },
     {

@@ -382,7 +382,11 @@
       "text": "금속이 마찰하는 소리와 찐득한 액체 소리가 들려왔다.",
       "leftCharacter": "",
       "rightCharacter": "",
-      "sfx": "sfx_metal_slime",
+      "sfx": "",
+      "sfxCues": [
+        { "key": "sticky_liquid", "delay": 0 },
+        { "key": "metal_friction", "delay": 0.4 }
+      ],
       "nextId": "f218_prebattle_009"
     },
     {
@@ -494,7 +498,7 @@
       "text": "규칙적인 기계음이 들렸다.",
       "leftCharacter": "",
       "rightCharacter": "",
-      "sfx": "sfx_machine_regular",
+      "sfx": "regular_mechanical",
       "nextId": "f218_memory_002"
     },
     {

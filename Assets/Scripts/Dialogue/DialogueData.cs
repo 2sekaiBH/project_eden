@@ -29,6 +29,8 @@ public class DialogueNode
 
     // 선택지 노드일 때만 사용
     public ChoiceData[] choices;
+    // 효과음 재생 cue
+    public SfxCue[] sfxCues;
 }
 
 [Serializable]
@@ -42,4 +44,11 @@ public class ChoiceData
 
     // 증가 1, 유지 0, 감소 -1
     public int affinityDelta;
+}
+
+[Serializable]
+public class SfxCue
+{
+    public string key;
+    public float delay; // 노드 시작 후 몇 초 뒤에 재생할지
 }

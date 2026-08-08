@@ -152,7 +152,7 @@
       "text": "웅성웅성거리는 소리와 비명이 들려왔다.",
       "leftCharacter": "",
       "rightCharacter": "",
-      "sfx": "sfx_crowd_panic",
+      "sfx": " archi_ending_crowd",
       "nextId": "ending_offline_010"
     },
     {
