@@ -40,7 +40,7 @@ public enum ESfx
     tallcase_C,
     tallcase_O,
     walking,
-    errir_glitch
+    error_glitch
 }
 
 public class SoundManager : MonoBehaviour
