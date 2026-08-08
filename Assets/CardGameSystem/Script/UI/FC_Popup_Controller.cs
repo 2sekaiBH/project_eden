@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class FC_Popup_Controller : MonoBehaviour
@@ -87,7 +88,10 @@ public class FC_Popup_Controller : MonoBehaviour
 
             case "Noa":
                 GameState.Instance.SetSelectedFaction(FactionType.Noa);
+                GameState.Instance.SetSelectedEnding(EndingType.Exodus); // 히든엔딩 직결
                 Debug.Log("Noa 히든 진영 선택");
+
+                SceneManager.LoadScene("05_EndingScene");
                 break;
 
             default:
@@ -101,7 +105,7 @@ public class FC_Popup_Controller : MonoBehaviour
         // 여기서 카드게임 씬을 로드하거나,
         // 이후 진행 로직을 호출하면 됨.
         //
-        // SceneManager.LoadScene("CardGameScene");
+        // SceneManager.LoadScene("Lahee_CardGame");
     }
 
     private bool CheckNoaAffinityCondition()

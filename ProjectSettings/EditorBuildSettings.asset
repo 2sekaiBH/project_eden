@@ -26,6 +26,12 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/CardGameSystem/Scene/Lahee_CardGame.unity
     guid: 02aa07611f8557a4abd6707932e04914
+  - enabled: 0
+    path: Assets/Scenes/04_Floor404Scene.unity
+    guid: 24734583bcf11bb4e98bb1387638d1ce
+  - enabled: 1
+    path: Assets/Scenes/05_EndingScene.unity
+    guid: e3463c8432397ab4aa079ec5d667da69
   m_configObjects:
     com.unity.input.settings: {fileID: 11400000, guid: 0729c886482a80b419911921e0e9d3fd, type: 2}
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 2bcd2660ca9b64942af0de543d8d7100, type: 3}

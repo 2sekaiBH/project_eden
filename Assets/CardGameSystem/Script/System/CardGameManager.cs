@@ -5,13 +5,13 @@ using UnityEngine.Events;
 using UnityEngine.SceneManagement;
 
 /// <summary>
-/// »óÀ§ °ÔÀÓ ¸Å´ÏÀú
-/// ½ºÅ×ÀÌÁö Á¤º¸ ¹İ¿µ
-/// ½ÂÆĞ Ã³¸®
+/// ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Å´ï¿½ï¿½ï¿½
+/// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½İ¿ï¿½
+/// ï¿½ï¿½ï¿½ï¿½ Ã³ï¿½ï¿½
 /// </summary>
 public class CardGameManager : MonoBehaviour
 {
-    // [SerializeField] private List<NpcData> npcDataList; // database ÂüÁ¶ Çü½ÄÀ¸·Î °³¼± ÇÊ¿ä
+    // [SerializeField] private List<NpcData> npcDataList; // database ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ê¿ï¿½
 
     [Header("DataBase")]
     [SerializeField] private List<StageData> stageDataList = new List<StageData>();
@@ -67,7 +67,7 @@ public class CardGameManager : MonoBehaviour
                 opponentActor.SetOpponent(stageData.opponent);
                 if (GameState.Instance == null)
                 {
-                    Debug.LogWarning("GameState ¾øÀ½!, ±âº» ÀÌ¸§ player·Î ´ëÃ¼");
+                    Debug.LogWarning("GameState ï¿½ï¿½ï¿½ï¿½!, ï¿½âº» ï¿½Ì¸ï¿½ playerï¿½ï¿½ ï¿½ï¿½Ã¼");
                     playerActor.SetPlayer("Player", stageData.playerMaxHp);
                 }
                 else
@@ -76,28 +76,43 @@ public class CardGameManager : MonoBehaviour
                 }
             }
         }
-        // Debug.LogWarning("ÃÊ±âÈ­ÇÒ ½ºÅ×ÀÌÁö Á¤º¸°¡ ¾ø½À´Ï´Ù.");
+        // Debug.LogWarning("ï¿½Ê±ï¿½È­ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ï´ï¿½.");
     }
 
-    // ÃÖÁ¾ ½ÂÆĞ ÆÇÁ¤¿¡ µû¸¥ Ã³¸®
+    // ìµœì¢… ìŠ¹íŒ¨ íŒì •ì— ë”°ë¥¸ ì²˜ë¦¬
     private void HandleCardGameResult(bool result)
     {
-        if(result)
+        if (result)
         {
-            Debug.Log("");
+            Debug.Log("[CardGame] ì¹´ë“œê²Œì„ ìŠ¹ë¦¬");
             onGameCleared?.Invoke();
+            return;
         }
-        else{
-            Debug.Log("");
-            onGameFailed?.Invoke();
+
+        Debug.Log("[CardGame] ì¹´ë“œê²Œì„ íŒ¨ë°° â†’ GameOver ì—”ë”©ìœ¼ë¡œ ì´ë™");
+
+        if (GameState.Instance == null)
+        {
+            Debug.LogError(
+                "[CardGame] GameStateê°€ ì—†ì–´ GameOver ì—”ë”©ì„ ì„¤ì •í•  ìˆ˜ ì—†ìŠµë‹ˆë‹¤."
+            );
+            return;
         }
+
+        // EndingDialogueStarterê°€ ì´ ê°’ì„ ì½ê³ 
+        // ending_gameover_001ë¶€í„° ì¬ìƒí•˜ê²Œ ë¨
+        GameState.Instance.SetSelectedEnding(EndingType.GameOver);
+
+        // ê¸°ì¡´ Inspector ì´ë²¤íŠ¸ê°€ í•„ìš”í•˜ë‹¤ë©´ ë¨¼ì € ì‹¤í–‰
+        onGameFailed?.Invoke();
+
+        // ë™ì¼í•œ ì—”ë”© ì”¬ìœ¼ë¡œ ì´ë™
+        SceneManager.LoadScene("05_EndingScene");
     }
+
 }
 
 
-/// <summary>
-/// 1,2,3 ½ºÅ×ÀÌÁöº° Áß°£º¸½º, npcSlot µ¥ÀÌÅÍ
-/// </summary>
 [System.Serializable]
 public class StageData
 {

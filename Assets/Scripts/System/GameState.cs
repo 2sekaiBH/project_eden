@@ -9,6 +9,15 @@ public enum FactionType
     Noa
 }
 
+public enum EndingType
+{
+    None,
+    GameOver,
+    Offline,
+    Reconnect,
+    Exodus
+}
+
 public class GameState : MonoBehaviour
 {
     public static GameState Instance { get; private set; }
@@ -29,9 +38,15 @@ public class GameState : MonoBehaviour
         5,6,7,8,9
     };
 
+    [SerializeField] private bool forceAllHiddenEndingItemsForTest;
+
     [Header("Final Choice")]
     [SerializeField] private FactionType selectedFaction = FactionType.None;
     public FactionType SelectedFaction => selectedFaction;
+
+    [Header("Ending")]
+    [SerializeField] private EndingType selectedEnding = EndingType.None;
+    public EndingType SelectedEnding => selectedEnding;
 
 
     // 실제로 획득한 히든 엔딩 아이템 ID.
@@ -196,6 +211,15 @@ public class GameState : MonoBehaviour
     /// Noa 히든 엔딩에 필요한 아이템 5개를 모두 획득했는지 확인합니다.
     public bool HasAllHiddenEndingItems()
     {
+        if (forceAllHiddenEndingItemsForTest) // 테스트용
+        {
+            Debug.Log(
+                "[TEST] 히든 엔딩 아이템 5개를 모두 획득한 것으로 처리합니다."
+            );
+
+            return true;
+        }
+
         if (hiddenEndingItemIds == null ||
             hiddenEndingItemIds.Length != 5)
         {
@@ -245,9 +269,11 @@ public class GameState : MonoBehaviour
         noahAffinity = 0;
 
         selectedFaction = FactionType.None;
+        selectedEnding = EndingType.None;
 
         // 새 게임 시작 시 히든 아이템 획득 기록도 초기화
         acquiredHiddenEndingItemIds.Clear();
+        
     }
 
     public void SetSelectedFaction(FactionType faction)
@@ -256,5 +282,13 @@ public class GameState : MonoBehaviour
 
         Debug.Log($"[GameState] 선택된 진영: {selectedFaction}");
     }
+
+    public void SetSelectedEnding(EndingType ending)
+    {
+        selectedEnding = ending;
+
+        Debug.Log($"[GameState] 선택된 엔딩: {selectedEnding}");
+    }
+
 
 }

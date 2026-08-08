@@ -67,9 +67,7 @@ public class GameManager : MonoBehaviour
     }
 }
 
-/// <summary>
-/// 저장할 데이터 정보
-/// </summary>
+
 [System.Serializable]
 public struct GameData
 {
