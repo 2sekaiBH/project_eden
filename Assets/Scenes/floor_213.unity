@@ -3091,7 +3091,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1403836397}
         m_TargetAssemblyTypeName: Floor218FlowController, Assembly-CSharp
-        m_MethodName: OnPuzzleCleared
+        m_MethodName: StartPreCardDialogue
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
