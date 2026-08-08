@@ -37,11 +37,11 @@ public class CardGameManager : MonoBehaviour
     public UnityEvent OnGameCleared => onGameCleared;
     public UnityEvent OnGameFailed => onGameFailed;
 
-    private bool isFinal = false; // 최종전인지
+    public bool isFinal = false; // 최종전인지
 
     private StageType stage;
 
-    FactionType faction = GameState.Instance.SelectedFaction;
+    FactionType faction;
     private PlayerSelectedSideInCardGame side = PlayerSelectedSideInCardGame.None;
 
     public enum PlayerSelectedSideInCardGame
@@ -75,6 +75,8 @@ public class CardGameManager : MonoBehaviour
             return;
         }
 
+        faction = GameState.Instance.SelectedFaction;
+
         switch (faction)
         {
             case FactionType.Archi:
@@ -107,6 +109,8 @@ public class CardGameManager : MonoBehaviour
         if (isFinal)
         {
             Debug.LogWarning("최종전입니다. GameState에서 초기화");
+
+            SoundManager.Instance.PlayBGM(EBgm.CardGame_404);
             isFinal = false;
             return;
         }

@@ -49,6 +49,7 @@ public class Floor67FlowController : MonoBehaviour
         state = FlowState.PreCardDialogue;
 
         dialogueController.StartDialogue("f67_device_001");
+        SoundManager.Instance.PlayBGM(EBgm.Dialogue_67);
     }
 
     // 대사 종료
