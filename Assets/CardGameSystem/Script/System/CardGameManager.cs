@@ -88,6 +88,7 @@ public class CardGameManager : MonoBehaviour
                 opponentActor.SetOpponent(eveOpponentData);
                 playerActor.SetPlayer(GameState.Instance.PlayerName, finalPlayerHp);
                 isFinal = true;
+                SoundManager.Instance.PlayBGM(EBgm.CardGame_404); // 404 bgm 재생
                 roundFlowManager.StartRound();
                 break;
             case FactionType.Eve:
@@ -97,6 +98,7 @@ public class CardGameManager : MonoBehaviour
                 opponentActor.SetOpponent(archiOpponentData);
                 playerActor.SetPlayer(GameState.Instance.PlayerName, finalPlayerHp);
                 isFinal = true;
+                SoundManager.Instance.PlayBGM(EBgm.CardGame_404); // 404 bgm 재생
                 roundFlowManager.StartRound();
                 break;
             default:
@@ -109,11 +111,11 @@ public class CardGameManager : MonoBehaviour
         if (isFinal)
         {
             Debug.LogWarning("최종전입니다. GameState에서 초기화");
-
-            SoundManager.Instance.PlayBGM(EBgm.CardGame_404);
             isFinal = false;
             return;
         }
+
+        SoundManager.Instance.PlayBGM(EBgm.CardGame); // 일반 bgm 재생
         InitializeGameData();
         roundFlowManager.StartRound();
     }
