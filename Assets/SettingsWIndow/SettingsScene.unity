@@ -1852,8 +1852,8 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 680538648}
         m_TargetAssemblyTypeName: SettingsController, Assembly-CSharp
-        m_MethodName: OpenCloseSettingsWIndow
-        m_Mode: 6
+        m_MethodName: CloseSettings
+        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine

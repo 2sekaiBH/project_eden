@@ -10,6 +10,7 @@ public class InventoryUI : MonoBehaviour
 
     [SerializeField] private GameObject inventoryPanel;
     [SerializeField] private InventorySlotUI[] slotUI;
+    public bool IsOpened => inventoryPanel != null && inventoryPanel.activeSelf;
 
     [SerializeField] private Image itemDetailIcon;
     [SerializeField] private TextMeshProUGUI itemName;
@@ -119,4 +120,32 @@ public class InventoryUI : MonoBehaviour
         itemDetailIcon.enabled = true;
     }
 
+    private void OnEnable()
+    {
+        OpenCloseSettingsWindow.OnEscPressed += HandleEscClose;
+    }
+
+    private void OnDisable()
+    {
+        OpenCloseSettingsWindow.OnEscPressed -= HandleEscClose;
+    }
+
+    // ESC가 눌렸을 때 실행될 함수
+    private bool HandleEscClose()
+    {
+        // 인벤토리 패널이 실제로 켜져 있다면 닫고 true 반환
+        if (inventoryPanel != null && inventoryPanel.activeSelf)
+        {
+            inventoryPanel.SetActive(false);
+
+            if (SoundManager.Instance != null)
+            {
+                SoundManager.Instance.PlaySFX(ESfx.tallcase_C);
+            }
+
+            return true; // "내가 ESC 입력을 처리했음!" 알림
+        }
+
+        return false; // 안 켜져 있으면 처리 안 함
+    }
 }

@@ -23,6 +23,8 @@ public class PasswordUI : MonoBehaviour
     [Header("성공 이벤트")]
     [SerializeField] private UnityEvent onPasswordSuccess;
 
+    public bool IsOpened => passwordPanel != null && passwordPanel.activeSelf;
+
     private int[] currentDigits;  // 각 자릿수의 현재 숫자
     private int currentFocusIndex = 0; // 현재 조종 중인 자릿수 인덱스
     private bool isOpen = false;  // UI가 켜져있는지 여부
@@ -208,5 +210,34 @@ public class PasswordUI : MonoBehaviour
                 digitTexts[i].color = normalDigitColor;
             }
         }
+    }
+
+    private void OnEnable()
+    {
+        OpenCloseSettingsWindow.OnEscPressed += HandleEscClose;
+    }
+
+    private void OnDisable()
+    {
+        OpenCloseSettingsWindow.OnEscPressed -= HandleEscClose;
+    }
+
+    // ESC가 눌렸을 때 실행될 함수
+    private bool HandleEscClose()
+    {
+        // 인벤토리 패널이 실제로 켜져 있다면 닫고 true 반환
+        if (passwordPanel != null && passwordPanel.activeSelf)
+        {
+            passwordPanel.SetActive(false);
+
+            if (SoundManager.Instance != null)
+            {
+                SoundManager.Instance.PlaySFX(ESfx.tallcase_C);
+            }
+
+            return true; // "내가 ESC 입력을 처리했음!" 알림
+        }
+
+        return false; // 안 켜져 있으면 처리 안 함
     }
 }
