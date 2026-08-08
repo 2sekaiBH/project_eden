@@ -15,5 +15,5 @@ MonoBehaviour:
   name: "\uC774\uBE0C"
   effectDescription: "\uC190\uD328\uC5D0\uC11C \uCE74\uB4DC 1\uC7A5 \uBCF5\uC0AC\uD558\uC5EC
     \uB2E4\uC74C \uB77C\uC6B4\uB4DC\uC5D0<br>\uC7AC\uC0AC\uC6A9\uD55C\uB2E4"
-  npcProfileImage: {fileID: -5158351327573750697, guid: 7f9ef8ec4a1580b49a97ffc40d90ece9, type: 3}
+  npcProfileImage: {fileID: -5990128629324314386, guid: 4ce4683d7c86f134c882819394957b43, type: 3}
   effect: {fileID: 11400000, guid: a4211a5dfab358c4f9ad35127e28ef89, type: 2}
