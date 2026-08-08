@@ -30,6 +30,8 @@ public class ButtonSequenceManager : MonoBehaviour
     [Tooltip("변경될(활성화/반전될) 이미지 목록 (버튼 ID 순서대로)")]
     [SerializeField] private List<Sprite> changedSprites = new List<Sprite>();
 
+    public bool IsOpened => sequencePanel != null && sequencePanel.activeSelf;
+
     // 플레이어가 지금까지 누른 버튼 ID들을 기록하는 리스트
     private List<int> playerSequence = new List<int>();
     private void Awake()
@@ -202,5 +204,34 @@ public class ButtonSequenceManager : MonoBehaviour
         {
             SceneManager.LoadScene(nextSceneName);
         }
+    }
+
+    private void OnEnable()
+    {
+        OpenCloseSettingsWindow.OnEscPressed += HandleEscClose;
+    }
+
+    private void OnDisable()
+    {
+        OpenCloseSettingsWindow.OnEscPressed -= HandleEscClose;
+    }
+
+    // ESC가 눌렸을 때 실행될 함수
+    private bool HandleEscClose()
+    {
+        // 인벤토리 패널이 실제로 켜져 있다면 닫고 true 반환
+        if (sequencePanel != null && sequencePanel.activeSelf)
+        {
+            sequencePanel.SetActive(false);
+
+            if (SoundManager.Instance != null)
+            {
+                SoundManager.Instance.PlaySFX(ESfx.tallcase_C);
+            }
+
+            return true; // "내가 ESC 입력을 처리했음!" 알림
+        }
+
+        return false; // 안 켜져 있으면 처리 안 함
     }
 }

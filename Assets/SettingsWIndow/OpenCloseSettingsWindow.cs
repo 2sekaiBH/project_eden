@@ -7,6 +7,8 @@ public class OpenCloseSettingsWindow : MonoBehaviour
     private KeyCode SettingsKeyCode = KeyCode.Escape;
     public static event Action<bool> OnOpenCloseSettings;
 
+    public static Func<bool> OnEscPressed;
+
     private void OnDisable()
     {
         if (KeyManager.Instance == null) return;
@@ -35,11 +37,24 @@ public class OpenCloseSettingsWindow : MonoBehaviour
     {
         if (Input.GetKeyDown(SettingsKeyCode))
         {
+            if (OnEscPressed != null)
+            {
+                bool wasHandled = false;
+                foreach (Func<bool> handler in OnEscPressed.GetInvocationList())
+                {
+                    if (handler.Invoke())
+                    {
+                        wasHandled = true;
+                    }
+                }
+
+                if (wasHandled) return;
+            }
+
             if (!SceneManager.GetSceneByName("SettingsScene").isLoaded)
             {
                 SceneManager.LoadScene("SettingsScene", LoadSceneMode.Additive);
             }
-            OnOpenCloseSettings?.Invoke(true);
         }
     }
 }
