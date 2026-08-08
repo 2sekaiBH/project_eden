@@ -30,7 +30,6 @@ public class FailGameOver : MonoBehaviour
     private void Update()
     {
         // 이미 게임오버가 한 번 실행되었다면 더 이상 검사하지 않는다
-        if (isGameOverTriggered) return;
 
         if (playerTransform != null)
         {
@@ -47,6 +46,11 @@ public class FailGameOver : MonoBehaviour
         isGameOverTriggered = true;
 
         Debug.Log($"[게임오버] 플레이어가 추락했습니다!");
+
+        if (SoundManager.Instance != null)
+        {
+            SoundManager.Instance.PlaySFX(ESfx.error_glitch);
+        }
 
         ResetPlayerPosition();
     }

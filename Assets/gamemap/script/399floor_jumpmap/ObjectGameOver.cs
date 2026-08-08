@@ -8,7 +8,6 @@ public class GameOver : MonoBehaviour
     private static bool isGameOverTriggered = false;
     private void OnTriggerEnter2D(Collider2D other)
     {
-        if (isGameOverTriggered) return;
 
         // 닿은 오브젝트의 태그가 "Player"인지 확인
         if (other.CompareTag("Player"))
@@ -29,6 +28,10 @@ public class GameOver : MonoBehaviour
             rb2d.linearVelocity = Vector2.zero;
             rb2d.angularVelocity = 0f;
             rb2d.position = spawnPosition;
+        }
+        if (SoundManager.Instance != null)
+        {
+            SoundManager.Instance.PlaySFX(ESfx.error_glitch);
         }
 
         // Transform 위치 이동

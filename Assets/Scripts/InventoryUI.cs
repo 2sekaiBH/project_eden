@@ -53,6 +53,10 @@ public class InventoryUI : MonoBehaviour
             {
                 inventoryPanel.SetActive(false);
             }
+            if (SoundManager.Instance != null)
+            {
+                SoundManager.Instance.PlaySFX(ESfx.tallcase_C);
+            }
         }
     }
 
@@ -66,6 +70,10 @@ public class InventoryUI : MonoBehaviour
         if (isActive)
         {
             Refresh();
+        }
+        if (SoundManager.Instance != null)
+        {
+            SoundManager.Instance.PlaySFX(ESfx.tallcase_C);
         }
     }
 
