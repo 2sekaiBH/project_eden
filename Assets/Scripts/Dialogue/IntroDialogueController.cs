@@ -966,6 +966,7 @@ public class IntroDialogueController : MonoBehaviour
             button.interactable = false;
         }
     }
+
     private IEnumerator ShowChoiceNode(DialogueNode node)
     {
         SetOnlyScreen(characterDialogueScreen);
@@ -1002,6 +1003,8 @@ public class IntroDialogueController : MonoBehaviour
         ShowChoices(node);
     }
 
+    //선택지 랜덤을 위한 변수 추가
+    private int[] choiceIndexMap;
     private void ShowChoices(DialogueNode node)
     {
         if (node.choices == null ||
@@ -1012,6 +1015,25 @@ public class IntroDialogueController : MonoBehaviour
             );
 
             return;
+        }
+
+
+        int count = node.choices.Length;
+        choiceIndexMap = new int[count];
+
+        //인덱스 저장
+        for (int i = 0; i < count; i++)
+        {
+            choiceIndexMap[i] = i;
+        }
+
+        //랜덤섞기
+        for(int i=0; i<count; i++)
+        {
+            int rand = UnityEngine.Random.Range(i, count);
+            int temp = choiceIndexMap[i];
+            choiceIndexMap[i] = choiceIndexMap[rand];
+            choiceIndexMap[rand] = temp;
         }
 
         choicePanel.SetActive(true);
@@ -1029,10 +1051,12 @@ public class IntroDialogueController : MonoBehaviour
                 continue;
             }
 
+            int realIndex = choiceIndexMap[i];
+
             button.gameObject.SetActive(true);
             button.interactable = true;
 
-            ChoiceData choice = node.choices[i];
+            ChoiceData choice = node.choices[realIndex];
 
             text.text =
                 ReplacePlayerName(choice.text);
@@ -1041,7 +1065,7 @@ public class IntroDialogueController : MonoBehaviour
 
             // 버튼 클릭 시 해당 선택지 실행
             button.onClick.AddListener(
-                () => SelectChoice(capturedIndex)
+                () => SelectChoicedMapped(capturedIndex)
             );
 
             // 마우스를 버튼 위에 올렸을 때
@@ -1063,6 +1087,12 @@ public class IntroDialogueController : MonoBehaviour
 
         currentChoiceIndex = 0;
         SetChoiceIndex(0);
+    }
+
+    private void SelectChoicedMapped(int uiIndex)
+    {
+        int realIndex = choiceIndexMap[uiIndex];
+        SelectChoice(realIndex);
     }
 
     private void SelectChoice(int choiceIndex)
@@ -1204,6 +1234,19 @@ public class IntroDialogueController : MonoBehaviour
         }
 
         MoveChoiceCursor(selectedButton);
+
+        //호버 시 선택지 크기 키우기
+        for (int i=0; i<choiceCount; i++)
+        {
+            Transform t = choiceButtons[i].transform;
+
+            if (i == currentChoiceIndex)
+                t.localScale = Vector3.one * 1.1f;
+
+            else
+                t.localScale = Vector3.one;
+        }
+
     }
 
     private void MoveChoiceCursor(Button targetButton)
