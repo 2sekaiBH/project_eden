@@ -16,6 +16,9 @@ public class InventoryUI : MonoBehaviour
     [SerializeField] private TextMeshProUGUI itemName;
     [SerializeField] private Text itemDescription;
 
+    private KeyCode inventoryKeyCode = KeyCode.I;
+
+
     private void Awake()
     {
         if (Instance == null)
@@ -37,13 +40,24 @@ public class InventoryUI : MonoBehaviour
         itemName.text = "";
         itemDescription.text = "";
 
+        if (KeyManager.Instance != null)
+        {
+            KeyManager.Instance.OnKeyChanged += UpdateKeyCode;
+            UpdateKeyCode();
+        }
+
+    }
+    private void UpdateKeyCode()
+    {
+        // KeyManager에서 설정된 Inventory 키를 받아옴
+        inventoryKeyCode = KeyManager.Instance.GetKeyCode(KeyBindingName.Inventory);
     }
 
     // Update is called once per frame
     void Update()
     {
         // I키: 인벤토리 열기/닫기
-        if (Keyboard.current != null && Keyboard.current.iKey.wasPressedThisFrame)
+        if (Keyboard.current != null && Input.GetKeyDown(inventoryKeyCode))
         {
             ToggleInventory();
         }

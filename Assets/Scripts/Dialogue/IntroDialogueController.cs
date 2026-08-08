@@ -120,6 +120,8 @@ public class IntroDialogueController : MonoBehaviour
     private DialogueNode currentNode;
     private bool isTransitioning;
 
+    private KeyCode dialogueKeyCode = KeyCode.Space;
+
     private void Awake()
     {
         if (!ValidateRequiredReferences())
@@ -150,6 +152,28 @@ public class IntroDialogueController : MonoBehaviour
         {
             HideDialogueUIForGameplay();
         }
+
+        if (KeyManager.Instance != null)
+        {
+            KeyManager.Instance.OnKeyChanged += UpdateKeyCode;
+            UpdateKeyCode();
+        }
+    }
+
+    private void OnDisable()
+    {
+        if (KeyManager.Instance != null)
+        {
+            KeyManager.Instance.OnKeyChanged -= UpdateKeyCode;
+        }
+    }
+
+    private void UpdateKeyCode()
+    {
+        if (KeyManager.Instance != null)
+        {
+            dialogueKeyCode = KeyManager.Instance.GetKeyCode(KeyBindingName.Dialogue);
+        }
     }
 
     private void Update()
@@ -170,15 +194,11 @@ public class IntroDialogueController : MonoBehaviour
             return;
         }
 
-        bool spacePressed =
-            Keyboard.current != null &&
-            Keyboard.current.spaceKey.wasPressedThisFrame;
+        bool customKeyPressed = Input.GetKeyDown(dialogueKeyCode);
 
-        bool leftClickPressed =
-            Mouse.current != null &&
-            Mouse.current.leftButton.wasPressedThisFrame;
+        bool leftClickPressed = Mouse.current != null && Mouse.current.leftButton.wasPressedThisFrame;
 
-        if (spacePressed || leftClickPressed)
+        if (customKeyPressed || leftClickPressed)
         {
             Advance();
         }
