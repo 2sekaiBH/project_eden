@@ -93,10 +93,6 @@ public class PasswordUI : MonoBehaviour
     // 비밀번호 UI 열기
     public void OpenPasswordUI()
     {
-        if (SoundManager.Instance != null)
-        {
-            SoundManager.Instance.PlaySFX(ESfx.tallcase_O); ;
-        }
         isOpen = true;
         currentFocusIndex = 0;
 
@@ -107,6 +103,10 @@ public class PasswordUI : MonoBehaviour
         }
 
         if (passwordPanel != null) passwordPanel.SetActive(true);
+        if (SoundManager.Instance != null)
+        {
+            SoundManager.Instance.PlaySFX(ESfx.tallcase_O); ;
+        }
         Time.timeScale = 0f; // 게임 일시정지
 
         UpdateUI();
@@ -115,12 +115,12 @@ public class PasswordUI : MonoBehaviour
     // 비밀번호 UI 닫기
     public void ClosePasswordUI()
     {
+        isOpen = false;
+        if (passwordPanel != null) passwordPanel.SetActive(false);
         if (SoundManager.Instance != null)
         {
             SoundManager.Instance.PlaySFX(ESfx.tallcase_C);
         }
-        isOpen = false;
-        if (passwordPanel != null) passwordPanel.SetActive(false);
         Time.timeScale = 1f;
     }
 
