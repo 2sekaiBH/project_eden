@@ -227,7 +227,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::FailGameOver
   fallLimitY: -7
   playerTransform: {fileID: 1298013858}
-  useStartPosAsSpawn: 1
   spawnPosition: {x: -42, y: -3.8, z: 0}
 --- !u!114 &33389700
 MonoBehaviour:
@@ -429,6 +428,8 @@ MonoBehaviour:
   dialogueController: {fileID: 0}
   startNodeId: 
   triggerOnlyOnce: 1
+  playBgmOnTrigger: 1
+  bgmToPlay: 0
   onTriggered:
     m_PersistentCalls:
       m_Calls:
@@ -444,6 +445,7 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+  hasTriggered: 0
 --- !u!61 &137003797
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -2151,7 +2153,6 @@ GameObject:
   - component: {fileID: 998715926}
   - component: {fileID: 998715925}
   - component: {fileID: 998715928}
-  - component: {fileID: 998715929}
   m_Layer: 7
   m_Name: "\uC810\uD504\uB9F5 \uC6C0\uC9C1\uC774\uB294 \uBC14\uB2E5_1"
   m_TagString: Platform
@@ -2576,32 +2577,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6e5674f767bf520428a9f0379ce60ba0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::IntroDialogueController
---- !u!1 &1140256709
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 998715924}
-  m_BodyType: 1
-  m_Simulated: 1
-  m_UseFullKinematicContacts: 0
-  m_UseAutoMass: 0
-  m_Mass: 1
-  m_LinearDamping: 0
-  m_AngularDamping: 0.05
-  m_GravityScale: 1
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_Interpolate: 0
-  m_SleepingMode: 1
-  m_CollisionDetection: 0
-  m_Constraints: 0
 --- !u!1 &1187771328
 GameObject:
   m_ObjectHideFlags: 0
@@ -5525,9 +5500,7 @@ SceneRoots:
   - {fileID: 1622048922}
   - {fileID: 1345838538}
   - {fileID: 1891307429}
-  - {fileID: 342904804}
   - {fileID: 715733811}
-  - {fileID: 1802035826}
   - {fileID: 1427939881}
   - {fileID: 1410529828}
   - {fileID: 441184841}
@@ -5549,3 +5522,4 @@ SceneRoots:
   - {fileID: 1780581265}
   - {fileID: 137003795}
   - {fileID: 1227278060}
+  - {fileID: 1962057391}

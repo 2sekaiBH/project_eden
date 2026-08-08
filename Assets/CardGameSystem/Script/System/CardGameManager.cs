@@ -37,11 +37,19 @@ public class CardGameManager : MonoBehaviour
     public UnityEvent OnGameCleared => onGameCleared;
     public UnityEvent OnGameFailed => onGameFailed;
 
-    private bool isFinal = false;
+    private bool isFinal = false; // 최종전인지
 
     private StageType stage;
 
     FactionType faction = GameState.Instance.SelectedFaction;
+    private PlayerSelectedSideInCardGame side = PlayerSelectedSideInCardGame.None;
+
+    public enum PlayerSelectedSideInCardGame
+    {
+        None,
+        Architect,
+        Eve,
+    }
 
     private void OnEnable()
     {
@@ -71,6 +79,7 @@ public class CardGameManager : MonoBehaviour
         {
             case FactionType.Archi:
                 Debug.Log("아키텍처 덱 설정");
+                side = PlayerSelectedSideInCardGame.Architect;
                 if (GameState.Instance.GetAffinity("cain") < 5) // 호감도 5 이하면 npc에서 제외
                     archiNpcList.RemoveAll(npc => npc != null && npc.name.Equals("카인"));
                 npcSlotManager.Initialize(archiNpcList);
@@ -80,6 +89,7 @@ public class CardGameManager : MonoBehaviour
                 roundFlowManager.StartRound();
                 break;
             case FactionType.Eve:
+                side = PlayerSelectedSideInCardGame.Eve;
                 Debug.Log("이브 덱 설정");
                 npcSlotManager.Initialize(eveNpcList);
                 opponentActor.SetOpponent(archiOpponentData);
@@ -139,16 +149,24 @@ public class CardGameManager : MonoBehaviour
             return;
         }
 
-        // ======= 승리 시 ========
         if (result)
         {
             Debug.Log("[CardGame] 카드게임 승리");
             onGameCleared?.Invoke();
 
+            // ======= 최종전 승리 시 ========
+            if (!isFinal) return;
 
+            if(side == PlayerSelectedSideInCardGame.Architect) // 아키텍트 선택 엔딩
+            {
+                GameState.Instance.SetSelectedEnding(EndingType.Offline);
+            }
 
-
-
+            else if(side == PlayerSelectedSideInCardGame.Eve) // 이브 선택 엔딩
+            {
+                GameState.Instance.SetSelectedEnding(EndingType.Reconnect);
+            }
+            SceneManager.LoadScene("05_EndingScene");
 
             return;
         }

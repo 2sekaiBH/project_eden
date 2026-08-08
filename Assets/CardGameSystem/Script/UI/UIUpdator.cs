@@ -50,7 +50,6 @@ public class UIUpdator : MonoBehaviour
             switch (item.Item2)
             {
                 case (CasterType.Player):
-                    Debug.Log("파란색 되야 된");
                     textColor = new Color(102f / 255f, 1f, 1f); //플레이어일 시 파란색 text로 표시
                     break;
                 case (CasterType.Opponent):
