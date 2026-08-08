@@ -558,7 +558,7 @@ PrefabInstance:
     - target: {fileID: 6047414836398750601, guid: beac60035099aa54aa12fdace8ee823b, type: 3}
       propertyPath: backgrounds.Array.data[0].sprite
       value: 
-      objectReference: {fileID: 8888326817614559108, guid: 058d2d822c8808545bbd9719719fdc33, type: 3}
+      objectReference: {fileID: 21300000, guid: bb3deed8a90f20441bb1aeb2f9c7bdf8, type: 3}
     - target: {fileID: 6047414836398750601, guid: beac60035099aa54aa12fdace8ee823b, type: 3}
       propertyPath: backgrounds.Array.data[1].sprite
       value: 
