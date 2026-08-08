@@ -131,22 +131,31 @@ public class CardGameManager : MonoBehaviour
     // 최종 승패 판정에 따른 처리
     private void HandleCardGameResult(bool result)
     {
+        if (GameState.Instance == null) 
+        {
+            Debug.LogError(
+                "[CardGame] GameState가 없어엔딩을 설정할 수 없습니다."
+            );
+            return;
+        }
+
+        // ======= 승리 시 ========
         if (result)
         {
             Debug.Log("[CardGame] 카드게임 승리");
             onGameCleared?.Invoke();
+
+
+
+
+
+
             return;
         }
+
+        // ======= 패배 시 ========
 
         Debug.Log("[CardGame] 카드게임 패배 → GameOver 엔딩으로 이동");
-
-        if (GameState.Instance == null)
-        {
-            Debug.LogError(
-                "[CardGame] GameState가 없어 GameOver 엔딩을 설정할 수 없습니다."
-            );
-            return;
-        }
 
         // EndingDialogueStarter가 이 값을 읽고
         // ending_gameover_001부터 재생하게 됨
