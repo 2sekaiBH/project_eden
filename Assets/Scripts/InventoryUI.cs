@@ -106,6 +106,7 @@ public class InventoryUI : MonoBehaviour
             }
         }
 
+        itemName.text = nameToDisplay;
         itemDescription.text = descriptionToDisplay;
         itemDetailIcon.enabled = true;
     }
