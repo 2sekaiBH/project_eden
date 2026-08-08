@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using System;
 using UnityEngine;
-using UnityEngine.PlayerLoop;
+
 
 /// <summary>
 /// �÷��̾� �ൿ ���� ��ũ��Ʈ
@@ -19,15 +19,22 @@ public class PlayerActor : Actor
     public event Action<List<CardData>> OnPlayerDrawCard;
     public static event Action OnPlayerStartSelect; // �÷��̾� ī�� ���� ���� �̺�Ʈ - npc slot btn, submit btn���� ����
 
+    public void SetPlayer(string name, int maxHp)
+    {
+        this.name = name;
+        this.maxHp = maxHp;
+        Initialize();
+    }
+
     public override void Initialize()
     {
-        name = "Player"; // ������ - Ŀ���� name���� ����
-        maxHp = maxHpAmount;
         currentHp = maxHp;
         currentBlock = 0;
         currentEnergy = maxEnergy;
         
         profileUpdator.InitializeUpdator(maxHp, maxEnergy); // profileUpdator �ʱ�ȭ
+
+        UpdateProfileUI();
     }
 
     // ī�� ���� ����
@@ -37,11 +44,6 @@ public class PlayerActor : Actor
         handManager.StartSelect(hand);
     }
 
-    void Awake()
-    {
-        Initialize();
-        UpdateProfileUI();
-    }
 
     public override void UpdateProfileUI()
     {
@@ -68,7 +70,7 @@ public class PlayerActor : Actor
         }
         handManager.ReplaceHand(index, newCard); // ���� UI ���� 
         //UIUpdator.Instance.SetText($"�÷��̾� ���� {index + 1}��° ī�带 {newCard.name}���� �����߽��ϴ�.", CasterType.Player);
-        Debug.Log($"�÷��̾� ���� {index + 1}��° ī�带 {newCard.name}���� �����߽��ϴ�.");
+        Debug.Log($"플레이어 {index + 1}번째 카드를 {newCard.name}로 변경.");
         return newCard;
     }
 

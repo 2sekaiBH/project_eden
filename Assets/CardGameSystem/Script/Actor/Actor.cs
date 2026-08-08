@@ -50,7 +50,7 @@ public abstract class Actor : MonoBehaviour
         RoundFlowManager.OnRoundStart += ResetHand;
     }
 
-    private void OnDisEnable()
+    private void OnDisable()
     {
         TurnFlowManager.OnTurnStart -= _handler;
         TurnFlowManager.OnTurnEnd -= ResetBlock;
@@ -80,12 +80,17 @@ public abstract class Actor : MonoBehaviour
 
         int remaining = amount - absorbed;
         currentHp = Mathf.Max(0, currentHp - remaining);
-        MissionManager.Instance.TakeDamage(this); //데미지를 입었는지 확인
+
+        if (this is PlayerActor)
+            SoundManager.Instance.PlaySFX(ESfx.shield); //플레이어가 맞을 경우 방어 소리 재생
+        else
+            SoundManager.Instance.PlaySFX(ESfx.attack); //이외에 다 공격 소리 재생
 
         // 반사 구현
         if (reflect && absorbed > 0 && attacker != null)
         {
             attacker.TakeDamage(absorbed, null);
+
         }
 
         Debug.Log($"{name}: 현재 체력: {currentHp}");

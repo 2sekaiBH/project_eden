@@ -25,7 +25,7 @@ public enum ESfx
     card_select,
     communication_of_aliens,
     door_open,
-    electrical_noise1,
+    electrical_noise,
     emergency_signal,
     item_acquired,
     jump,
@@ -40,6 +40,7 @@ public enum ESfx
     tallcase_C,
     tallcase_O,
     walking,
+    error_glitch
 }
 
 public class SoundManager : MonoBehaviour

@@ -70,7 +70,7 @@ public class CardExecutor : MonoBehaviour
 
             
             UIUpdator.Instance.SetText($"{caster.Name}: {card.name} 카드 사용!", cast);
-            Debug.Log($"{caster.name}의 카드 {cards} 실행");
+            Debug.Log($"{caster.name}의 카드 {card.description} 실행");
             yield return new WaitForSeconds(1f);
         }
     }

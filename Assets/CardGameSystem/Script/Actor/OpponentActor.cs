@@ -15,9 +15,17 @@ public class OpponentActor : Actor
 
     void Awake()
     {
+        // Initialize();
+        // UpdateProfileUI();
+    }
+
+    public void SetOpponent(OpponentData opponentData)
+    {
+        this.opponentData = opponentData;
         Initialize();
         UpdateProfileUI();
     }
+
     public override void Initialize()
     {
         name = opponentData.name;
@@ -27,6 +35,7 @@ public class OpponentActor : Actor
         currentEnergy = opponentData.maxEnergy;
 
         profileUpdator.InitializeUpdator(opponentData.totalHp, opponentData.maxEnergy); // profileUpdator √ ±‚»≠
+        profileUpdator.UpdateProfileImg(opponentData.name);
     }
 
     /// <summary>

@@ -10,16 +10,21 @@ public class InventoryUI : MonoBehaviour
 
     [SerializeField] private GameObject inventoryPanel;
     [SerializeField] private InventorySlotUI[] slotUI;
+    public bool IsOpened => inventoryPanel != null && inventoryPanel.activeSelf;
 
     [SerializeField] private Image itemDetailIcon;
     [SerializeField] private TextMeshProUGUI itemName;
     [SerializeField] private Text itemDescription;
+
+    private KeyCode inventoryKeyCode = KeyCode.I;
+
 
     private void Awake()
     {
         if (Instance == null)
         {
             Instance = this;
+            DontDestroyOnLoad(gameObject);
         }
         else
         {
@@ -29,25 +34,47 @@ public class InventoryUI : MonoBehaviour
     }
     private void Start()
     {
-        if (inventoryPanel != null) inventoryPanel.SetActive(false); //√ ±‚∞™, ¿Œ∫•≈‰∏Æ UI¥¬ ≤®¡Æ ¿÷¿Ω
+        if (inventoryPanel != null) inventoryPanel.SetActive(false);
 
-        //√ ±‚∞™, æ∆¿Ã≈€ º≥∏Ì√¢¿« ∏µÁ ∞ÕµÈ¿ª ≤®µ“
         itemDetailIcon.enabled = false;
         itemName.text = "";
         itemDescription.text = "";
 
+        if (KeyManager.Instance != null)
+        {
+            KeyManager.Instance.OnKeyChanged += UpdateKeyCode;
+            UpdateKeyCode();
+        }
+
+    }
+    private void UpdateKeyCode()
+    {
+        // KeyManagerÏóêÏÑú ÏÑ§Ï†ïÎêú Inventory ÌÇ§Î•º Î∞õÏïÑÏò¥
+        inventoryKeyCode = KeyManager.Instance.GetKeyCode(KeyBindingName.Inventory);
     }
 
     // Update is called once per frame
     void Update()
-     {
-        if (Keyboard.current != null && Keyboard.current.iKey.wasPressedThisFrame)
+    {
+        // IÌÇ§: Ïù∏Î≤§ÌÜ†Î¶¨ Ïó¥Í∏∞/Îã´Í∏∞
+        if (Keyboard.current != null && Input.GetKeyDown(inventoryKeyCode))
         {
             ToggleInventory();
         }
+        // ESCÌÇ§: Ïù∏Î≤§ÌÜ†Î¶¨ Îã´Í∏∞
+        else if (Keyboard.current.escapeKey.wasPressedThisFrame)
+        {
+            if (inventoryPanel != null && inventoryPanel.activeSelf)
+            {
+                inventoryPanel.SetActive(false);
+            }
+            if (SoundManager.Instance != null)
+            {
+                SoundManager.Instance.PlaySFX(ESfx.tallcase_C);
+            }
+        }
     }
 
-    //¿Œ∫•≈‰∏Æ UI≈∞∞Ì ≤Ù¥¬ ∞Õ ∞¸∏Æ
     public void ToggleInventory()
     {
         if (inventoryPanel == null) return;
@@ -55,17 +82,18 @@ public class InventoryUI : MonoBehaviour
         bool isActive = !inventoryPanel.activeSelf;
         inventoryPanel.SetActive(isActive);
 
-        // ¿Œ∫•≈‰∏Æ∞° ƒ—¡˙ ∂ß √÷Ω≈ µ•¿Ã≈Õ∑Œ ΩΩ∑‘¿ª Ωœ ∞ªΩ≈«ÿ¡›¥œ¥Ÿ.
         if (isActive)
         {
             Refresh();
         }
+        if (SoundManager.Instance != null)
+        {
+            SoundManager.Instance.PlaySFX(ESfx.tallcase_C);
+        }
     }
 
-    // ¿Œ∫•≈‰∏Æ ≥ª ΩΩ∑‘ ∞ªΩ≈
     public void Refresh()
     {
-        // ΩÃ±€≈Ê¿∏∑Œ ¡∏¿Á«œ¥¬ Inventory.Instanceø°º≠ µ•¿Ã≈Õ∏¶ æ»¿¸«œ∞‘ ∞°¡Æø…¥œ¥Ÿ.
         if (Inventory.Instance == null || slotUI == null) return;
 
         for (int i = 0; i < Inventory.Instance.slots.Length; i++)
@@ -77,15 +105,61 @@ public class InventoryUI : MonoBehaviour
         }
     }
 
-    //æ∆¿Ã≈€¿ª º≥∏Ì√¢ø° ∫∏ø©¡÷µµ∑œ «œ¥¬ «‘ºˆ
     public void ShowItem(ItemData item)
     {
         itemDetailIcon.sprite = item.ItemDetailIcon;
         itemDetailIcon.SetNativeSize();
-        itemName.text = item.itemName;
-        itemDescription.text = item.itemDescription;
+        string nameToDisplay = item.itemName;
+        string descriptionToDisplay = item.itemDescription;
 
+        // 5Î≤à ÏïÑÏù¥ÌÖúÏù¥Í≥†, 9Î≤à ÏïÑÏù¥ÌÖúÏùÑ Í∞ÄÏßÄÍ≥† ÏûàÎã§Î©¥ Î∞îÎÄê ÏÑ§Î™Ö Ï∂úÎ†•
+        if (item.id == 5)
+        {
+            ItemData item9 = ItemDatabase.Instance != null ? ItemDatabase.Instance.GetItemByID(9) : null;
+
+            bool hasItem9 = item9 != null && Inventory.Instance != null && Inventory.Instance.HasItem(item9);
+            if (!string.IsNullOrWhiteSpace(item.changedName))
+            {
+                nameToDisplay = item.changedName;
+            }
+
+            if (hasItem9 && !string.IsNullOrWhiteSpace(item.changedDescription))
+            {
+                descriptionToDisplay = item.changedDescription;
+            }
+        }
+
+        itemName.text = nameToDisplay;
+        itemDescription.text = descriptionToDisplay;
         itemDetailIcon.enabled = true;
     }
 
+    private void OnEnable()
+    {
+        OpenCloseSettingsWindow.OnEscPressed += HandleEscClose;
+    }
+
+    private void OnDisable()
+    {
+        OpenCloseSettingsWindow.OnEscPressed -= HandleEscClose;
+    }
+
+    // ESCÍ∞Ä ÎàåÎ†∏ÏùÑ Îïå Ïã§ÌñâÎê† Ìï®Ïàò
+    private bool HandleEscClose()
+    {
+        // Ïù∏Î≤§ÌÜ†Î¶¨ Ìå®ÎÑêÏù¥ Ïã§Ï†úÎ°ú ÏºúÏ†∏ ÏûàÎã§Î©¥ Îã´Í≥† true Î∞òÌôò
+        if (inventoryPanel != null && inventoryPanel.activeSelf)
+        {
+            inventoryPanel.SetActive(false);
+
+            if (SoundManager.Instance != null)
+            {
+                SoundManager.Instance.PlaySFX(ESfx.tallcase_C);
+            }
+
+            return true; // "ÎÇ¥Í∞Ä ESC ÏûÖÎ†•ÏùÑ Ï≤òÎ¶¨ÌñàÏùå!" ÏïåÎ¶º
+        }
+
+        return false; // Ïïà ÏºúÏ†∏ ÏûàÏúºÎ©¥ Ï≤òÎ¶¨ Ïïà Ìï®
+    }
 }

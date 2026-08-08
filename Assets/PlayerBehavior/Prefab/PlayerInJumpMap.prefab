@@ -521,7 +521,7 @@ MonoBehaviour:
   slideColliderSize: {x: 4.3, y: 1.4}
   groundLayer:
     serializedVersion: 2
-    m_Bits: 64
+    m_Bits: 128
   groundCheck: {fileID: 7071389905878247540}
 --- !u!114 &2096106927436906070
 MonoBehaviour:
@@ -564,7 +564,7 @@ Rigidbody2D:
   m_LinearDamping: 0
   m_AngularDamping: 0.05
   m_GravityScale: 1
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 6200000, guid: 02778677cf1e6f9409bc46e381a262f1, type: 2}
   m_IncludeLayers:
     serializedVersion: 2
     m_Bits: 0

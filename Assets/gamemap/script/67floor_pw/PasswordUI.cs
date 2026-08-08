@@ -2,7 +2,7 @@ using System.Collections;
 using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using UnityEngine.SceneManagement;
+using UnityEngine.Events;
 
 public class PasswordUI : MonoBehaviour
 {
@@ -20,7 +20,10 @@ public class PasswordUI : MonoBehaviour
 
     [Header("비밀번호 설정")]
     [SerializeField] private string correctPassword = "5321"; // 정답 비밀번호
-    [SerializeField] private string nextSceneName = "CardGameScene";
+    [Header("성공 이벤트")]
+    [SerializeField] private UnityEvent onPasswordSuccess;
+
+    public bool IsOpened => passwordPanel != null && passwordPanel.activeSelf;
 
     private int[] currentDigits;  // 각 자릿수의 현재 숫자
     private int currentFocusIndex = 0; // 현재 조종 중인 자릿수 인덱스
@@ -67,15 +70,25 @@ public class PasswordUI : MonoBehaviour
         {
             ChangeDigitValue(-1);
         }
-        // 3. 엔터키 또는 Space (다음 자릿수로 이동 / 마지막 자릿수면 정답 검사)
-        else if (Keyboard.current.enterKey.wasPressedThisFrame || Keyboard.current.spaceKey.wasPressedThisFrame)
+        // 3. 오른쪽 방향키 (다음 자릿수로 이동)
+        else if (Keyboard.current.rightArrowKey.wasPressedThisFrame)
         {
             ConfirmCurrentDigit();
         }
-        // 4. Backspace (이전 자릿수로 되돌아가기 - 편의 기능)
-        else if (Keyboard.current.backspaceKey.wasPressedThisFrame)
+        // 4. 왼쪽 방향키 (이전 자릿수로 되돌아가기)
+        else if (Keyboard.current.leftArrowKey.wasPressedThisFrame)
         {
             MoveToPreviousDigit();
+        }
+        // 5. 엔터키 (즉시 정답 검증)
+        else if (Keyboard.current.enterKey.wasPressedThisFrame)
+        {
+            CheckPassword();
+        }
+        // 6. esc키 (UI 닫기)
+        else if (Keyboard.current.escapeKey.wasPressedThisFrame)
+        {
+            ClosePasswordUI();
         }
     }
 
@@ -92,6 +105,10 @@ public class PasswordUI : MonoBehaviour
         }
 
         if (passwordPanel != null) passwordPanel.SetActive(true);
+        if (SoundManager.Instance != null)
+        {
+            SoundManager.Instance.PlaySFX(ESfx.tallcase_O); ;
+        }
         Time.timeScale = 0f; // 게임 일시정지
 
         UpdateUI();
@@ -102,6 +119,10 @@ public class PasswordUI : MonoBehaviour
     {
         isOpen = false;
         if (passwordPanel != null) passwordPanel.SetActive(false);
+        if (SoundManager.Instance != null)
+        {
+            SoundManager.Instance.PlaySFX(ESfx.tallcase_C);
+        }
         Time.timeScale = 1f;
     }
 
@@ -116,7 +137,7 @@ public class PasswordUI : MonoBehaviour
         UpdateUI();
     }
 
-    // 엔터키를 눌렀을 때 실행 (다음 자릿수로)
+    // 다음 자릿수로
     private void ConfirmCurrentDigit()
     {
         // 아직 마지막 자릿수가 아니라면 -> 다음 자릿수로 이동
@@ -132,7 +153,7 @@ public class PasswordUI : MonoBehaviour
         }
     }
 
-    // 이전 자릿수로 돌아가기 (오타 수정용)
+    // 이전 자릿수로 돌아가기
     private void MoveToPreviousDigit()
     {
         if (currentFocusIndex > 0)
@@ -151,13 +172,19 @@ public class PasswordUI : MonoBehaviour
         if (inputResult == correctPassword)
         {
             Debug.Log("해제 성공");
-            Time.timeScale = 1f;
-            SceneManager.LoadScene(nextSceneName);
+
+            ClosePasswordUI();
+
+            onPasswordSuccess?.Invoke();
         }
         else
         {
             Debug.Log("비밀번호가 틀렸습니다. 다시 시도하세요.");
             // 틀렸을 경우 첫 번째 자릿수로 돌려보내고 초기화
+            if (SoundManager.Instance != null)
+            {
+                SoundManager.Instance.PlaySFX(ESfx.error_glitch);
+            }
             currentFocusIndex = 0;
             for (int i = 0; i < currentDigits.Length; i++) currentDigits[i] = 0;
             UpdateUI();
@@ -183,5 +210,34 @@ public class PasswordUI : MonoBehaviour
                 digitTexts[i].color = normalDigitColor;
             }
         }
+    }
+
+    private void OnEnable()
+    {
+        OpenCloseSettingsWindow.OnEscPressed += HandleEscClose;
+    }
+
+    private void OnDisable()
+    {
+        OpenCloseSettingsWindow.OnEscPressed -= HandleEscClose;
+    }
+
+    // ESC가 눌렸을 때 실행될 함수
+    private bool HandleEscClose()
+    {
+        // 인벤토리 패널이 실제로 켜져 있다면 닫고 true 반환
+        if (passwordPanel != null && passwordPanel.activeSelf)
+        {
+            passwordPanel.SetActive(false);
+
+            if (SoundManager.Instance != null)
+            {
+                SoundManager.Instance.PlaySFX(ESfx.tallcase_C);
+            }
+
+            return true; // "내가 ESC 입력을 처리했음!" 알림
+        }
+
+        return false; // 안 켜져 있으면 처리 안 함
     }
 }

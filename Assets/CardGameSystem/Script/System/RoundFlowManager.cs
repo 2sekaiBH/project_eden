@@ -23,25 +23,26 @@ public class RoundFlowManager : MonoBehaviour
     // ----------------------------------------
     private int currentRound = 0;
     public int CurrentRound => currentRound;
-    private bool turnResult = false; // 턴의 결과를 반영하는 플래그
+    private bool isTurnResultDetermined = false; // 턴의 결과를 반영하는 플래그
+    private bool turnResult = false; // 턴의 승패 결과를 저장하는 플래그
 
     // ----------------------------------------
     // 이벤트
     // ----------------------------------------
     public static event Action<int> OnRoundStart; // 라운드 수
     public static event Action<int> OnRoundEnd;
-    public static event Action <bool>OnResultDetermined; // 게임의 승패 판정을 알리는 이벤트 true - win, flase - lose  
+    public event Action <bool>OnResultDetermined; // 게임의 승패 판정을 알리는 이벤트 true - win, flase - lose  
 
 
     private void OnDisable()
     {
-        turnFlowManager.OnPlayerWin -= HandlePlayerWin;
+        turnFlowManager.OnTurnResultDetermined -= HandleTurnResult;
     }
 
     private void Awake()
     {
         turnFlowManager = GetComponent<TurnFlowManager>();
-        turnFlowManager.OnPlayerWin += HandlePlayerWin;
+        turnFlowManager.OnTurnResultDetermined += HandleTurnResult;
 
     }
 
@@ -77,9 +78,10 @@ public class RoundFlowManager : MonoBehaviour
             yield return StartCoroutine(turnFlowManager.RunTurn());
 
             // 3. 턴 종료
-            if (turnResult == true)
+            if (isTurnResultDetermined == true)
             {
-                OnResultDetermined?.Invoke(false); // 게임 매니저에서 처리
+                yield return new WaitForSeconds(3f);
+                OnResultDetermined?.Invoke(turnResult); // 게임 매니저에서 처리 - 승리
                 yield break;
             }
 
@@ -90,12 +92,12 @@ public class RoundFlowManager : MonoBehaviour
             yield return new WaitForSeconds(1f);
         }
 
-        // 5라운드 초과 시 패배
-        OnResultDetermined?.Invoke(false);
-
         UIUpdator.Instance.SetText($"패배");
         Debug.Log($"패배");
-        yield return new WaitForSeconds(1f);
+        yield return new WaitForSeconds(3f);
+
+        // 5라운드 초과 시 패배
+        OnResultDetermined?.Invoke(false);
 
         yield return null;
     }
@@ -103,9 +105,10 @@ public class RoundFlowManager : MonoBehaviour
    /// <summary>
    /// 플레이어 승리 이벤트 핸들러
    /// </summary>
-    private void HandlePlayerWin()
+    private void HandleTurnResult(bool result)
     {
-        turnResult = true;
+        isTurnResultDetermined = true;
+        turnResult = result;
     }
 
     /// <summary>
@@ -114,7 +117,7 @@ public class RoundFlowManager : MonoBehaviour
     private void Initialize()
     {
         currentRound = 0;
-        turnResult = false;
+        isTurnResultDetermined = false;
     }
 
     /// <summary>

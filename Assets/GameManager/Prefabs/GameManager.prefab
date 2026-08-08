@@ -66,14 +66,14 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 2870fc08cfae0a24aa2f9f6d52b685ca, type: 3}
   - {fileID: 8300000, guid: d167cf3311c66c742ad904300976c0e9, type: 3}
   - {fileID: 8300000, guid: 30d2a795dd7cc094d888fc49bd9c4a5a, type: 3}
-  - {fileID: 8300000, guid: ff77a25f63ae5be47870533c13c147d9, type: 3}
+  - {fileID: 8300000, guid: 15c17340260121b4c99e6a82f12d2c2a, type: 3}
   - {fileID: 8300000, guid: 1699f643c34917840ba680352abfa7e9, type: 3}
   - {fileID: 8300000, guid: 492054111ca7f8e44b897bba258d3562, type: 3}
   - {fileID: 8300000, guid: 26d59678a0df6c14abc27180572e80e6, type: 3}
   - {fileID: 8300000, guid: 0a6a386586fce164a8e014ce98c08cc0, type: 3}
   - {fileID: 8300000, guid: 91580899996e441479696dc996851946, type: 3}
   - {fileID: 8300000, guid: 2cdcc9a8787011f4b870c2550f947d90, type: 3}
-  - {fileID: 8300000, guid: 10e3d79b28394b7419b5ee81802b8f31, type: 3}
+  - {fileID: 8300000, guid: 7cec1f389c094bb46b6a8d745a0ff2e0, type: 3}
   - {fileID: 8300000, guid: 6dda2467f5675304d93a05daf3960179, type: 3}
   - {fileID: 8300000, guid: a6fedc45f471f974aab07610cb8375a2, type: 3}
   - {fileID: 8300000, guid: 4b714fc1e44d8c140beacfd62cfb278f, type: 3}
@@ -83,6 +83,7 @@ MonoBehaviour:
   - {fileID: 8300000, guid: ebdc023af3a699547b7f43f7eb3a56cf, type: 3}
   - {fileID: 8300000, guid: 307a68d8162282d4693f489944f1e1f7, type: 3}
   - {fileID: 8300000, guid: 46b24f8d1c607894693c5094870b8a08, type: 3}
+  - {fileID: 8300000, guid: 4accc0d64be4b5545a8d975e8cf476b3, type: 3}
 --- !u!1 &3086032617467165218
 GameObject:
   m_ObjectHideFlags: 0
@@ -116,6 +117,7 @@ Transform:
   - {fileID: 4535790345723070884}
   - {fileID: 9065728724491833595}
   - {fileID: 7557103405273996827}
+  - {fileID: 3157915215063086966}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &2624000087134952360
@@ -133,6 +135,7 @@ MonoBehaviour:
   gameData:
     currentScene: 
     keyMappingDataList: []
+  lastStage: 0
 --- !u!1 &4018913870710507971
 GameObject:
   m_ObjectHideFlags: 0
@@ -479,3 +482,47 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 94d22c38bf3be94418a34fb34a792499, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::KeyManager
+--- !u!1 &8524767399575987503
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3157915215063086966}
+  - component: {fileID: 7700770715965322896}
+  m_Layer: 0
+  m_Name: SettingsWindowController
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &3157915215063086966
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8524767399575987503}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 5190970645439023916}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &7700770715965322896
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8524767399575987503}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 52bb2ff57ec0c944e8a72a6231c5933d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::OpenCloseSettingsWindow

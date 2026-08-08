@@ -6,14 +6,14 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/Scenes/InventoryUI.unity
-    guid: 8c9cfa26abfee488c85f1582747f6a02
-  - enabled: 1
-    path: Assets/gamemap/scene/scene_Init.unity
-    guid: 4edf64e77a4b29b4793a4ce734c47740
+    path: Assets/Scenes/00_IntroScene.unity
+    guid: 3a188298f7acfa44480569712455b7ac
   - enabled: 1
     path: Assets/Scenes/floor_67.unity
     guid: 6ea3b03cb8e93564fb8b13b3846279b0
+  - enabled: 1
+    path: Assets/Scenes/02_Floor218Scene.unity
+    guid: 3d8f89ffc3414af4692c6695a32a66a8
   - enabled: 1
     path: Assets/Scenes/floor_213.unity
     guid: 4939def196dab0047882974700cfa067
@@ -21,8 +21,23 @@ EditorBuildSettings:
     path: Assets/Scenes/floor_399.unity
     guid: 52f79b51cec2d914485b9dc7b81eaf07
   - enabled: 1
+    path: Assets/Scenes/04_Floor404Scene.unity
+    guid: 24734583bcf11bb4e98bb1387638d1ce
+  - enabled: 1
+    path: Assets/Scenes/05_EndingScene.unity
+    guid: e3463c8432397ab4aa079ec5d667da69
+  - enabled: 1
     path: Assets/SettingsWIndow/SettingsScene.unity
     guid: 529e6fef30da8f244b89890977d1d7cc
+  - enabled: 1
+    path: Assets/CardGameSystem/Scene/Lahee_CardGame.unity
+    guid: 02aa07611f8557a4abd6707932e04914
+  - enabled: 1
+    path: Assets/Scenes/InventoryUI.unity
+    guid: 8c9cfa26abfee488c85f1582747f6a02
+  - enabled: 1
+    path: Assets/gamemap/scene/scene_Init.unity
+    guid: 4edf64e77a4b29b4793a4ce734c47740
   m_configObjects:
     com.unity.input.settings: {fileID: 11400000, guid: 0729c886482a80b419911921e0e9d3fd, type: 2}
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 2bcd2660ca9b64942af0de543d8d7100, type: 3}

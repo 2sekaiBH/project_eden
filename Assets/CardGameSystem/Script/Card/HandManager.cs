@@ -162,12 +162,14 @@ public class HandManager : MonoBehaviour
             // 선택된 카드 리스트에 추가
             selectedCards.Add(card);
             display.SetSelectedVisual(true);
+            SoundManager.Instance.PlaySFX(ESfx.card_select); //카드 선택 사운드 재생
         }
         else // 이미 클릭된 카드 선택 - 선택 카드 해제
         {
             player.RefundEnergy(card.energyCost);
             selectedCards.Remove(card);
             display.SetSelectedVisual(false);
+            SoundManager.Instance.PlaySFX(ESfx.card_select); //카드 선택 사운드 재생
         }
         OnCardSelect?.Invoke(player.CurrentEnergy);
     }
@@ -250,6 +252,7 @@ public class HandManager : MonoBehaviour
         rectTransform.anchoredPosition = end;
     }
 
+    //손패를 부드럽게 다시 올림
     private IEnumerator MoveUp()
     {
         Vector2 start = rectTransform.anchoredPosition;
@@ -276,11 +279,23 @@ public class HandManager : MonoBehaviour
     //촤라라락
     private IEnumerator FlipAllCards()
     {
-        yield return null;
+        //  UI 배치 끝날 때까지 기다림
+        yield return new WaitForEndOfFrame();
+        yield return new WaitForEndOfFrame();
 
+        // 먼저 전부 스케일 통일
         foreach (var display in cardDisplays)
         {
-            StartCoroutine(display.Flip());
+                display.SetBaseScale();
+            
+        }
+
+        yield return new WaitForEndOfFrame();
+
+        // 순차적으로 뒤집기
+        foreach (var display in cardDisplays)
+        {
+            StartCoroutine(display.FlipToFront());
             yield return new WaitForSeconds(0.05f);
         }
     }

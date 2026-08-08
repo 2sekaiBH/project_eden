@@ -28,6 +28,14 @@ public class ItemAcquisitionUI : MonoBehaviour
         if (popupPanel != null) popupPanel.SetActive(false);
     }
 
+    private void Update()
+    {
+        if (popupPanel != null && popupPanel.activeSelf && Input.GetKeyDown(KeyCode.Return))
+        {
+            OnClickConfirmButton();
+        }
+    }
+
     public void ShowAcquisitionPopup(int id)
     {
         if (ItemDatabase.Instance == null)
@@ -61,6 +69,10 @@ public class ItemAcquisitionUI : MonoBehaviour
         }
 
         if (popupPanel != null) popupPanel.SetActive(true);
+        if (SoundManager.Instance != null)
+        {
+            SoundManager.Instance.PlaySFX(ESfx.item_acquired);
+        }
         Time.timeScale = 0f;
     }
 
@@ -69,6 +81,7 @@ public class ItemAcquisitionUI : MonoBehaviour
         if (Inventory.Instance != null)
         {
             Inventory.Instance.AddItemByID(currentAcquiredItemId);
+            GameState.Instance.RegisterHiddenEndingItem(currentAcquiredItemId);
             Debug.Log("아이템이 인벤토리에 추가되었습니다.");
         }
         else
@@ -76,7 +89,16 @@ public class ItemAcquisitionUI : MonoBehaviour
             Debug.LogError("아이템을 찾을 수 없습니다");
         }
 
-        if (popupPanel != null) popupPanel.SetActive(false);
+        if (popupPanel != null)
+        {
+            popupPanel.SetActive(false);
+        }
+
+        if (SoundManager.Instance != null)
+        {
+            SoundManager.Instance.PlaySFX(ESfx.button);
+        }
+
         Time.timeScale = 1f;
     }
 

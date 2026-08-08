@@ -1,50 +1,225 @@
-using NUnit.Framework;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
+using UnityEngine.SceneManagement;
 
 /// <summary>
-/// »óÀ§ °ÔÀÓ ¸Å´ÏÀú
-/// ½ºÅ×ÀÌÁö Á¤º¸ ¹İ¿µ
-/// ½ÂÆĞ Ã³¸®
+/// ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Å´ï¿½ï¿½ï¿½
+/// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½İ¿ï¿½
+/// ï¿½ï¿½ï¿½ï¿½ Ã³ï¿½ï¿½
 /// </summary>
 public class CardGameManager : MonoBehaviour
 {
-    [SerializeField] private List<NpcData> npcDataList; // database ÂüÁ¶ Çü½ÄÀ¸·Î °³¼± ÇÊ¿ä
+    // [SerializeField] private List<NpcData> npcDataList; // database ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ê¿ï¿½
 
     [Header("DataBase")]
-    [SerializeField] private OpponentData opponentData;
-    [SerializeField] private NpcDataBase npcDataBase; // µ¥ÀÌÅÍ º£ÀÌ½º ÂüÁ¶ ÈÄ Àü´Ş ±â´É ÃßÈÄ Ãß°¡
+    [SerializeField] private List<StageData> stageDataList = new List<StageData>();
+    [SerializeField] private int finalPlayerHp = 40;
 
     [Header("Other Managers")]
     [SerializeField] private RoundFlowManager roundFlowManager;
     [SerializeField] private NpcSlotManager npcSlotManager;
+    [SerializeField] private PlayerActor playerActor;
+    [SerializeField] private OpponentActor opponentActor;
 
-    private bool isWIn = false;
+    [Header("Result Events")]
+    [SerializeField] private UnityEvent onGameCleared;
+    [SerializeField] private UnityEvent onGameFailed;
+
+
+    [Header("ìµœì¢…ì „ ì¹´ë“œ ê²Œì„")]
+    [SerializeField] private List<NpcData> eveNpcList;
+    [SerializeField] private List<NpcData> archiNpcList;
+    [SerializeField] private OpponentData eveOpponentData;
+    [SerializeField] private OpponentData archiOpponentData;
+
+    [Header("í…ŒìŠ¤íŠ¸ìš© - í…ŒìŠ¤íŠ¸ í›„ isTesting ë°˜ë“œì‹œ í•´ì œ")]
+    [SerializeField] private List<NpcData> testingNpcDataList;
+    [SerializeField] private OpponentData testingOpponentData;
+    [SerializeField] private bool isTesting; // í…ŒìŠ¤íŒ… ì¤‘ì¸ì§€
+
+
+    public UnityEvent OnGameCleared => onGameCleared;
+    public UnityEvent OnGameFailed => onGameFailed;
+
+
+    private bool isFinal = false; // ìµœì¢…ì „ì¸ì§€ ì•Œë¦¬ëŠ” í”Œë˜ê·¸
+
+    private StageType stage;
+
+    FactionType faction;
+    private PlayerSelectedSideInCardGame side = PlayerSelectedSideInCardGame.None;
+
+
+
+    public enum PlayerSelectedSideInCardGame
+    {
+        None,
+        Architect,
+        Eve,
+    }
+
+    private void OnEnable()
+    {
+        roundFlowManager.OnResultDetermined += HandleCardGameResult;
+    }
+
+    private void OnDisable()
+    {
+        roundFlowManager.OnResultDetermined -= HandleCardGameResult;
+    }
 
     private void Awake()
     {
         if (roundFlowManager == null)
-            GetComponentInChildren<RoundFlowManager>();
+            roundFlowManager = GetComponentInChildren<RoundFlowManager>();
     }
-    void Start()
-    {
-        // °ÔÀÓ Àü¿ª µ¥ÀÌÅÍ ÃÊ±âÈ­
-        InitializeGameData();
 
-        // °ÔÀÓ ½ÇÇà
-        RunCardGame();
+    private void Start()
+    {
+        // í…ŒìŠ¤íŠ¸ìš© run
+        if (isTesting)
+        {
+            npcSlotManager.Initialize(testingNpcDataList);
+            opponentActor.SetOpponent(testingOpponentData);
+            playerActor.SetPlayer(GameState.Instance.PlayerName, finalPlayerHp);
+            SoundManager.Instance.PlayBGM(EBgm.CardGame); // 404 bgm ì¬ìƒ
+            roundFlowManager.StartRound();
+            return;
+        }
+
+
+        if(GameState.Instance == null)
+        {
+            Debug.LogWarning("GameStateê°€ ì—†ìŠµë‹ˆë‹¤.");
+            return;
+        }
+
+        faction = GameState.Instance.SelectedFaction;
+
+        switch (faction)
+        {
+            case FactionType.Archi:
+                Debug.Log("ì•„í‚¤í…ì²˜ ë± ì„¤ì •");
+                side = PlayerSelectedSideInCardGame.Architect;
+                if (GameState.Instance.GetAffinity("cain") < 5) // í˜¸ê°ë„ 5 ì´í•˜ë©´ npcì—ì„œ ì œì™¸
+                    archiNpcList.RemoveAll(npc => npc != null && npc.name.Equals("ì¹´ì¸"));
+                npcSlotManager.Initialize(archiNpcList);
+                opponentActor.SetOpponent(eveOpponentData);
+                playerActor.SetPlayer(GameState.Instance.PlayerName, finalPlayerHp);
+                isFinal = true;
+                SoundManager.Instance.PlayBGM(EBgm.CardGame_404); // 404 bgm ì¬ìƒ
+                roundFlowManager.StartRound();
+                break;
+            case FactionType.Eve:
+                side = PlayerSelectedSideInCardGame.Eve;
+                Debug.Log("ì´ë¸Œ ë± ì„¤ì •");
+                npcSlotManager.Initialize(eveNpcList);
+                opponentActor.SetOpponent(archiOpponentData);
+                playerActor.SetPlayer(GameState.Instance.PlayerName, finalPlayerHp);
+                isFinal = true;
+                SoundManager.Instance.PlayBGM(EBgm.CardGame_404); // 404 bgm ì¬ìƒ
+                roundFlowManager.StartRound();
+                break;
+            default:
+                Debug.Log("ë§ëŠ” fraction typeì´ ì—†ìŠµë‹ˆë‹¤. - ê¸°ë³¸ ë± ì„¤ì •");
+                break;
+        }
+    }
+    public void StartCardGame()
+    {
+        if (isFinal)
+        {
+            Debug.LogWarning("ìµœì¢…ì „ì…ë‹ˆë‹¤. GameStateì—ì„œ ì´ˆê¸°í™”");
+            isFinal = false;
+            return;
+        }
+
+        SoundManager.Instance.PlayBGM(EBgm.CardGame); // ì¼ë°˜ bgm ì¬ìƒ
+        InitializeGameData();
+        roundFlowManager.StartRound();
     }
 
     void InitializeGameData()
     {
-        npcSlotManager.Initialize(npcDataList);
-        // OpponentActor¿¡°Ô opponentData Àü´Ş
+        stage = GameManager.Instance.LastStage;
+
+        foreach (var stageData in stageDataList)
+        {
+            if (stageData.stageName.Equals(stage.ToString()))
+            {
+                npcSlotManager.Initialize(stageData.joinNpc);
+                opponentActor.SetOpponent(stageData.opponent);
+                if (GameState.Instance == null)
+                {
+                    Debug.LogWarning("GameState ï¿½ï¿½ï¿½ï¿½!, ï¿½âº» ï¿½Ì¸ï¿½ playerï¿½ï¿½ ï¿½ï¿½Ã¼");
+                    playerActor.SetPlayer("Player", stageData.playerMaxHp);
+                }
+                else
+                {
+                    playerActor.SetPlayer(GameState.Instance.PlayerName, stageData.playerMaxHp);
+                }
+            }
+        }
+        // Debug.LogWarning("ï¿½Ê±ï¿½È­ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ï´ï¿½.");
     }
 
-    private void RunCardGame()
+    // ìµœì¢… ìŠ¹íŒ¨ íŒì •ì— ë”°ë¥¸ ì²˜ë¦¬
+    private void HandleCardGameResult(bool result)
     {
-        roundFlowManager.StartRound();
+        if (GameState.Instance == null) 
+        {
+            Debug.LogError(
+                "[CardGame] GameStateê°€ ì—†ì–´ì—”ë”©ì„ ì„¤ì •í•  ìˆ˜ ì—†ìŠµë‹ˆë‹¤."
+            );
+            return;
+        }
+
+        if (result)
+        {
+            Debug.Log("[CardGame] ì¹´ë“œê²Œì„ ìŠ¹ë¦¬");
+            onGameCleared?.Invoke();
+
+            // ======= ìµœì¢…ì „ ìŠ¹ë¦¬ ì‹œ ========
+            if (!isFinal) return;
+
+            if(side == PlayerSelectedSideInCardGame.Architect) // ì•„í‚¤í…íŠ¸ ì„ íƒ ì—”ë”©
+            {
+                GameState.Instance.SetSelectedEnding(EndingType.Offline);
+            }
+
+            else if(side == PlayerSelectedSideInCardGame.Eve) // ì´ë¸Œ ì„ íƒ ì—”ë”©
+            {
+                GameState.Instance.SetSelectedEnding(EndingType.Reconnect);
+            }
+            SceneManager.LoadScene("05_EndingScene");
+
+            return;
+        }
+
+        // ======= íŒ¨ë°° ì‹œ ========
+
+        Debug.Log("[CardGame] ì¹´ë“œê²Œì„ íŒ¨ë°° â†’ GameOver ì—”ë”©ìœ¼ë¡œ ì´ë™");
+
+        // EndingDialogueStarterê°€ ì´ ê°’ì„ ì½ê³ 
+        // ending_gameover_001ë¶€í„° ì¬ìƒí•˜ê²Œ ë¨
+        GameState.Instance.SetSelectedEnding(EndingType.GameOver);
+
+        // ê¸°ì¡´ Inspector ì´ë²¤íŠ¸ê°€ í•„ìš”í•˜ë‹¤ë©´ ë¨¼ì € ì‹¤í–‰
+        onGameFailed?.Invoke();
+
+        // ë™ì¼í•œ ì—”ë”© ì”¬ìœ¼ë¡œ ì´ë™
+        SceneManager.LoadScene("05_EndingScene");
     }
 
-    // ÃÖÁ¾ ½ÂÆĞ ÆÇÁ¤¿¡ µû¸¥ Ã³¸®
+}
+
+
+[System.Serializable]
+public class StageData
+{
+    public string stageName;
+    public int playerMaxHp;
+    public List<NpcData> joinNpc;
+    public OpponentData opponent;
 }
