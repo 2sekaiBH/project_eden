@@ -91,11 +91,6 @@ public abstract class Actor : MonoBehaviour
         {
             attacker.TakeDamage(absorbed, null);
 
-            if (attacker is PlayerActor)
-                SoundManager.Instance.PlaySFX(ESfx.attack);
-
-            else if (attacker is OpponentActor)
-                SoundManager.Instance.PlaySFX(ESfx.shield);
         }
 
         Debug.Log($"{name}: 현재 체력: {currentHp}");
