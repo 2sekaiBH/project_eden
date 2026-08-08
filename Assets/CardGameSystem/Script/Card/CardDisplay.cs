@@ -79,12 +79,13 @@ public class CardDisplay : MonoBehaviour, IPointerClickHandler, IPointerEnterHan
     /// <summary>
     /// 외부에서 카드를 바꿀 때는 반드시 이 함수를 통해서만.
     /// </summary>
-    public void SetCard(CardData newCard)
+    public void SetCard(CardData newCard, bool isUsingInPanel = false)
     {
         card = newCard;
         ShowBack();
         UpdateCardDisplay();
 
+        if (isUsingInPanel) return;
         baseScale = transform.localScale;
     }
     
@@ -188,7 +189,8 @@ public class CardDisplay : MonoBehaviour, IPointerClickHandler, IPointerEnterHan
     //마우스 포인터 뗌
     public void OnPointerExit(PointerEventData eventData)
     {
-        if (isFlipping) return; 
+        if (isFlipping) return;
+        if (rt == null) return;
 
         rt.localScale = originalScale;
         rt.anchoredPosition = originalPos;

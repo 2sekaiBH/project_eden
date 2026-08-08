@@ -48,6 +48,21 @@ public class EndingDialogueStarter : MonoBehaviour
             $"Type: {endingType}, Start ID: {startNodeId}"
         );
 
+        // 엔딩별 맞는 Bgm 재생
+        switch (endingType)
+        {
+            case (EndingType.Reconnect): // 이브 엔딩
+                SoundManager.Instance.PlayBGM(EBgm.Ending_Eve);
+                break;
+            case (EndingType.Offline): // 아키텍트 엔딩
+                SoundManager.Instance.PlayBGM(EBgm.Ending_Arch);
+                break;
+            case (EndingType.Exodus): // 노아 엔딩
+                SoundManager.Instance.PlayBGM(EBgm.Ending_Noa);
+                break;
+        }
+
+
         dialogueController.StartDialogue(startNodeId);
     }
 

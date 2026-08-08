@@ -471,7 +471,7 @@ MonoBehaviour:
   m_lineSpacingMax: 0
   m_paragraphSpacing: 0
   m_charWidthMaxAdj: 0
-  m_TextWrappingMode: 1
+  m_TextWrappingMode: 0
   m_wordWrappingRatios: 0.4
   m_overflowMode: 0
   m_linkedTextComponent: {fileID: 0}
@@ -1047,6 +1047,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 7328699172388630944}
     m_Modifications:
+    - target: {fileID: 663067464914437698, guid: 597e98dcd1957ab4ab494490c77e2230, type: 3}
+      propertyPath: m_FillAmount
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1117434073831302898, guid: 597e98dcd1957ab4ab494490c77e2230, type: 3}
+      propertyPath: m_FillAmount
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 1871756998154512534, guid: 597e98dcd1957ab4ab494490c77e2230, type: 3}
       propertyPath: m_Name
       value: Hp_Block_Slider

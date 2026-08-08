@@ -71,7 +71,7 @@ public class PlayerActor : Actor
         }
         handManager.ReplaceHand(index, newCard); // ���� UI ���� 
         //UIUpdator.Instance.SetText($"�÷��̾� ���� {index + 1}��° ī�带 {newCard.name}���� �����߽��ϴ�.", CasterType.Player);
-        Debug.Log($"�÷��̾� ���� {index + 1}��° ī�带 {newCard.name}���� �����߽��ϴ�.");
+        Debug.Log($"플레이어 {index + 1}번째 카드를 {newCard.name}로 변경.");
         return newCard;
     }
 
