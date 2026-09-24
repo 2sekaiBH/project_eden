@@ -153,7 +153,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e1a47a8a72a22664aa060ff6af8e7edf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GameBootstrap
-  itemUISceneName: scene_init
+  itemUISceneName: ItemAcquiredUI
 --- !u!4 &358965254
 Transform:
   m_ObjectHideFlags: 0
