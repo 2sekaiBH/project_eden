@@ -71,6 +71,9 @@ public class PlayerJumpWithSlide : MonoBehaviour
             return;
         }
         KeyManager.Instance.OnKeyChanged += UpdateKeyCode;
+
+        // Start 시 KeyManager에서 키 받아오기
+        UpdateKeyCode();
     }
 
     void FixedUpdate()

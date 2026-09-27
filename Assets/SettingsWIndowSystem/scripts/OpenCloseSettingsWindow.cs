@@ -8,6 +8,7 @@ public class OpenCloseSettingsWindow : MonoBehaviour
     public static event Action<bool> OnOpenCloseSettings;
 
     public static Func<bool> OnEscPressed;
+    private bool isOpen;
 
     private void OnDisable()
     {

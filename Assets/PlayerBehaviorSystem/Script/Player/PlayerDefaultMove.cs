@@ -70,6 +70,8 @@ public class PlayerDefaultMove : MonoBehaviour
             return;
         }
         KeyManager.Instance.OnKeyChanged += UpdateKeyCode;
+
+        UpdateKeyCode();
     }
 
     public void BlockDash()
