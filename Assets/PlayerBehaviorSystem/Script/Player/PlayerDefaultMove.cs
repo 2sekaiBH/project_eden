@@ -35,6 +35,7 @@ public class PlayerDefaultMove : MonoBehaviour
 
     private KeyCode moveLeftKeyCode = KeyCode.A;
     private KeyCode moveRIghtKeyCode = KeyCode.D;
+    private KeyCode runKeyCode = KeyCode.LeftShift;
 
 
     void Awake()
@@ -212,9 +213,9 @@ public class PlayerDefaultMove : MonoBehaviour
             OnMoveRight();
         if(Input.GetKeyUp(moveRIghtKeyCode))
             OnMoveRightEnd();
-        if (Input.GetKeyDown(KeyCode.LeftShift) || Input.GetKeyDown(KeyCode.RightShift))
+        if (Input.GetKeyDown(runKeyCode))
             OnDash();
-        if(Input.GetKeyUp(KeyCode.LeftShift) || Input.GetKeyUp(KeyCode.RightShift))
+        if(Input.GetKeyUp(runKeyCode))
             OnDashEnd();
     }
 
@@ -222,5 +223,6 @@ public class PlayerDefaultMove : MonoBehaviour
     {
         moveLeftKeyCode = KeyManager.Instance.GetKeyCode(KeyBindingName.PlayerLeft);
         moveRIghtKeyCode = KeyManager.Instance.GetKeyCode(KeyBindingName.PlayerRight);
+        runKeyCode = KeyManager.Instance.GetKeyCode(KeyBindingName.PlayerRun);
     }
 }
