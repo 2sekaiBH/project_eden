@@ -64,6 +64,7 @@ public class KeyManager : MonoBehaviour
         keyMappingDict[KeyBindingName.Settings] = KeyCode.Escape;
         keyMappingDict[KeyBindingName.Dialogue] = KeyCode.Space;
         keyMappingDict[KeyBindingName.Inventory] = KeyCode.I;
+        keyMappingDict[KeyBindingName.PlayerRun] = KeyCode.LeftShift;
     }
 
     public bool SetKeyMapping(KeyBindingName name, KeyCode newKeyCode)
@@ -110,7 +111,8 @@ public enum KeyBindingName
     Interaction,
     Settings,
     Dialogue,
-    Inventory
+    Inventory,
+    PlayerRun
 }
 
 [System.Serializable]

@@ -37,6 +37,7 @@ public class PlayerInteraction : MonoBehaviour
             return;
         }
         KeyManager.Instance.OnKeyChanged += UpdateKeyCode;
+        UpdateKeyCode();
     }
 
     // 상호작용 중인지 검사
