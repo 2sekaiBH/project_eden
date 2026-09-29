@@ -38,8 +38,8 @@ public abstract class Actor : MonoBehaviour
     // 데미지 절반으로 받는 상태
     private bool halfDamage = false;
 
-    // 에너지가 -1인 상태
-    private bool reduceCost = false;
+    // 에너지 줄이기
+    private int reduceCost = 0;
 
     private void OnEnable()
     {
@@ -140,9 +140,9 @@ public abstract class Actor : MonoBehaviour
         int origin = amount;
 
         // 실제 카드 코스트를 1 줄임
-        if (reduceCost)
+        if (reduceCost > 0)
         {
-            amount = Mathf.Max(0, amount - 1);
+            amount = Mathf.Max(0, amount - reduceCost);
             Debug.Log($"카드 코스트 요래됐수 {origin} -> {amount}");
         }
 
@@ -158,9 +158,9 @@ public abstract class Actor : MonoBehaviour
     /// </summary>
     public virtual void RefundEnergy(int amount)
     {
-        if(reduceCost)
+        if(reduceCost > 0)
         {
-            amount = Mathf.Max(0, amount - 1);
+            amount = Mathf.Max(0, amount - reduceCost);
         }
 
         SetEnergy(currentEnergy + amount);
@@ -218,7 +218,7 @@ public abstract class Actor : MonoBehaviour
     // 카드 코스트 -1
     public void EnableReduceCost()
     {
-        reduceCost = true;
+        reduceCost++;
     }
 
     // 턴 동안 지속되는 효과 초기화
@@ -226,7 +226,7 @@ public abstract class Actor : MonoBehaviour
     {
         reflect = false;
         halfDamage = false;
-        reduceCost = false;
+        reduceCost = 0;
     }
 
     /// <summary>

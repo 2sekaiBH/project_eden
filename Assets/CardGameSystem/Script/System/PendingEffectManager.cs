@@ -53,90 +53,108 @@ public class PendingEffectManager : MonoBehaviour
     // 평타 공격 강화
     public void AddExtraAttack(int damage)
     {
-         turnPendingEffect.extraDefaultDamage = damage;
+        turnPendingEffect.extraAttack.Add(new PendingExtraAttackEffect(damage));
         
     }
 
     // 턴 끝마다 공격 설정
     public void AddEndturnDamage(int damge, int turn, Actor target)
     {
-        turnPendingEffect.endTurnDamage = damge;
-        turnPendingEffect.endTurnDamageRemain = turn;
-        turnPendingEffect.target = target;
+        turnPendingEffect.endTurnDamageEffect.Add(new PendingEndTurnDamageEffect(damge, turn, target));
     }
 
     // 평타 추가 공격 실행
     public int ConsumeExtraAttack()
     {
-        int damage = turnPendingEffect.extraDefaultDamage;
-        turnPendingEffect.extraDefaultDamage = 0;
-        return damage;
+        int totalDamage = 0;
+
+        foreach(PendingExtraAttackEffect extra in turnPendingEffect.extraAttack)
+        {
+            totalDamage += extra.damage;
+        } //리스트에 있는 목록을 차례대로 실행
+
+        turnPendingEffect.extraAttack.Clear(); // 재사용 방지 - 한번 적용 후 clear;
+
+        return totalDamage;
+      
     }
 
     // 끝날 때 추가 공격 실행
     public void ConsumeEndturnDamage()
     {
-        if (turnPendingEffect.endTurnDamageRemain <= 0)
-            return;
+       foreach (PendingEndTurnDamageEffect endturnDamage in turnPendingEffect.endTurnDamageEffect)
+        {
+            if (endturnDamage.remainTurn <= 0)
+                continue;
 
-        turnPendingEffect.target.TakeDamage(turnPendingEffect.endTurnDamage, null);
-        turnPendingEffect.endTurnDamageRemain--;
-        Debug.Log($"턴 종료 공격 {turnPendingEffect.endTurnDamageRemain}만큼 남음");
+            endturnDamage.target.TakeDamage(endturnDamage.damage, null);
+            endturnDamage.remainTurn--;
+
+            Debug.Log($"턴 종료 {endturnDamage.remainTurn} 남음");
+        }
+
+        // 턴이 끝난 효과 제거
+        turnPendingEffect.endTurnDamageEffect.RemoveAll(effect => effect.remainTurn <= 0);
     }
 
     // 에너지 코스트 -1 설정할 Actor를 들고 옴
     public void ReduceCost(Actor player)
     {
-        turnPendingEffect.player = player;
+        turnPendingEffect.reduceCost.Add(new PendingReduceCostEffect(player));
     }
 
     // 에너지 코스트 -1 사용
     public void ConsumeReduceCost()
     {
-        if (turnPendingEffect.player == null)
-            return;
+       foreach(PendingReduceCostEffect reduceCost in turnPendingEffect.reduceCost)
+        {
+            if (reduceCost.target == null)
+                continue;
 
-        turnPendingEffect.player.EnableReduceCost();
-        turnPendingEffect.player = null;
+            reduceCost.target.EnableReduceCost();
+        }
+
+        turnPendingEffect.reduceCost.Clear(); // 재사용 방지 - 한번 적용 후 clear;
     }
 
-    //어떤 카드를 추가로 받을지 가져옴 & 카드를 받는 대상 가져옴
+    //어떤 카드를 추가로 받을지, 누가 받을지 설정
     public void AddExtraCard(Actor getCard, CardData card)
     {
-        turnPendingEffect.getCard = getCard;
-        turnPendingEffect.card = card;
+        turnPendingEffect.extraCards.Add(new PendingCardEffect(getCard, card));
     }
 
     //카드 추가 지급 효과 적용
     public void ConsumeExtraCard()
     {
-        if (turnPendingEffect.card == null)
+     if(turnPendingEffect.extraCards.Count <= 0)
             return;
 
-        turnPendingEffect.getCard.AddCard(turnPendingEffect.card);
+       foreach(PendingCardEffect effect in turnPendingEffect.extraCards)
+        {
+            effect.getCard.AddCard(effect.card);
+        }
 
-        //초기화
-        turnPendingEffect.getCard = null;
-        turnPendingEffect.card = null;
+     turnPendingEffect.extraCards.Clear(); // 재사용 방지 - 한번 적용 후 clear;
+     
     }
 }
 
 [System.Serializable]
 public class TurnPendingEffect
 {
-    public int extraDefaultDamage = 0; // 평타 추가 공격 기억
+
+    //평타 추가 공격 기억
+    public List<PendingExtraAttackEffect> extraAttack = new List<PendingExtraAttackEffect>();
 
     // 2턴간 -3공격 기억
-    public int endTurnDamage;
-    public int endTurnDamageRemain = 0;
-    public Actor target;
+    public List<PendingEndTurnDamageEffect> endTurnDamageEffect = new List<PendingEndTurnDamageEffect>();
 
-    // 카드 코스트 -1 대상
-    public Actor player;
+    // 카드 코스트 -1 기억
+    public List<PendingReduceCostEffect> reduceCost = new List<PendingReduceCostEffect>();
 
-    //추가 카드를 받을 대상
-    public Actor getCard = null;
-    public CardData card = null; //추가로 받을 카드
+    //추가 카드를 받을 대상, 카드 설정
+    public List<PendingCardEffect> extraCards = new List<PendingCardEffect>();
+    
 }
 
 [System.Serializable]
@@ -149,9 +167,68 @@ public class RoundPendingEffect
 
     }
 
+
     public List<CardData> AddExtraCard(List<CardData> extraCard)
     {
         extraCards.AddRange(extraCard);
         return extraCards;
+    }
+}
+
+//카드 추가 지급을 리스트로 관리하기 위한 클래스
+[System.Serializable]
+public class PendingCardEffect
+{
+
+   public Actor getCard;
+    public CardData card;
+
+    public PendingCardEffect(Actor getCard, CardData card)
+    {
+        this.getCard = getCard;
+        this.card = card;
+    }
+}
+
+//평타 추가 공격을 리스트로 관리하기 위한 클래스
+[System.Serializable]
+public class PendingExtraAttackEffect
+{
+    public int damage;
+
+    public PendingExtraAttackEffect(int damage)
+    {
+        this.damage = damage;
+    }
+}
+
+//턴 종료시 공격을 리스트로 관리하기 위한 클래스
+[System.Serializable]
+public class PendingEndTurnDamageEffect
+{
+    public int damage;
+    public int remainTurn;
+    public Actor target;
+
+    public PendingEndTurnDamageEffect(
+        int damage,
+        int remainTurn,
+        Actor target)
+    {
+        this.damage = damage;
+        this.remainTurn = remainTurn;
+        this.target = target;
+    }
+}
+
+//에너지 코스트 -1을 리스트로 관리하기 위한 클래스
+[System.Serializable]
+public class PendingReduceCostEffect
+{
+    public Actor target;
+
+    public PendingReduceCostEffect(Actor target)
+    {
+        this.target = target;
     }
 }

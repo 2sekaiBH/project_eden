@@ -30,7 +30,7 @@ public class EveEffect : NpcEffect
 
             yield return panelController.CoRunSelect(); // 카드 선택 시작
 
-            selectdCard = panelController.SelectedCard.Select(cardData => cardData.Item2).ToList();
+            selectdCard = panelController.SelectedCard.Select(cardData => Instantiate(cardData.Item2)).ToList();
 
             PendingEffectManager.Instance.SetRoundPendingEffect(selectdCard); // pendingEffect에 해당 카드 저장
             cardSelectUIPanel.SetActive(false); // 선택 패널 비활성화
