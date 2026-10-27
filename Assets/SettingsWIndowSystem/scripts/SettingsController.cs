@@ -10,7 +10,7 @@ public class SettingsController : MonoBehaviour
     [SerializeField] private Slider sfxSlider;
 
     private KeyCode settingsKeyCode = KeyCode.Escape;
-    private bool isOpen;
+    private bool isOpen = false;
 
     private void OnEnable()
     {
