@@ -156,7 +156,7 @@ public class HandManager : MonoBehaviour
 
         if (!alreadySelected) // 카드 선택
         {
-            if (!player.TrySpendEnergy(card.energyCost)) // currentEnergy와 비교, 판정
+            if (!player.TrySpendEnergy(card)) // currentEnergy와 비교, 판정
                 return; // 에너지 부족 -> 무시, UI도 이미 흐려져 있어서 시각적으로 인지 가능
 
             // 선택된 카드 리스트에 추가
@@ -166,7 +166,7 @@ public class HandManager : MonoBehaviour
         }
         else // 이미 클릭된 카드 선택 - 선택 카드 해제
         {
-            player.RefundEnergy(card.energyCost);
+            player.RefundEnergy(card);
             selectedCards.Remove(card);
             display.SetSelectedVisual(false);
             SoundManager.Instance.PlaySFX(ESfx.card_select); //카드 선택 사운드 재생

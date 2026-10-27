@@ -38,9 +38,6 @@ public abstract class Actor : MonoBehaviour
     // 데미지 절반으로 받는 상태
     private bool halfDamage = false;
 
-    // 에너지 줄이기
-    private int reduceCost = 0;
-
     private void OnEnable()
     {
         _handler = (amount) => UpdateProfileUI();
@@ -135,35 +132,61 @@ public abstract class Actor : MonoBehaviour
     /// <summary>
     /// 에너지 소비
     /// </summary>
-    public virtual bool TrySpendEnergy(int amount)
+
+    private List<CardData> discountedCards = new List<CardData>();
+
+    //손패에서 코스트 순으로 정렬, 그 중 첫 번째 카드를 가져옴
+    public void ApplyReducecost()
     {
-        int origin = amount;
+        CardData highestCost = hand
+            .Where(card => card != null && !discountedCards.Contains(card))
+            .OrderByDescending(card => card.energyCost)
+            .FirstOrDefault();
 
-        // 실제 카드 코스트를 1 줄임
-        if (reduceCost > 0)
+        if (highestCost != null)
         {
-            amount = Mathf.Max(0, amount - reduceCost);
-            Debug.Log($"카드 코스트 요래됐수 {origin} -> {amount}");
+            discountedCards.Add(highestCost);
         }
+    }
 
-        if (currentEnergy < amount)
+    public virtual bool TrySpendEnergy(CardData card)
+    {
+        if (card == null)
             return false;
 
-        SetEnergy(currentEnergy - amount);
+        int cost = card.energyCost;
+
+        if (discountedCards.Contains(card)) //할인 카드라면 cost를 -1함
+            cost = Mathf.Max(0, cost - 1);
+
+        if (currentEnergy < cost)
+            return false;
+
+        SetEnergy(currentEnergy - cost);
+
+
         return true;
+       
     }
 
     /// <summary>
     /// 에너지 추가
     /// </summary>
-    public virtual void RefundEnergy(int amount)
+    public virtual void RefundEnergy(CardData card)
     {
-        if(reduceCost > 0)
+        int reduceCost = card.energyCost;
+
+        if(discountedCards.Contains(card))
         {
-            amount = Mathf.Max(0, amount - reduceCost);
+            reduceCost = Mathf.Max(0, reduceCost - 1);
         }
 
-        SetEnergy(currentEnergy + amount);
+        SetEnergy(currentEnergy + reduceCost);
+    }
+
+    public virtual void Refund(int energy)
+    {
+        SetEnergy(currentEnergy + energy);
     }
 
     /// <summary>
@@ -215,18 +238,13 @@ public abstract class Actor : MonoBehaviour
         halfDamage = true;
     }
 
-    // 카드 코스트 -1
-    public void EnableReduceCost()
-    {
-        reduceCost++;
-    }
 
     // 턴 동안 지속되는 효과 초기화
     public void ResetTurnEffect()
     {
         reflect = false;
         halfDamage = false;
-        reduceCost = 0;
+        discountedCards.Clear();
     }
 
     /// <summary>

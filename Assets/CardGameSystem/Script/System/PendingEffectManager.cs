@@ -111,7 +111,7 @@ public class PendingEffectManager : MonoBehaviour
             if (reduceCost.target == null)
                 continue;
 
-            reduceCost.target.EnableReduceCost();
+            reduceCost.target.ApplyReducecost();
         }
 
         turnPendingEffect.reduceCost.Clear(); // 재사용 방지 - 한번 적용 후 clear;

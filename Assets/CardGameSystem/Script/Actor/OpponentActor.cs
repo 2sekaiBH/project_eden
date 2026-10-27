@@ -60,7 +60,7 @@ public class OpponentActor : Actor
                 }
 
                 //에너지 부족시 역시 건너뜀
-                if(!TrySpendEnergy(card.energyCost))
+                if(!TrySpendEnergy(card))
                 {
                     i++;
                     continue;
