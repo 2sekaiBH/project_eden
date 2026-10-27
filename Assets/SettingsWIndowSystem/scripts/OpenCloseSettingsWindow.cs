@@ -1,14 +1,12 @@
 using System;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 public class OpenCloseSettingsWindow : MonoBehaviour
 {
     private KeyCode SettingsKeyCode = KeyCode.Escape;
     public static event Action<bool> OnOpenCloseSettings;
-
     public static Func<bool> OnEscPressed;
-    private bool isOpen;
+    private static bool isOpen;
 
     private void OnDisable()
     {
@@ -18,9 +16,10 @@ public class OpenCloseSettingsWindow : MonoBehaviour
 
     private void Start()
     {
+        isOpen = false;
         if (KeyManager.Instance == null)
         {
-            Debug.LogWarning("KeyManager°¡ ¾ø½À´Ï´Ù! - ±âº» Esc·Î KeyCode ¼³Á¤");
+            Debug.LogWarning("KeyManagerê°€ ì—†ìŠµë‹ˆë‹¤! - ê¸°ë³¸ Esc í‚¤ë¥¼ ì‚¬ìš©í•©ë‹ˆë‹¤.");
             return;
         }
 
@@ -33,29 +32,27 @@ public class OpenCloseSettingsWindow : MonoBehaviour
         SettingsKeyCode = KeyManager.Instance.GetKeyCode(KeyBindingName.Settings);
     }
 
-    // Update is called once per frame
-    void Update()
+    private void Update()
     {
-        if (Input.GetKeyDown(SettingsKeyCode))
+        if (!Input.GetKeyDown(SettingsKeyCode)) return;
+
+        if (OnEscPressed != null)
         {
-            if (OnEscPressed != null)
+            bool wasHandled = false;
+            foreach (Func<bool> handler in OnEscPressed.GetInvocationList())
             {
-                bool wasHandled = false;
-                foreach (Func<bool> handler in OnEscPressed.GetInvocationList())
-                {
-                    if (handler.Invoke())
-                    {
-                        wasHandled = true;
-                    }
-                }
-
-                if (wasHandled) return;
+                if (handler.Invoke()) wasHandled = true;
             }
 
-            if (!SceneManager.GetSceneByName("SettingsScene").isLoaded)
-            {
-                SceneManager.LoadScene("SettingsScene", LoadSceneMode.Additive);
-            }
+            if (wasHandled) return;
         }
+
+        SetOpen(!isOpen);
+    }
+
+    public static void SetOpen(bool open)
+    {
+        isOpen = open;
+        OnOpenCloseSettings?.Invoke(isOpen);
     }
 }

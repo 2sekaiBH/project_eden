@@ -1,6 +1,6 @@
 using UnityEngine;
-using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using System;
 
 public class SettingsController : MonoBehaviour
 {
@@ -9,73 +9,110 @@ public class SettingsController : MonoBehaviour
     [SerializeField] private Slider bgmSlider;
     [SerializeField] private Slider sfxSlider;
 
+    private KeyCode settingsKeyCode = KeyCode.Escape;
+    private bool isOpen;
+
     private void OnEnable()
     {
         OpenCloseSettingsWindow.OnOpenCloseSettings += OpenCloseSettingsWIndow;
+        if (KeyManager.Instance != null)
+        {
+            KeyManager.Instance.OnKeyChanged += UpdateSettingsKeyCode;
+            UpdateSettingsKeyCode();
+        }
     }
 
     private void OnDisable()
     {
         OpenCloseSettingsWindow.OnOpenCloseSettings -= OpenCloseSettingsWIndow;
+        if (KeyManager.Instance != null)
+        {
+            KeyManager.Instance.OnKeyChanged -= UpdateSettingsKeyCode;
+        }
     }
-
-
 
     private void Awake()
     {
-        if(SoundManager.Instance == null)
+        if (settingsWIndowCanvas != null)
         {
-            Debug.LogWarning("SoundManager°¡ ¾ø½À´Ï´Ù!");
+            settingsWIndowCanvas.SetActive(false);
+        }
+
+        if (SoundManager.Instance == null)
+        {
+            Debug.LogWarning("SoundManagerê°€ ì—†ìŠµë‹ˆë‹¤!");
             return;
         }
 
-        Time.timeScale = 0f; // ÀÏ½Ã Á¤Áö
+        if (bgmSlider != null)
+        {
+            bgmSlider.onValueChanged.AddListener(SoundManager.Instance.SetBgmVolume);
+            bgmSlider.SetValueWithoutNotify(SoundManager.Instance.GetBgmVolume());
+        }
 
-        bgmSlider.onValueChanged.AddListener(SoundManager.Instance.SetBgmVolume);
-        sfxSlider.onValueChanged.AddListener(SoundManager.Instance.SetSfxVolume);
-
-        bgmSlider.value = SoundManager.Instance.GetBgmVolume();
-        sfxSlider.value = SoundManager.Instance.GetSfxVolume();
+        if (sfxSlider != null)
+        {
+            sfxSlider.onValueChanged.AddListener(SoundManager.Instance.SetSfxVolume);
+            sfxSlider.SetValueWithoutNotify(SoundManager.Instance.GetSfxVolume());
+        }
     }
 
-    public void OpenCloseSettingsWIndow(bool isOpen)
+    private void Update()
     {
-        if (isOpen)
+        if (settingsKeyCode == KeyCode.None || !Input.GetKeyDown(settingsKeyCode))
         {
-            Time.timeScale = 0f; // ¼³Á¤Ã¢ÀÌ ¿­¸± ¶§ ½Ã°£ Á¤Áö
-            if (settingsWIndowCanvas != null) settingsWIndowCanvas.SetActive(true);
+            return;
         }
-        else
+
+        if (OpenCloseSettingsWindow.OnEscPressed != null)
         {
-            CloseSettings(); // ´Ý±â ¿äÃ» ½Ã CloseSettings È£Ãâ
+            bool wasHandled = false;
+            foreach (Func<bool> handler in OpenCloseSettingsWindow.OnEscPressed.GetInvocationList())
+            {
+                if (handler.Invoke()) wasHandled = true;
+            }
+
+            if (wasHandled) return;
         }
+
+        OpenCloseSettingsWindow.SetOpen(!isOpen);
+    }
+
+    private void UpdateSettingsKeyCode()
+    {
+        if (KeyManager.Instance != null)
+        {
+            settingsKeyCode = KeyManager.Instance.GetKeyCode(KeyBindingName.Settings);
+        }
+    }
+
+    public void OpenCloseSettingsWIndow(bool open)
+    {
+        SetSettingsOpen(open);
+    }
+
+    private void SetSettingsOpen(bool open)
+    {
+        isOpen = open;
+        if (settingsWIndowCanvas != null)
+        {
+            settingsWIndowCanvas.SetActive(isOpen);
+        }
+
+        Time.timeScale = isOpen ? 0f : 1f;
     }
 
     public void CloseSettings()
     {
-        Time.timeScale = 1f; // ÀÏ½Ã Á¤Áö ÇØÁ¦
-
-        // SettingsSceneÀ» ¸Þ¸ð¸®¿¡¼­ ¿ÏÀüÈ÷ Unload½ÃÄÑ¾ß ´ÙÀ½¿¡ ´Ù½Ã ¿­ ¼ö ÀÖ½À´Ï´Ù.
-        Scene settingsScene = SceneManager.GetSceneByName("SettingsScene");
-        if (settingsScene.isLoaded)
-        {
-            SceneManager.UnloadSceneAsync("SettingsScene");
-        }
-        else if (settingsWIndowCanvas != null)
-        {
-            settingsWIndowCanvas.SetActive(false);
-        }
+        OpenCloseSettingsWindow.SetOpen(false);
     }
 
     public void OnQuitButtonClicked()
     {
 #if UNITY_EDITOR
-        // À¯´ÏÆ¼ ¿¡µðÅÍ ½ÇÇà ÁßÀÏ ¶§´Â ÇÃ·¹ÀÌ ¸ðµå¸¦ Á¾·á
         UnityEditor.EditorApplication.isPlaying = false;
 #else
-        // ½ÇÁ¦ ºôµåµÈ °ÔÀÓ(exe µî)¿¡¼­´Â °ÔÀÓ Ã¢À» ¿ÏÀüÈ÷ Á¾·á
         Application.Quit();
 #endif
     }
-
 }
