@@ -244,7 +244,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_MaskInteraction: 0
-  m_Sprite: {fileID: 6737183247441357314, guid: d6a095a3625eb494e8ff5b339f8f1f56, type: 3}
+  m_Sprite: {fileID: -5768520758699594814, guid: a8ddb29e0eba9f64ca6d261dd1274cb6, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -264,7 +264,7 @@ Transform:
   m_GameObject: {fileID: 33389696}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 5.7, z: 0}
   m_LocalScale: {x: 1.4, y: 1.4, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -2983,6 +2983,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: DialogueRoot
       objectReference: {fileID: 0}
+    - target: {fileID: 1260358921405001155, guid: beac60035099aa54aa12fdace8ee823b, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 1674094713152422115, guid: beac60035099aa54aa12fdace8ee823b, type: 3}
       propertyPath: m_AnchoredPosition.x
       value: -13
@@ -3427,7 +3431,7 @@ Transform:
   m_GameObject: {fileID: 1187771328}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 5.3, z: 0}
+  m_LocalPosition: {x: 0, y: 15, z: 0}
   m_LocalScale: {x: 87, y: 0.5, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
