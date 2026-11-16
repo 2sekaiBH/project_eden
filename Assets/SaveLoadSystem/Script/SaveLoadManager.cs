@@ -3,33 +3,39 @@ using System.IO;
 using UnityEngine;
 
 // 저장 데이터 클래스
+
+[System.Serializable]
 public class PlayerData
 {
     /*
-    //위치, 스토리 진행도, 체력, 멘탈, 소지 아이템 
-    public int HP;
-    public float Mental;
-    public InventorySaveData InventorySaveData;
-    public Vector3 Location;
-    public string[] Flags;
-    public List<QuestSaveData> Quests;
-    public string SaveTime;
-    public string currentScene;
-    public PlayerData(int HP, float Mental, InventorySaveData InventorySaveData, Vector3 Location, string[] Flags, List<QuestSaveData> Quests, string SaveTime, string currentScene)
+     * 스테이지 정보, 인벤토리, npc 호감도, 사운드 데이터
+     */
+    public List<KeyData> keyDatas;
+    public int[] inventoryDatas;
+    public AffinityDatas[] npcAffinityDatas;
+    public VolumeDatas volumeDatas;
+
+    public void SetKeyDatas(List<KeyData> keyDatas)
     {
-        this.HP = HP;
-        this.Mental = Mental;
-        this.InventorySaveData = InventorySaveData;
-        this.Location = Location;
-        this.Flags = Flags;
-        this.Quests = Quests;
-        this.SaveTime = SaveTime;
-        this.currentScene = currentScene;
-    }*/
+        this.keyDatas = keyDatas;
+    }
+    public void SetInvenoryDatas(int[] itemsIdDatas)
+    {
+        this.inventoryDatas = itemsIdDatas;
+    }
+    public void SetnpcAffinityDatas(AffinityDatas[] npcAffinityDatas)
+    {
+        this.npcAffinityDatas = npcAffinityDatas;
+    }
+    public void SetVolumeDatas(VolumeDatas volumeDatas)
+    {
+        this.volumeDatas = volumeDatas;
+    }
 }
 public class SaveLoadManager : MonoBehaviour
 {
     public static SaveLoadManager instance;
+    public PlayerData nowPlayer; // 저장 데이터
 
     private void Awake()
     {
@@ -53,38 +59,39 @@ public class SaveLoadManager : MonoBehaviour
     // 데이터 수집해 저장
     public void SaveData()
     {
-        /*
-        InventorySaveData = new InventorySaveData(inventory);
+        nowPlayer = new PlayerData();
 
-        string[] flags = FlagManager.Instance.flagsData;
-        List<QuestSaveData> quests = QuestManager.Instance.SaveActiveQuest();
+        // 키 데이터 수집
+        nowPlayer.SetKeyDatas(KeyManager.Instance.ToKeyDataList());
 
-        string SaveTime = System.DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
-        int Hp = playerSaveData.Hp;
-        float Mental = playerSaveData.Mental;
-        Vector3 Location = playerSaveData.PlayerLocation;
+        // 인벤토리 데이터 수집
+        nowPlayer.SetInvenoryDatas(Inventory.Instance.GetInventoryData());
 
-        nowPlayer = new PlayerData(Hp, Mental, InventorySaveData, Location, flags, quests, SaveTime, currentScene);
+        // 사운드 볼륨 데이터 수집
+        nowPlayer.SetVolumeDatas(SoundManager.Instance.GetVolumeDatas());
+
+        // npc 호감도 데이터 수집
+        nowPlayer.SetnpcAffinityDatas(GameState.Instance.GetAffinityDatas().ToArray());
+
+        // Json으로 저장
         string data = JsonUtility.ToJson(nowPlayer);
-        Debug.Log(data);
-        File.WriteAllText(GetFilePath((nowSlot)), data);*/
+        Debug.Log($"저장 데이터: {data}");
+        File.WriteAllText(GetFilePath(), data);
     }
 
     // 데이터 로드
     public void LoadData()
     {
-        /*
         string path = GetFilePath();
         if (File.Exists(path))
         {
             string data = File.ReadAllText(path);
-            Debug.Log(data);
+            Debug.Log($"로드 데이터: {data}");
             nowPlayer = JsonUtility.FromJson<PlayerData>(data);
         }
         else
         {
             Debug.LogWarning($"Save file not found: {path}");
         }
-        */
     }
 }

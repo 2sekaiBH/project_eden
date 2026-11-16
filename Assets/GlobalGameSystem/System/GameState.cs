@@ -1,4 +1,6 @@
+using JetBrains.Annotations;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using UnityEngine;
 
 public enum FactionType
@@ -30,6 +32,16 @@ public class GameState : MonoBehaviour
     [SerializeField] private int cainAffinity;
     [SerializeField] private int noahAffinity;
 
+    // 호감도 저장 함수 추가
+    public List<AffinityDatas> GetAffinityDatas()
+    {
+        List<AffinityDatas> datas = new List<AffinityDatas>();
+        datas.Add(new AffinityDatas("architect", architectAffinity));
+        datas.Add(new AffinityDatas("cain", cainAffinity));
+        datas.Add(new AffinityDatas("noah", noahAffinity));
+
+        return datas;
+    }
     [Header("Hidden Ending Item IDs")]
     [Tooltip("Noa 히든 엔딩에 필요한 아이템 ID 5개를 입력하세요.")]
     [SerializeField]
@@ -291,4 +303,17 @@ public class GameState : MonoBehaviour
     }
 
 
+}
+
+[System.Serializable]
+public struct AffinityDatas
+{
+    public string target;
+    public int affinityValue;
+
+    public AffinityDatas(string target, int affinityValue)
+    {
+        this.target = target;
+        this.affinityValue = affinityValue;
+    }
 }
