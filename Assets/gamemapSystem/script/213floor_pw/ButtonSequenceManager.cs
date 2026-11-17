@@ -1,8 +1,9 @@
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
-using UnityEngine.SceneManagement;
 using UnityEngine.Events;
+using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class ButtonSequenceManager : MonoBehaviour
 {
@@ -21,7 +22,7 @@ public class ButtonSequenceManager : MonoBehaviour
     [SerializeField] private bool autoLoadNextScene = true;
     [SerializeField] private UnityEvent onSequenceSuccess;
 
-    [Header("버튼 및 스프라이트 연동 (Button ID : 1, 2, 3, 4...)")]
+    [Header("버튼 및 스프라이트 연동")]
     [SerializeField] private List<Image> buttonImages = new List<Image>();
 
     [Tooltip("기본 이미지 목록 (버튼 ID 순서대로)")]
@@ -30,10 +31,20 @@ public class ButtonSequenceManager : MonoBehaviour
     [Tooltip("변경될(활성화/반전될) 이미지 목록 (버튼 ID 순서대로)")]
     [SerializeField] private List<Sprite> changedSprites = new List<Sprite>();
 
+    [Header("페이드 설정")]
+    [SerializeField] private float fadeDuration = 0.5f;
+
     public bool IsOpened => sequencePanel != null && sequencePanel.activeSelf;
 
     // 플레이어가 지금까지 누른 버튼 ID들을 기록하는 리스트
     private List<int> playerSequence = new List<int>();
+
+    // 현재 실행 중인 페이드 코루틴들을 관리하기 위한 딕셔너리 (중복 실행 방지)
+    private Dictionary<Image, Coroutine> activeFadeCoroutines = new Dictionary<Image, Coroutine>();
+
+    // 1번 버튼이 활성화된 상태로 고정(유지)되었는지를 기록하는 변수
+    private bool isButton1Locked = false;
+
     private void Awake()
     {
         if (Instance == null) Instance = this;
@@ -46,6 +57,7 @@ public class ButtonSequenceManager : MonoBehaviour
     public void OpenSequenceUI()
     {
         playerSequence.Clear(); // 입력 기록 리셋
+        isButton1Locked = false;
         ResetAllButtonImages();
         if (sequencePanel != null) sequencePanel.SetActive(true);
         if (SoundManager.Instance != null)
@@ -67,6 +79,10 @@ public class ButtonSequenceManager : MonoBehaviour
 
     public void OnPressButton(int buttonId)
     {
+        if (buttonId == 1)
+        {
+            isButton1Locked = true;
+        }
         playerSequence.Add(buttonId);
         int currentIndex = playerSequence.Count - 1; // 방금 누른 버튼의 순서(인덱스)
         if (SoundManager.Instance != null)
@@ -152,33 +168,98 @@ public class ButtonSequenceManager : MonoBehaviour
 
 
 
-        public void ChangeButtonImage(int targetButtonId, bool isChanged)
+    public void ChangeButtonImage(int targetButtonId, bool isChanged)
     {
         int index = targetButtonId - 1; // 버튼 ID가 1부터 시작하면 인덱스는 0부터이므로 -1
 
         if (index >= 0 && index < buttonImages.Count)
         {
+            Image targetImage = buttonImages[index];
             if (buttonImages[index] != null)
             {
+                Sprite newSprite = null;
                 if (isChanged && index < changedSprites.Count && changedSprites[index] != null)
                 {
-                    buttonImages[index].sprite = changedSprites[index];
+                    newSprite = changedSprites[index];
                 }
                 else if (!isChanged && index < defaultSprites.Count && defaultSprites[index] != null)
                 {
-                    buttonImages[index].sprite = defaultSprites[index];
+                    newSprite = defaultSprites[index];
+                }
+
+                if (newSprite != null)
+                {
+                    // 이미 실행 중인 페이드가 있다면 중지
+                    if (activeFadeCoroutines.ContainsKey(targetImage) && activeFadeCoroutines[targetImage] != null)
+                    {
+                        StopCoroutine(activeFadeCoroutines[targetImage]);
+                    }
+
+                    // 새로운 페이드 코루틴 시작
+                    activeFadeCoroutines[targetImage] = StartCoroutine(FadeSpriteRoutine(targetImage, newSprite, fadeDuration));
                 }
             }
         }
+    }
+
+    private IEnumerator FadeSpriteRoutine(Image img, Sprite targetSprite, float duration)
+    {
+        float halfDuration = duration / 2f;
+        Color color = img.color;
+
+        // 1단계: 투명해지기 (Fade Out)
+        
+        float elapsedTime = 0f;
+        while (elapsedTime < halfDuration)
+        {
+            elapsedTime += Time.unscaledDeltaTime; // 일시정지(Time.timeScale = 0) 상태에서도 작동하도록 unscaledDeltaTime 사용
+            float alpha = Mathf.Lerp(1f, 0f, elapsedTime / halfDuration);
+            img.color = new Color(color.r, color.g, color.b, alpha);
+            yield return null;
+        }
+
+        // 스프라이트 교체
+        img.sprite = targetSprite;
+
+        // 2단계: 선명해지기 (Fade In)
+        elapsedTime = 0f;
+        while (elapsedTime < halfDuration)
+        {
+            elapsedTime += Time.unscaledDeltaTime;
+            float alpha = Mathf.Lerp(0f, 1f, elapsedTime / halfDuration);
+            img.color = new Color(color.r, color.g, color.b, alpha);
+            yield return null;
+        }
+
+        // 알파값 완전히 복구
+        img.color = new Color(color.r, color.g, color.b, 1f);
+        activeFadeCoroutines.Remove(img);
     }
 
     private void ResetAllButtonImages()
     {
         for (int i = 0; i < buttonImages.Count; i++)
         {
+            if (i == 0 && isButton1Locked) continue;
+
             if (buttonImages[i] != null && i < defaultSprites.Count && defaultSprites[i] != null)
             {
-                buttonImages[i].sprite = defaultSprites[i];
+                Image img = buttonImages[i];
+                if (activeFadeCoroutines.ContainsKey(img) && activeFadeCoroutines[img] != null)
+                {
+                    StopCoroutine(activeFadeCoroutines[img]);
+                    activeFadeCoroutines.Remove(img);
+                }
+                img.sprite = defaultSprites[i];
+                Color c = img.color;
+                img.color = new Color(c.r, c.g, c.b, 1f);
+            }
+        }
+        if (isButton1Locked && buttonImages.Count > 0 && buttonImages[0] != null)
+        {
+            if (0 < changedSprites.Count && changedSprites[0] != null)
+            {
+                buttonImages[0].sprite = changedSprites[0];
             }
         }
     }
@@ -229,9 +310,9 @@ public class ButtonSequenceManager : MonoBehaviour
                 SoundManager.Instance.PlaySFX(ESfx.tallcase_C);
             }
 
-            return true; // "내가 ESC 입력을 처리했음!" 알림
+            return true;
         }
 
-        return false; // 안 켜져 있으면 처리 안 함
+        return false;
     }
 }

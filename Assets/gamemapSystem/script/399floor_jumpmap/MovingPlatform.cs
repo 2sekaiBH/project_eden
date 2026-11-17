@@ -10,48 +10,45 @@ public class MovingPlatform : MonoBehaviour
     [SerializeField] private float minSpeed = 1.5f;   // 최소 속도
     [SerializeField] private float maxSpeed = 3.5f;   // 최대 속도
 
+    private Rigidbody rb;
     private float randomOffset;
     private float moveDistance;
     private float moveSpeed;
     private Vector3 startPosition;
 
+    private Vector3 previousPosition;
+    private Vector3 currentVelocity;
     void Start()
     {
-        // 게임이 시작될 때의 최초 위치를 기억
         startPosition = transform.position;
+        previousPosition = startPosition;
 
         moveDistance = Random.Range(minDistance, maxDistance);
         moveSpeed = Random.Range(minSpeed, maxSpeed);
 
-        // 이 오프셋 덕분에 모든 발판이 동시에 위로 올라가지 않고 제각각 움직입니다.
+        //모든 발판이 동시에 위로 올라가지 않고 제각각 움직이도록 함
         randomOffset = Random.Range(0f, 100f);
     }
 
-    void Update()
+    void FixedUpdate()
     {
-        // Time.time에 발판 고유의 randomOffset을 더해줍니다.
-        float sinValue = Mathf.Sin((Time.time * moveSpeed) + randomOffset);
+        previousPosition = transform.position;
 
+        float sinValue = Mathf.Sin((Time.time * moveSpeed) + randomOffset);
         float newY = startPosition.y + (sinValue * moveDistance);
         transform.position = new Vector3(startPosition.x, newY, startPosition.z);
+
+        // 프레임당 발판의 이동 속도(벡터) 계산
+        currentVelocity = (transform.position - previousPosition) / Time.deltaTime;
     }
 
-    private void OnCollisionEnter(Collision collision)
+    private void OnCollisionStay(Collision collision)
     {
-        // 내 위에 부딪힌 오브젝트의 태그가 Player라면
-        if (collision.gameObject.CompareTag("Player"))
+        CharacterController playerController = collision.gameObject.GetComponent<CharacterController>();
+        if (playerController != null)
         {
-            // 플레이어를 내 자식으로 들여보냅니다. (발판과 함께 이동)
-            collision.transform.SetParent(transform);
-        }
-    }
-
-    private void OnCollisionExit(Collision collision)
-    {
-        if (collision.gameObject.CompareTag("Player"))
-        {
-            // 플레이어가 나가면 자식 관계를 끊어줍니다.
-            collision.transform.SetParent(null);
+            // 발판이 움직이는 만큼 플레이어를 함께 밀어줍니다.
+            playerController.Move(currentVelocity * Time.deltaTime);
         }
     }
 }
