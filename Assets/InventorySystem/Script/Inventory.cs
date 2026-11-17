@@ -1,3 +1,4 @@
+using System.Linq;
 using UnityEngine;
 
 public class Inventory : MonoBehaviour
@@ -77,5 +78,11 @@ public class Inventory : MonoBehaviour
                 return;
             }
         }
+    }
+
+    // 데이터 저장용 함수 추가
+    public int[] GetInventoryData()
+    {
+        return slots.Select(x => x.item.id).ToArray();
     }
 }

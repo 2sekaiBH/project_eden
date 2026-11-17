@@ -150,4 +150,24 @@ public class SoundManager : MonoBehaviour
 
         return 1f;
     }
+
+    public VolumeDatas GetVolumeDatas()
+    {
+        VolumeDatas datas = new VolumeDatas(GetSfxVolume(), GetBgmVolume());
+        return datas;
+    }
 }
+
+[System.Serializable]
+public struct VolumeDatas
+{
+    float sfxVolume;
+    float BgmVolume;
+
+    public VolumeDatas(float sfxVolume, float BgmVolume)
+    {
+        this.sfxVolume = sfxVolume;
+        this.BgmVolume = BgmVolume;
+    }
+}
+
